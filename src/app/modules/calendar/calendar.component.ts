@@ -26,7 +26,6 @@ import { RecurringEventsService } from './recurring-events.service';
 import { UserRole, CalendarView, RecurrenceType, RoasterType } from '../../enums/enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth.service';
-import { CasesStateService } from '../user-mgmt/cases/cases-state.service';
 
 interface EventLog {
   timestamp: Date;

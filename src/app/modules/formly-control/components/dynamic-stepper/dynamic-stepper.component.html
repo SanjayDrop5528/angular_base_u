@@ -148,18 +148,18 @@
         <div *ngIf="activeStepIndex === visibleSteps.length - 1" class="review-step animate-fade-in">
 
           <ng-container *ngIf="props['showPatientDetailsReview']; else defaultReview">
-            <div style="margin-bottom: 2rem;">
-              <app-patient-details-view
-                [patient]="onboardingModel.patient_id || onboardingModel.id"
-                [model]="onboardingModel"
-                [hideHeader]="isEdit">
-              </app-patient-details-view>
+            <div style="margin-bottom: 2rem;" class="review-profile-header">
+              <h2>{{ onboardingModel?.name || onboardingModel?.patient_name || 'Patient Summary' }}</h2>
+              <p>{{ onboardingModel?.email || onboardingModel?.email_id || '' }}</p>
             </div>
           </ng-container>
 
           <ng-template #defaultReview>
             @if(this.props["viewtype"] == "component"){
-               <app-specialist-view [specialistId]="onboardingModel.id" [isModal]="true"></app-specialist-view>
+              <div class="review-profile-header">
+                <h2>{{ onboardingModel?.name || 'Specialist Profile' }}</h2>
+                <p>{{ onboardingModel?.email || '' }}</p>
+              </div>
             }@else {
               <!-- Professional Profile Header -->
               @if(visibleSteps[activeStepIndex].hideviewprofile == false){

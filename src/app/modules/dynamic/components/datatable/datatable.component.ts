@@ -27,7 +27,7 @@ export class DatatableComponent implements OnInit {
   config: any;
   collectionName!: string;
 
-  @Input("mode") mode: string = "page";
+  @Input("mode") mode: 'page' | 'popup' = "page";
 
   private route = inject(ActivatedRoute);
   private DataService = inject(DataService);

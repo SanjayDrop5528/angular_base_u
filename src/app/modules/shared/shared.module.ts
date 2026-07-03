@@ -50,8 +50,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './components/dialogComponents/confirmation-dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActionButtonComponent } from '../dynamic/components/datatable/button';
-import { DropDownAgggrid } from '../dynamic/components/master-single-detail-form/dropdownAggrid';
-import { MasterButtonComponent } from '../dynamic/components/master-single-detail-form/master-button';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HasPermissionDirective } from '../../core/directives/has-permission.directive';
 
@@ -64,9 +62,7 @@ import { HasPermissionDirective } from '../../core/directives/has-permission.dir
     ConfirmationDialogComponent,
     //  VisibleDirective,
 
-    ActionButtonComponent,
-    DropDownAgggrid,
-    MasterButtonComponent
+    ActionButtonComponent
   ],
   imports: [
     CommonModule,
@@ -140,9 +136,6 @@ import { HasPermissionDirective } from '../../core/directives/has-permission.dir
 
 
     ActionButtonComponent,
-
-    DropDownAgggrid,
-    MasterButtonComponent,
     FilePreviewComponent,
     // 3 party 
     AgGridModule,
