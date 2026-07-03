@@ -49,15 +49,6 @@ export const routes: Routes = [
         path: 'user-mgmt',
         children: [
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-
-          // Dashboard — open to all authenticated users
-          {
-            path: 'dashboard',
-            loadComponent: () =>
-              import('./modules/user-mgmt/dashboard/dashboard-home.component')
-                .then(m => m.DashboardHomeComponent)
-          },
-
           // Members
           {
             path: 'members',
