@@ -1,0 +1,60 @@
+{
+  "pageHeading": "Submit a Review",
+  "screenEditMode": "popup",
+  "addButText": "Submit Review",
+  "saveInCollection": "reviews",
+  "form": {
+    "collectionName": "reviews",
+    "fields": [
+      {
+        "key": "rating",
+        "type": "rating",
+        "className": "flex-12",
+        "props": {
+          "label": "Overall Rating",
+          "required": true
+        }
+      },
+      {
+        "key": "title",
+        "type": "mat-text-input",
+        "className": "flex-12",
+        "props": {
+          "label": "Review Title",
+          "placeholder": "Summarize your experience",
+          "required": true
+        }
+      },
+      {
+        "key": "comments",
+        "type": "mat-textarea-input",
+        "className": "flex-12",
+        "props": {
+          "label": "Review Comments",
+          "placeholder": "Describe your experience in detail...",
+          "required": true,
+          "rows": 4
+        }
+      },
+      {
+        "key": "recommend",
+        "type": "toogle",
+        "className": "flex-12",
+        "props": {
+          "label": "Would you recommend?",
+          "sublabel": ["Yes, I would recommend"]
+        }
+      }
+    ]
+  },
+  "addFormData": [
+    {
+      "from_key": "entityId",
+      "to_key": "entity_id"
+    },
+    {
+      "from_key": "entityType",
+      "to_key": "entity_type"
+    }
+  ]
+}

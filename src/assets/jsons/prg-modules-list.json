@@ -1,0 +1,103 @@
+{
+  "pageHeading": "PRG_MODULES.TITLE",
+  "pageDescription": "PRG_MODULES.SUBTITLE",
+  "screenId": "prg-modules",
+  "collectionName": "prg_modules",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "screenWidth": "600px",
+  "showbutton": true,
+  "rowModelType": "clientSide",
+  "defaultViewMode": "grid",
+  "cardSchema": {
+    "titleKey": "name",
+    "subtitleKey": "descriptions",
+    "fields": [
+      {
+        "key": "status",
+        "label": "PRG_MODULES.COL_STATUS",
+        "type": "badge",
+        "badgeColor": "primary"
+      }
+    ],
+    "actions": [
+      {
+        "label": "Edit",
+        "icon": "edit",
+        "action": "edit",
+        "color": "primary"
+      },
+      {
+        "label": "Delete",
+        "icon": "delete",
+        "action": "delete",
+        "color": "warn"
+      }
+    ]
+  },
+  "statusActions": [
+    {
+      "sourceField": "status",
+      "expectedValue": "Active",
+      "skip_confirmation": true,
+      "formAction": "update",
+      "updateCollectionName": "entities/prg_modules",
+      "updateIdKey": "id",
+      "tooltip": {
+        "activate": "Activate this module",
+        "deactivate": "Deactivate this module"
+      },
+      "setValue": {
+        "activate": "Active",
+        "deactivate": "Inactive"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "label": "FORM.COMMON.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "FORM.COMMON.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "PRG_MODULES.COL_NAME",
+      "field": "name",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "headerName": "PRG_MODULES.COL_DESCRIPTION",
+      "field": "descriptions",
+      "filter": "agTextColumnFilter",
+      "flex": 2
+    },
+    {
+      "headerName": "PRG_MODULES.COL_STATUS",
+      "field": "status",
+      "maxWidth": 120,
+      "cellRenderer": "buttonRenderer",
+      "cellRendererParams": {
+        "label": "status",
+        "actionKey": "context.componentParent.config.statusActions"
+      }
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "FORM.COMMON.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 85,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

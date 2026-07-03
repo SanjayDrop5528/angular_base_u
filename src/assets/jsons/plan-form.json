@@ -1,0 +1,112 @@
+{
+  "pageHeading": "SUBSCRIPTIONS.FORM_TITLE",
+  "formType": "simple",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "diffMehthod": true,
+  "saveEndPoint": "entities/api/subscriptions/plans",
+  "updateEndPoint": "entities/api/subscriptions/plans/{{model.id}}",
+  "keyField": "id",
+  "getendpoint": "entities/api/subscriptions/plans/{{id}}",
+  "saveMessage": "Plan saved successfully",
+  "updateMessage": "Plan updated successfully",
+  "form": {
+    "collectionName": "plans",
+    "fields": [
+      {
+        "key": "name",
+        "type": "mat-text-input",
+        "props": {
+          "label": "SUBSCRIPTIONS.FIELD_PLAN_NAME",
+          "placeholder": "e.g. Enterprise Tier",
+          "required": true
+        }
+      },
+      {
+        "key": "description",
+        "type": "html-input",
+        "props": {
+          "label": "SUBSCRIPTIONS.FIELD_PLAN_DESC",
+          "placeholder": "Briefly describe what this plan offers..."
+        }
+      },
+      {
+        "fieldGroupClassName": "form-row-2",
+        "fieldGroup": [
+          {
+            "key": "currency",
+            "type": "select-input",
+            "props": {
+              "label": "SUBSCRIPTIONS.FIELD_CURRENCY",
+              "placeholder": "INR",
+              "required": true,
+              "valueProp": "currency_symbol",
+              "labelProp": "{{flag_icon}} {{currency}} - {{currency_symbol}}",
+              "needSearch": true,
+              "optionsDataSource": {
+                "collectionName": "countries"
+              }
+            }
+          },
+          {
+            "key": "price",
+            "type": "mat-text-input",
+            "props": {
+              "label": "SUBSCRIPTIONS.FIELD_PRICE",
+              "placeholder": "e.g. 99",
+              "required": true,
+              "type": "number"
+            }
+          },
+          {
+            "key": "preference",
+            "type": "mat-text-input",
+            "props": {
+              "label": "SUBSCRIPTIONS.FIELD_PREFERENCE",
+              "placeholder": "e.g. 1",
+              "required": true,
+              "type": "number"
+            }
+          },
+          {
+            "key": "tag",
+            "type": "mat-text-input",
+            "props": {
+              "label": "SUBSCRIPTIONS.FIELD_TAG",
+              "placeholder": "e.g. Popular"
+            }
+          },
+          {
+            "key": "status",
+            "type": "select-input",
+            "hideExpression": "!model.id",
+            "props": {
+              "label": "SHARED.STATUS",
+              "required": true,
+              "valueProp": "value",
+              "labelProp": "label",
+              "options": [
+                {
+                  "label": "SHARED.STATUS_ACTIVE",
+                  "value": "active"
+                },
+                {
+                  "label": "SHARED.STATUS_INACTIVE",
+                  "value": "inactive"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "key": "is_default",
+        "type": "toogle",
+        "props": {
+          "label": "SUBSCRIPTIONS.FIELD_DEFAULT_PLAN"
+        },
+        "hideExpression": "model._defaultBlocked"
+      }
+    ]
+  }
+}

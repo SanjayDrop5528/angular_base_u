@@ -1,0 +1,120 @@
+{
+  "pageHeading": "CASE_MGMT.PAGE_UNALLOCATED",
+  "pageDescription": "CASE_MGMT.PAGE_UNALLOCATED_DESC",
+  "filterOptions": [
+    {
+      "type": "input",
+      "label": "CASE_MGMT.MEMBERS.COL_CASE_NO",
+      "columnName": "case_no",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "input",
+      "label": "CASE_MGMT.MEMBERS.COL_PATIENT",
+      "columnName": "patientName",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "select",
+      "label": "SHARED.STATUS",
+      "columnName": "status",
+      "multiSelection": false,
+      "labelProp": "label",
+      "valueProp": "value",
+      "options": [
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_NEW",
+          "value": "new"
+        },
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_UNDER_REVIEW",
+          "value": "under_review"
+        },
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_DOCTOR_ASSIGNED",
+          "value": "doctor_assigned"
+        },
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_REPORT_READY",
+          "value": "report_ready"
+        },
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_CLOSED",
+          "value": "closed"
+        }
+      ]
+    }
+  ],
+  "collectionName": "cases",
+  "editMode": "page",
+  "screenEditMode": "popup",
+  "showbutton": false,
+  "columnDefs": [
+    {
+      "headerName": "CASE_MGMT.MEMBERS.COL_CASE_NO",
+      "field": "case_no",
+      "filter": "agTextColumnFilter",
+      "maxWidth": 150
+    },
+    {
+      "headerName": "CASE_MGMT.MEMBERS.COL_PATIENT",
+      "field": "patientName",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "CASE_MGMT.FIELD_PRICING_PLAN",
+      "field": "plan_name",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "CASE_MGMT.MEMBERS.COL_INTAKE_COMPLAINT",
+      "field": "primary_diagnosis",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "CASE_MGMT.MEMBERS.COL_PRIORITY",
+      "field": "priority",
+      "filter": "agTextColumnFilter",
+      "maxWidth": 120
+    },
+    {
+      "headerName": "SHARED.STATUS",
+      "field": "status",
+      "type": "statusColor",
+      "backgroundColor": {
+        "defaultColor": "rgba(99, 102, 241, 0.12)",
+        "config": [
+          { "status": "new", "color": "rgba(99, 102, 241, 0.12)" },
+          { "status": "under_review", "color": "rgba(99, 102, 241, 0.12)" },
+          { "status": "doctor_assigned", "color": "rgba(99, 102, 241, 0.12)" },
+          { "status": "report_ready", "color": "rgba(99, 102, 241, 0.12)" },
+          { "status": "closed", "color": "rgba(99, 102, 241, 0.12)" }
+        ]
+      },
+      "textColor": {
+        "defaultColor": "#6366f1",
+        "config": [
+          { "status": "new", "color": "#15c05c" },
+          { "status": "under_review", "color": "#f59e0b" },
+          { "status": "doctor_assigned", "color": "#9c27b0" },
+          { "status": "report_ready", "color": "#10b981" },
+          { "status": "closed", "color": "#f44336" }
+        ]
+      },
+      "lockPosition": "right",
+      "maxWidth": 150,
+      "lockPinned": true,
+      "pinned": "right",
+      "filter": "agSetColumnFilter",
+      "filterParams": {
+        "values": [
+          "new",
+          "under_review",
+          "doctor_assigned",
+          "report_ready",
+          "closed"
+        ]
+      }
+    }
+  ]
+}

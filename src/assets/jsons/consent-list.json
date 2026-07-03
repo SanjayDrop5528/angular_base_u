@@ -1,0 +1,84 @@
+{
+  "pageHeading": "CONSENT_MGMT.PAGE_HEADING",
+  "collectionName": "consent",
+  "noForm": true,
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "showbutton": true,
+  "keyField": "id",
+  "rowModelType": "clientSide",
+  "actions": [
+    {
+      "label": "SHARED.VIEW",
+      "icon": "visibility",
+      "formAction": "view"
+    },
+    {
+      "label": "Version History",
+      "icon": "history",
+      "formAction": "history"
+    },
+    {
+      "label": "SHARED.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "SHARED.CLONE",
+      "icon": "content_copy",
+      "formAction": "clone"
+    },
+    {
+      "label": "SHARED.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "field": "name",
+      "headerName": "SHARED.NAME",
+      "flex": 1.5
+    },
+    {
+      "field": "key",
+      "headerName": "CONSENT_MGMT.COL_CONSENT_KEY",
+      "flex": 1.5
+    },
+    {
+      "field": "version",
+      "headerName": "CONSENT_MGMT.COL_VERSION",
+      "flex": 0.8
+    },
+    {
+      "field": "region",
+      "headerName": "CONSENT_MGMT.COL_REGION",
+      "flex": 1
+    },
+    {
+      "field": "display_type",
+      "headerName": "CONSENT_MGMT.COL_DISPLAY_TYPE",
+      "flex": 1
+    },
+    {
+      "field": "status",
+      "headerName": "CONSENT_MGMT.COL_STATUS",
+      "flex": 0.8
+    },
+    {
+      "field": "created_on",
+      "headerName": "CONSENT_MGMT.COL_CREATED_DATE",
+      "flex": 1.2
+    },
+    {
+      "headerName": "",
+      "field": "Action",
+      "cellRenderer": "buttonRenderer",
+      "lockPosition": "right",
+      "pinned": "right",
+      "lockPinned": true,
+      "maxWidth": 130,
+      "menuTabs": []
+    }
+  ]
+}

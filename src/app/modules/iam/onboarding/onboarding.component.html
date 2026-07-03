@@ -1,0 +1,229 @@
+<div class="onboarding-page">
+  <div class="chat-wrapper animate-fade-in">
+    <!-- Header -->
+    <header class="chat-header">
+      <div class="bot-info">
+        <div class="bot-avatar">
+          <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2a10 10 0 0 0-10 10c0 1.57.36 3.05 1 4.37L1.87 21a1 1 0 0 0 1.25 1.25l4.63-1.13A10 10 0 1 0 12 2zm4 11h-8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2zm0-4h-8a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2z" fill="#6366f1"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Onboarding Assistant</h3>
+          <p class="status-online">Online</p>
+        </div>
+      </div>
+      <button type="button" class="btn-reset" (click)="resetOnboarding()" title="Reset chatbot onboarding">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1 1 21.21 8H18" />
+        </svg>
+        <span>Reset</span>
+      </button>
+    </header>
+
+    <!-- Chat Message Log Container -->
+    <div class="chat-log" #chatContainer>
+      <div *ngFor="let msg of messages" class="message-row" [ngClass]="{'row-bot': msg.sender === 'bot', 'row-user': msg.sender === 'user'}">
+        <div class="msg-avatar" *ngIf="msg.sender === 'bot'">AI</div>
+        <div class="msg-bubble">
+          <div class="msg-text">{{ msg.text }}</div>
+          <div class="msg-time">{{ msg.timestamp | date:'shortTime' }}</div>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div class="message-row row-bot" *ngIf="isBotTyping">
+        <div class="msg-avatar">AI</div>
+        <div class="msg-bubble typing-bubble">
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Step Input Panel -->
+    <div class="input-panel" *ngIf="currentStepIndex < steps.length">
+      <!-- 1. Text Inputs (Name, Field of Study, Region etc) -->
+      <div class="control-group animate-slide-up" *ngIf="steps[currentStepIndex].type === 'text' || steps[currentStepIndex].type === 'region'">
+        <div class="input-send-wrapper">
+          <input type="text" [(ngModel)]="textInput" (keyup.enter)="submitAnswer()" [placeholder]="steps[currentStepIndex].placeholder || 'Type your response...'" class="chat-input" autofocus>
+          <button type="button" (click)="submitAnswer()" class="btn-send" [disabled]="!textInput.trim()">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Role Selector (Doctor / Patient) -->
+      <div class="control-group choice-control animate-slide-up" *ngIf="steps[currentStepIndex].type === 'role'">
+        <button type="button" (click)="selectedOption = 'Doctor'; submitAnswer()" class="choice-btn doctor-color">
+          <span class="choice-icon">🩺</span>
+          <span class="choice-label">I am a Doctor</span>
+        </button>
+        <button type="button" (click)="selectedOption = 'Patient'; submitAnswer()" class="choice-btn patient-color">
+          <span class="choice-icon">🤕</span>
+          <span class="choice-label">I am a Patient</span>
+        </button>
+      </div>
+
+      <!-- 3. Education levels (MD, MBBS, PhD, etc) -->
+      <div class="control-group choice-control animate-slide-up" *ngIf="steps[currentStepIndex].type === 'education'">
+        <button type="button" *ngFor="let opt of ['MBBS', 'MD', 'PhD', 'DNB', 'Other']" (click)="selectedOption = opt; submitAnswer()" class="choice-btn pill-btn">
+          {{ opt }}
+        </button>
+      </div>
+
+      <!-- 4. General select list (Yes / No) -->
+      <div class="control-group choice-control animate-slide-up" *ngIf="steps[currentStepIndex].type === 'select'">
+        <button type="button" *ngFor="let opt of steps[currentStepIndex].options" (click)="selectedOption = opt; submitAnswer()" class="choice-btn pill-btn" [ngClass]="{'btn-yes': opt === 'Yes', 'btn-no': opt === 'No'}">
+          {{ opt }}
+        </button>
+      </div>
+
+      <!-- 5. Doctor College / Registration details form -->
+      <div class="control-group form-control-block animate-slide-up" *ngIf="steps[currentStepIndex].type === 'doc_college'">
+        <div class="form-grid">
+          <div class="form-item">
+            <label>College Name</label>
+            <input type="text" [(ngModel)]="eduCollege" placeholder="e.g. Harvard Medical School" class="form-input">
+          </div>
+          <div class="form-item">
+            <label>Year of Completion</label>
+            <input type="number" [(ngModel)]="eduYear" placeholder="e.g. 2018" class="form-input">
+          </div>
+          <div class="form-item">
+            <label>Registration Number</label>
+            <input type="text" [(ngModel)]="eduRegNo" placeholder="e.g. REG-123456" class="form-input">
+          </div>
+        </div>
+        <button type="button" (click)="submitAnswer()" class="btn-submit" [disabled]="!eduCollege || !eduYear || !eduRegNo">
+          Submit College Details
+        </button>
+      </div>
+
+      <!-- 6. Specialization details form -->
+      <div class="control-group form-control-block animate-slide-up" *ngIf="steps[currentStepIndex].type === 'doc_spec_details'">
+        <div class="form-grid">
+          <div class="form-item">
+            <label>Specialization Field</label>
+            <input type="text" [(ngModel)]="specField" placeholder="e.g. Cardiology" class="form-input">
+          </div>
+          <div class="form-item">
+            <label>College/Institution</label>
+            <input type="text" [(ngModel)]="specCollege" placeholder="e.g. Stanford Medical" class="form-input">
+          </div>
+          <div class="form-item">
+            <label>Completion Year</label>
+            <input type="number" [(ngModel)]="specYear" placeholder="e.g. 2021" class="form-input">
+          </div>
+          <div class="form-item">
+            <label>Specialist Registration No</label>
+            <input type="text" [(ngModel)]="specRegNo" placeholder="e.g. SPEC-98765" class="form-input">
+          </div>
+        </div>
+        <button type="button" (click)="submitAnswer()" class="btn-submit" [disabled]="!specField || !specCollege || !specYear || !specRegNo">
+          Submit Specialization Details
+        </button>
+      </div>
+
+      <!-- 7. Awards / Medical Conditions Text Area -->
+      <div class="control-group text-area-control-block animate-slide-up" *ngIf="steps[currentStepIndex].type === 'text_area'">
+        <textarea [(ngModel)]="textInput" [placeholder]="steps[currentStepIndex].placeholder" class="chat-textarea" rows="3"></textarea>
+        <button type="button" (click)="submitAnswer()" class="btn-submit" [disabled]="!textInput.trim()">
+          Submit Response
+        </button>
+      </div>
+
+      <!-- 8. Experience Number Input -->
+      <div class="control-group animate-slide-up" *ngIf="steps[currentStepIndex].type === 'number'">
+        <div class="input-send-wrapper">
+          <input type="number" [(ngModel)]="docExperience" placeholder="Years of experience" min="0" class="chat-input" (keyup.enter)="submitAnswer()">
+          <button type="button" (click)="submitAnswer()" class="btn-send" [disabled]="docExperience === null || docExperience < 0">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 9. File Upload Field -->
+      <div class="control-group file-upload-block animate-slide-up" *ngIf="steps[currentStepIndex].type === 'file'">
+        <div class="file-uploader-box">
+          <input type="file" id="onboardingFile" (change)="onFileSelected($event)" style="display: none;">
+          <label for="onboardingFile" class="file-upload-label">
+            <span class="upload-icon">📁</span>
+            <span class="upload-text">{{ selectedFileName || 'Choose verification document...' }}</span>
+          </label>
+        </div>
+        <button type="button" (click)="submitAnswer()" class="btn-submit" [disabled]="!selectedFileName">
+          Submit Uploaded Document
+        </button>
+      </div>
+
+      <!-- 10. Patient DOB Picker -->
+      <div class="control-group animate-slide-up" *ngIf="steps[currentStepIndex].type === 'date'">
+        <div class="input-send-wrapper">
+          <input type="date" [(ngModel)]="patientDob" class="chat-input date-input">
+          <button type="button" (click)="submitAnswer()" class="btn-send" [disabled]="!patientDob">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 11. Patient Gender Selection -->
+      <div class="control-group choice-control animate-slide-up" *ngIf="steps[currentStepIndex].type === 'gender'">
+        <button type="button" *ngFor="let opt of ['Male', 'Female', 'Other']" (click)="selectedOption = opt; submitAnswer()" class="choice-btn pill-btn">
+          {{ opt }}
+        </button>
+      </div>
+
+      <!-- 12. Patient Emergency details form -->
+      <div class="control-group form-control-block animate-slide-up" *ngIf="steps[currentStepIndex].type === 'pat_emergency'">
+        <div class="form-grid">
+          <div class="form-item">
+            <label>Emergency Contact Name</label>
+            <input type="text" [(ngModel)]="patientEmergName" placeholder="e.g. Mary Doe" class="form-input">
+          </div>
+          <div class="form-item">
+            <label>Emergency Phone Number</label>
+            <input type="text" [(ngModel)]="patientEmergPhone" placeholder="e.g. +91 9999999999" class="form-input">
+          </div>
+        </div>
+        <button type="button" (click)="submitAnswer()" class="btn-submit" [disabled]="!patientEmergName || !patientEmergPhone">
+          Submit Emergency Contact
+        </button>
+      </div>
+
+      <!-- 13. Consent checkbox list -->
+      <div class="control-group consent-control-block animate-slide-up" *ngIf="steps[currentStepIndex].type === 'consent'">
+        <div class="consent-info-banner">
+          <p>Please review and accept our guidelines to activate your profile.</p>
+        </div>
+        <div class="consent-checkboxes">
+          <label class="checkbox-container">
+            <input type="checkbox" [(ngModel)]="acceptTerms">
+            <span class="checkmark"></span>
+            I agree to the <a href="#" (click)="$event.preventDefault()">Terms & Conditions</a>
+          </label>
+          <label class="checkbox-container">
+            <input type="checkbox" [(ngModel)]="acceptPrivacy">
+            <span class="checkmark"></span>
+            I accept the <a href="#" (click)="$event.preventDefault()">Privacy Policy</a>
+          </label>
+        </div>
+        <button type="button" (click)="submitAnswer()" class="btn-submit btn-consent-submit" [disabled]="!acceptTerms || !acceptPrivacy">
+          Accept & Complete Activation
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

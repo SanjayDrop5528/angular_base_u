@@ -1,0 +1,53 @@
+{
+  "pageHeading": "Version History",
+  "collectionName": "consent",
+  "noForm": true,
+  "keyField": "id",
+  "rowModelType": "clientSide",
+  "actions": [
+    {
+      "label": "View Live Template",
+      "icon": "visibility",
+      "formAction": "view"
+    },
+    {
+      "label": "Restore/Rollback Version",
+      "icon": "restore",
+      "formAction": "restore"
+    }
+  ],
+  "columnDefs": [
+    {
+      "field": "version",
+      "headerName": "VERSION",
+      "type": "versionName",
+      "flex": 0.8
+    },
+    {
+      "field": "is_active",
+      "headerName": "STATUS",
+      "type": "activeArchived",
+      "flex": 1
+    },
+    {
+      "field": "created_on",
+      "headerName": "PUBLISHED DATE",
+      "type": "datetime",
+      "format": "MMM DD, YYYY, hh:mm A",
+      "flex": 1.5
+    },
+    {
+      "field": "created_by_name",
+      "headerName": "AUTHOR",
+      "type": "userProfile",
+      "flex": 1.5
+    },
+    {
+      "headerName": "ACTIONS",
+      "type": "versionActions",
+      "pinned": "right",
+      "maxWidth": 140,
+      "flex": 1
+    }
+  ]
+}

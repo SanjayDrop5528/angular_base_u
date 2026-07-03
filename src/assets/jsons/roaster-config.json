@@ -1,0 +1,175 @@
+{
+  "pageHeading": "ROSTER.ROASTER_CONFIGURATION",
+  "formType": "simple",
+  "editMode": "page",
+  "screenEditMode": "page",
+  "onCancelRoute": "/calendar/roaster-config",
+  "diffMehthod": true,
+  "saveEndPoint": "roaster/api/roaster-configs",
+  "updateEndPoint": "roaster/api/roaster-configs/{{id}}",
+  "keyField": "id",
+  "form": {
+    "collectionName": "roaster_configs",
+    "fields": [
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "user_id",
+            "type": "select-input",
+            "props": {
+              "label": "ROSTER.SELECT_EMPLOYEE_DOCTOR",
+              "required": true,
+              "valueProp": "id",
+              "labelProp": "name",
+              "optionsEndpoint": "roaster/api/users"
+            }
+          },
+          {
+            "key": "entity_type",
+            "type": "select-input",
+            "props": {
+              "label": "ROSTER.ENTITY_TYPE",
+              "required": true,
+              "valueProp": "value",
+              "labelProp": "label",
+              "options": [
+                {
+                  "value": "doctor",
+                  "label": "ROSTER.DOCTOR"
+                },
+                {
+                  "value": "staff",
+                  "label": "ROSTER.STAFF"
+                }
+              ]
+            }
+          },
+          {
+            "key": "roaster_type",
+            "type": "select-input",
+            "props": {
+              "label": "ROSTER.ROASTER_TYPE",
+              "required": true,
+              "valueProp": "value",
+              "labelProp": "label",
+              "options": [
+                {
+                  "value": "available",
+                  "label": "ROSTER.AVAILABILITY"
+                },
+                {
+                  "value": "schedule",
+                  "label": "ROSTER.SCHEDULE"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "freq",
+            "type": "select-input",
+            "props": {
+              "label": "ROSTER.FREQUENCY",
+              "required": true,
+              "valueProp": "value",
+              "labelProp": "label",
+              "options": [
+                {
+                  "value": "daily",
+                  "label": "ROSTER.DAILY"
+                },
+                {
+                  "value": "weekly",
+                  "label": "ROSTER.WEEKLY"
+                },
+                {
+                  "value": "monthly",
+                  "label": "ROSTER.MONTHLY"
+                }
+              ]
+            }
+          },
+          {
+            "key": "interval_val",
+            "type": "numeric-input",
+            "props": {
+              "label": "ROSTER.INTERVAL_EVERY_N_PERIODS",
+              "required": true,
+              "min": 1,
+              "defaultValue": 1
+            }
+          },
+          {
+            "key": "duration",
+            "type": "numeric-input",
+            "props": {
+              "label": "ROSTER.SLOT_DURATION_MINUTES",
+              "required": true,
+              "min": 1,
+              "defaultValue": 30
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "slot",
+            "type": "toogle",
+            "props": {
+              "label": "ROSTER.GENERATE_SLOTS",
+              "defaultValue": true
+            }
+          },
+          {
+            "key": "byday",
+            "type": "text-input",
+            "props": {
+              "label": "ROSTER.BY_DAYS_COMMA_SEPARATED_E_G_MO_TU_WE",
+              "placeholder": "ROSTER.ENTER_DAYS_MO_TU_WE_TH_FR_SA_SU"
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "start_date",
+            "type": "date-input",
+            "props": {
+              "label": "ROSTER.START_DATE",
+              "required": true
+            }
+          },
+          {
+            "key": "end_date",
+            "type": "date-input",
+            "props": {
+              "label": "ROSTER.END_DATE"
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "notes",
+            "type": "mat-textarea-input",
+            "props": {
+              "label": "ROSTER.NOTES",
+              "placeholder": "ROSTER.ENTER_ANY_ROASTER_CONFIGURATION_NOTES"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

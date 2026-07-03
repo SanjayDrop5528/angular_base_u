@@ -1,0 +1,416 @@
+// ════════════════════════════════════════════════════════════════════════════
+// core-card.scss
+// Styles for the CoreCard shell and all card node components.
+// ════════════════════════════════════════════════════════════════════════════
+
+// ── Card shell ────────────────────────────────────────────────────────────────
+.core-card {
+  height: 100%;
+  border-radius: var(--card-radius, 16px);
+  box-shadow: var(--glass-shadow);
+  transition: var(--transition-smooth);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
+    border-color: var(--border-focus);
+    background: var(--bg-card-hover);
+  }
+
+  &--layout {
+    box-sizing: border-box;
+    height: 100%;
+  }
+}
+
+// ── Action bar — pinned to the bottom of the card ─────────────────────────────
+::ng-deep core-card .card-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.18);
+  border-top: 1px solid var(--border-color);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+// ── Layout primitives ─────────────────────────────────────────────────────────
+::ng-deep {
+
+  // FIX: align-items:center is now the DEFAULT on .row, not an opt-in modifier.
+  // This is what was causing icon/text baseline drift in every icon+text pair
+  // that didn't explicitly add "align-center" in the JSON.
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+
+    &.no-gap {
+      gap: 0;
+    }
+
+    &.nowrap {
+      flex-wrap: nowrap;
+    }
+
+    &.reverse {
+      flex-direction: row-reverse;
+    }
+
+    // kept for backward compat with existing JSON that still passes align-center
+    &.align-center {
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    &.justify-between {
+      justify-content: space-between;
+    }
+
+    &.justify-center {
+      justify-content: center;
+    }
+
+    &.justify-start {
+      justify-content: flex-start;
+    }
+
+    &.justify-end {
+      justify-content: flex-end;
+    }
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    box-sizing: border-box;
+
+    &.no-gap {
+      gap: 0;
+    }
+
+    &.align-center {
+      align-items: center;
+    }
+
+    &.justify-center {
+      justify-content: center;
+    }
+  }
+
+  .col {
+    flex: 1 1 0%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  @for $i from 1 through 12 {
+    .col-#{$i} {
+      flex: 0 0 calc(#{$i} / 12 * 100%);
+      max-width: calc(#{$i} / 12 * 100%);
+      min-width: 0;
+      box-sizing: border-box;
+    }
+  }
+
+  // ── Avatar ─────────────────────────────────────────────────────────────────
+  .core-card__avatar-container {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-right: 12px;
+    flex-shrink: 0;
+    border: 1px solid gray;
+  }
+
+  .core-card__avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+
+  .core-card__avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    color: var(--text-inverse);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+    z-index: 1;
+  }
+
+  // ── Text node base ──────────────────────────────────────────────────────────
+  .card-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-main);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // ── Text variant overrides ─────────────────────────────────────────────────
+  .variant-title .card-value {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .variant-subtitle .card-value {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .variant-stat .card-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  .variant-numeric .card-value {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  // ── Backward-compat type-* classes ──────────────────────────────────────────
+  .type-title .card-value {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .type-subtitle .card-value {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .type-stat .card-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  // ── mat-icon — GLOBAL RESET (the real fix) ───────────────────────────────
+  // Material's own mat-icon ships with a fixed 24px box by default. Any
+  // ngStyle font-size your CardIconComponent sets must be matched 1:1 by
+  // width/height, or the glyph will sit off-center inside a 24px box.
+  // This rule makes the box always equal the font-size, and forces true
+  // flex-centering instead of relying on line-height/baseline alignment
+  // (which is what causes "icon not vertically centered" bugs).
+  // ════════════════════════════════════════════════════════════════════════
+  .mat-icon,
+  mat-icon {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: 1 !important;
+    flex-shrink: 0;
+    box-sizing: content-box;
+
+    // default fallback box — overridden per-instance by [ngStyle] font-size/width/height
+    width: 1em;
+    height: 1em;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // ════════════════════════════════════════════════════════════════════════
+  // ── mat-icon-button — kills the "unwanted padding" around CardButtonComponent
+  // Material's MDC icon-button defaults to padding:8px + 48px (or 40px
+  // density -1) touch target. This is the padding you were seeing.
+  // ════════════════════════════════════════════════════════════════════════
+  .mat-mdc-icon-button {
+    padding: 0 !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    .mat-mdc-button-touch-target {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .mat-mdc-button-persistent-ripple,
+    .mdc-icon-button__ripple {
+      border-radius: inherit;
+    }
+
+    .mat-icon {
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+    }
+  }
+
+  // ── Badges (mat-chip) ──────────────────────────────────────────────────────
+  mat-chip {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: fit-content;
+    font-size: 11px;
+    min-height: 22px;
+    line-height: 22px;
+    border-radius: 11px;
+    font-weight: 600;
+
+    // MDC wraps chip content in this internal cell — must be centered too,
+    // or icon+text inside a badge will hug the left edge regardless of
+    // the mat-chip's own justify-content.
+    .mdc-evolution-chip__cell,
+    .mdc-evolution-chip__action,
+    .mdc-evolution-chip__text-label {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    &.row {
+      flex-direction: row;
+    }
+
+    &.column {
+      flex-direction: column;
+      height: auto;
+      padding: 6px 8px;
+      line-height: normal;
+    }
+
+    &.badge-primary {
+      --mdc-chip-label-text-color: var(--primary-color);
+      background: rgba(var(--primary-color-rgb), 0.15);
+      color: var(--primary-color);
+      border: 1px solid rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    &.badge-accent {
+      --mdc-chip-label-text-color: var(--secondary-color);
+      background: rgba(var(--secondary-color-rgb), 0.15);
+      color: var(--secondary-color);
+      border: 1px solid rgba(var(--secondary-color-rgb), 0.3);
+    }
+
+    &.badge-warn {
+      --mdc-chip-label-text-color: var(--color-error);
+      background: var(--color-error-bg);
+      color: var(--color-error);
+      border: 1px solid var(--color-error-border);
+    }
+
+    &.badge-success {
+      --mdc-chip-label-text-color: var(--color-success);
+      background: var(--color-success-bg);
+      color: var(--color-success);
+      border: 1px solid var(--color-success-border);
+    }
+
+    &.badge-info {
+      --mdc-chip-label-text-color: var(--color-info);
+      background: var(--color-info-bg);
+      color: var(--color-info);
+      border: 1px solid var(--color-info-border);
+    }
+
+    // icon inside a badge — fixed square box, no auto sizing
+    .mat-icon {
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+    }
+  }
+
+  // ── List separator ─────────────────────────────────────────────────────────
+  .list-separator {
+    color: var(--text-muted);
+    font-size: 12px;
+    align-self: center;
+    user-select: none;
+  }
+
+  // ── Divider ────────────────────────────────────────────────────────────────
+  .card-divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 4px 0;
+    width: 100%;
+  }
+
+  .row>.card-divider {
+    width: 1px;
+    height: auto;
+    align-self: stretch;
+    margin: 0;
+    border-top: none;
+    border-left: 1px solid var(--border-color);
+    flex: 0 0 1px;
+  }
+
+  .custom-chip {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(var(--primary-color-rgb));
+    border-radius: 14px;
+    padding: 6px;
+    background: rgba(var(--primary-color-rgb), 0.15);
+    justify-content: center;
+  }
+}

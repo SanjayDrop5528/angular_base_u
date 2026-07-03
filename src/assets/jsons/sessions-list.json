@@ -1,0 +1,52 @@
+{
+  "pageHeading": "SESSION.LIST.ACTIVE_SESSIONS",
+  "pageDescription": "SESSIONS.PAGE_DESCRIPTION",
+  "collectionName": "sessions",
+  "showbutton": false,
+  "actions": [
+    {
+      "label": "SESSION.LIST.TERMINATE_SESSION",
+      "icon": "logout",
+      "formAction": "terminate"
+    },
+    {
+      "label": "SESSION.LIST.BLOCK_IP",
+      "icon": "block",
+      "formAction": "block_ip"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "SESSION.LIST.EMAIL",
+      "field": "email",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "SESSION.LIST.IP_ADDRESS",
+      "field": "ip",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "SESSION.LIST.DEVICE_BROWSER",
+      "field": "user_agent",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "SESSION.LIST.LAST_ACTIVE",
+      "field": "last_active",
+      "type": "date",
+      "filter": "agDateColumnFilter"
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "SESSION.LIST.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 85,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

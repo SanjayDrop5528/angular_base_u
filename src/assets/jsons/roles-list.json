@@ -1,0 +1,142 @@
+{
+  "pageHeading": "USER_MGMT.ROLES.PAGE_HEADING",
+  "editPageHeading": "USER_MGMT.ROLES.PAGE_HEADING",
+  "pageDescription": "USER_MGMT.ROLES.PAGE_DESCRIPTION",
+  "collectionName": "roles",
+  "showbutton": true,
+  "noForm": true,
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "screenWidth": "600px",
+  "defaultViewMode": "grid",
+  "cardSchema": {
+    "titleKey": "name",
+    "subtitleKey": "role_description",
+    "fields": [
+      {
+        "key": "status",
+        "label": "USER_MGMT.ROLES.COL_STATUS",
+        "type": "badge",
+        "badgeColor": "primary"
+      },
+      {
+        "key": "created_on",
+        "label": "USER_MGMT.ROLES.COL_CREATED",
+        "type": "date",
+        "dateFormat": "dd MMM yyyy, hh:mm A"
+      }
+    ],
+    "actions": [
+      {
+        "label": "Edit",
+        "icon": "edit",
+        "action": "edit_fully",
+        "color": "primary"
+      },
+      {
+        "label": "Permissions",
+        "icon": "security",
+        "action": "edit_permissions",
+        "color": "accent"
+      },
+      {
+        "label": "Delete",
+        "icon": "delete",
+        "action": "delete_role",
+        "color": "warn"
+      }
+    ]
+  },
+  "statusActions": [
+    {
+      "sourceField": "status",
+      "expectedValue": "active",
+      "skip_confirmation": true,
+      "formAction": "update",
+      "updateCollectionName": "entities/roles",
+      "updateIdKey": "id",
+      "tooltip": {
+        "activate": "Activate this role",
+        "deactivate": "Deactivate this role"
+      },
+      "setValue": {
+        "activate": "active",
+        "deactivate": "inactive"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "label": "Edit Fully",
+      "icon": "edit",
+      "formAction": "edit_fully"
+    },
+    {
+      "label": "Edit Permissions Only",
+      "icon": "security",
+      "formAction": "edit_permissions"
+    },
+    {
+      "label": "Edit Menu Only",
+      "icon": "menu",
+      "formAction": "edit_menu"
+    },
+    {
+      "label": "Clone",
+      "icon": "file_copy",
+      "formAction": "clone"
+    },
+    {
+      "label": "Delete",
+      "icon": "delete",
+      "formAction": "delete_role"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "USER_MGMT.ROLES.COL_ROLE_NAME",
+      "field": "name",
+      "filter": "agTextColumnFilter",
+      "width": 250,
+      "minWidth": 150,
+      "maxWidth": 300
+    },
+    {
+      "headerName": "USER_MGMT.ROLES.COL_DESCRIPTION",
+      "field": "role_description",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "headerName": "USER_MGMT.ROLES.COL_CREATED",
+      "field": "created_on",
+      "type": "date",
+      "format": "DD MMM YY hh:mm A",
+      "maxWidth": 150,
+      "filter": "agDateColumnFilter"
+    },
+    {
+      "headerName": "USER_MGMT.ROLES.COL_STATUS",
+      "field": "status",
+      "maxWidth": 100,
+      "lockPosition": "right",
+      "cellRenderer": "buttonRenderer",
+      "cellRendererParams": {
+        "label": "status",
+        "actionKey": "context.componentParent.config.statusActions"
+      }
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "",
+      "field": "Action",
+      "width": 100,
+      "minWidth": 80,
+      "maxWidth": 120,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

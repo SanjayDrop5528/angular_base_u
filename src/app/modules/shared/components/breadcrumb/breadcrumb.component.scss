@@ -1,0 +1,78 @@
+// @import url('https://fonts.googleapis.com/css2?family=Tinos&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&display=swap');
+
+.tinos-regular {
+   font-family:  "Oswald",sans-serif;
+  font-optical-sizing: auto; 
+  font-weight: 400;
+  font-style: normal;
+}
+.parent-crumb{
+  display: grid;
+}
+.parent-crumb:hover .type {
+  text-decoration: underline;
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+}
+
+.crumb {
+  cursor: pointer;
+  text-transform:capitalize !important;
+  font-weight: 500;
+  display: grid;
+  transition: color 0.2s ease-in-out;
+}
+
+.link-color {
+  color: var(--breadcrumb-link-color) !important;
+}
+
+.link-color:hover {
+  text-decoration: underline;
+}
+
+.active-color {
+  color: var(--breadcrumb-active-color);
+  cursor: default;
+  text-transform:capitalize !important;
+  text-decoration: none !important;
+
+}
+
+.separator {
+  margin: 0 6px;
+  font-size: 30px;
+  margin-bottom: -8px;
+  color: #666;
+} 
+.active-color:hover {
+  text-decoration: none !important;
+  cursor: default;
+}
+
+.parent-crumb:has(.type:hover):not(:has(.type.type-active)):not(.active-color) {
+  text-decoration: underline;
+  color: var(--breadcrumb-link-color) !important;
+}
+
+
+.type{
+  margin-top: -10px;
+  float: right;
+  display: flex;
+  justify-content: flex-end;
+  color: var(--breadcrumb-type-color) ;
+  height: 10px;
+  font-size: small;
+  font-family: serif;
+  text-transform: capitalize;
+}
+ 
+.type-active{
+  color: var(--breadcrumb-type-active-color)!important;
+  text-decoration: none !important;
+}

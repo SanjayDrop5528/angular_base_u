@@ -1,0 +1,59 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    float: left;
+    width: 100%;
+   gap: 10px;
+}
+.online{
+    margin-top: 20px;
+    position: relative;
+    left: -35px;
+}
+.date-picker-wrapper {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 20;
+}
+
+.date-picker-container {
+  width: 100%;
+  height: 100%;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.datepicker-calendar-input {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+}
+
+.calendar-icon {
+  cursor: pointer;
+  padding-left: 8px;
+  user-select: none;
+  font-size: 18px;
+}

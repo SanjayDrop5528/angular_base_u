@@ -1,0 +1,41 @@
+{
+  "pageHeading": "JSON_CONFIG.FORM_TITLE",
+  "pageDescription": "JSON_CONFIG.FORM_SUBTITLE",
+  "screenId": "form-jsons",
+  "showbutton": false,
+  "noForm": true,
+  "rowModelType": "clientSide",
+  "defaultViewMode": "grid",
+  "columnDefs": [
+    {
+      "headerName": "JSON_CONFIG.COL_SCREEN",
+      "field": "screen",
+      "filter": "agTextColumnFilter",
+      "flex": 1
+    },
+    {
+      "headerName": "JSON_CONFIG.COL_JSON_TYPE",
+      "field": "jsonType",
+      "filter": "agTextColumnFilter",
+      "flex": 0.8
+    },
+    {
+      "headerName": "JSON_CONFIG.COL_FILE_NAME",
+      "field": "fileName",
+      "filter": "agTextColumnFilter",
+      "flex": 1.2
+    },
+    {
+      "headerName": "JSON_CONFIG.COL_ROUTE",
+      "field": "route",
+      "filter": "agTextColumnFilter",
+      "flex": 1.1
+    },
+    {
+      "headerName": "JSON_CONFIG.COL_PATH",
+      "field": "path",
+      "filter": "agTextColumnFilter",
+      "flex": 1.4
+    }
+  ]
+}

@@ -1,0 +1,640 @@
+/* ==========================================================================
+   AG Grid Customizable Premium Theme Definition
+   Supports both Dark (default) and Light (Morning) Modes dynamically via CSS variables.
+   ========================================================================== */
+
+/* AG Grid base CSS is loaded via angular.json styles array — see angular.json */
+
+:root {
+  --primary-font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --grid-header-bg-color: var(--primary-color);
+  --grid-header-text-color: #ffffff;
+  --grid-cell-text-color: var(--text-main);
+  --grid-cell-hover-color: rgba(var(--primary-color-rgb, 26, 115, 232), 0.1);
+  --grid-row-selected-color: rgba(26, 115, 232, 0.12);
+  --grid-border-color: var(--border-color);
+  --grid-accent-color: var(--primary-color);
+  --grid-font-size: 0.88rem;
+  --grid-header-font-size: 0.95rem;
+  --grid-row-height: 52px;
+  --grid-header-height: 56px;
+  --grid-cell-horizontal-padding: 14px;
+  --grid-border-radius: 6px;
+  --grid-paging-btn-hover-bg: rgba(25, 95, 74, 0.1);
+  --grid-paging-btn-disabled-color: rgba(25, 95, 74, 0.3);
+  --grid-paging-btn-active-bg: rgba(25, 95, 74, 0.15);
+  --grid-row-unselected-bg: rgba(255, 255, 255, 0.04);
+  --grid-row-selected-bg: rgba(88, 160, 255, 0.842);
+  --grid-row-selected-text: #ffffff;
+
+  /* Status Colors (Dark mode) */
+  --status-approved-bg: rgba(16, 185, 129, 0.12);
+  --status-approved-fg: #34d399;
+  --status-approved-border: rgba(16, 185, 129, 0.22);
+
+  --status-rejected-bg: rgba(239, 68, 68, 0.12);
+  --status-rejected-fg: #f87171;
+  --status-rejected-border: rgba(239, 68, 68, 0.22);
+
+  --status-pending-bg: rgba(37, 99, 235, 0.12);
+  --status-pending-fg: #60a5fa;
+  --status-pending-border: rgba(37, 99, 235, 0.22);
+
+  --status-hold-bg: rgba(245, 158, 11, 0.12);
+  --status-hold-fg: #fbbf24;
+  --status-hold-border: rgba(245, 158, 11, 0.22);
+
+  --status-draft-bg: rgba(75, 85, 99, 0.12);
+  --status-draft-fg: #9ca3af;
+  --status-draft-border: rgba(75, 85, 99, 0.22);
+
+  --status-info-bg: rgba(36, 115, 232, 0.12);
+  --status-info-fg: #60a5fa;
+  --status-info-border: rgba(36, 115, 232, 0.22);
+}
+
+[data-theme="morning"] {
+  --grid-header-bg-color: var(--primary-color);
+  --grid-header-text-color: #ffffff;
+  --grid-cell-text-color: var(--text-main);
+  --grid-cell-hover-color: rgba(var(--primary-color-rgb, 26, 115, 232), 0.06);
+  --grid-row-selected-color: rgba(26, 115, 232, 0.1);
+  --grid-border-color: var(--border-color);
+  --grid-accent-color: var(--primary-color);
+  --grid-row-unselected-bg: rgba(15, 23, 42, 0.04);
+  --grid-row-selected-bg: rgba(88, 160, 255, 0.842); //AGGIRD ROW SELETECED
+  --grid-row-selected-text: #ffffff;
+
+  /* Status Colors (Light mode) */
+  --status-approved-bg: rgba(16, 185, 129, 0.06);
+  --status-approved-fg: #059669;
+  --status-approved-border: rgba(16, 185, 129, 0.12);
+
+  --status-rejected-bg: rgba(239, 68, 68, 0.06);
+  --status-rejected-fg: #dc2626;
+  --status-rejected-border: rgba(239, 68, 68, 0.12);
+
+  --status-pending-bg: rgba(37, 99, 235, 0.06);
+  --status-pending-fg: #2563eb;
+  --status-pending-border: rgba(37, 99, 235, 0.12);
+
+  --status-hold-bg: rgba(245, 158, 11, 0.06);
+  --status-hold-fg: #d97706;
+  --status-hold-border: rgba(245, 158, 11, 0.12);
+
+  --status-draft-bg: rgba(75, 85, 99, 0.06);
+  --status-draft-fg: #4b5563;
+  --status-draft-border: rgba(75, 85, 99, 0.12);
+
+  --status-info-bg: rgba(36, 115, 232, 0.06);
+  --status-info-fg: #2563eb;
+  --status-info-border: rgba(36, 115, 232, 0.12);
+}
+
+/* Helper Overrides */
+.checkbox .mdc-text-field--outlined .mat-mdc-form-field-infix,
+.checkbox .mdc-text-field--no-label .mat-mdc-form-field-infix {
+  padding: var(--mdc-outlined-text-field-padding) !important;
+}
+
+.change_Checkbox_hieght .mat-mdc-text-field-wrapper {
+  align-items: center;
+  height: 56px;
+  will-change: auto;
+}
+
+.ag-popup .ag-date-picker input {
+  pointer-events: none;
+  caret-color: transparent;
+  /* Hide cursor */
+}
+
+.invalid-date-cell {
+  background-color: #f8d7da !important;
+  color: #721c24 !important;
+}
+
+/* Base Theme Configurations */
+.grid_con_res {
+  /* Set theme font family and size */
+  font-family: var(--primary-font) !important;
+  --ag-font-family: var(--primary-font) !important;
+  --ag-font-size: var(--grid-font-size, 0.88rem) !important;
+
+  /* Map standard AG Grid community tokens to our configuration tokens */
+  --ag-accent-color: var(--grid-accent-color) !important;
+  --ag-header-foreground-color: var(--grid-header-text-color) !important;
+  --ag-foreground-color: var(--grid-cell-text-color) !important;
+  --ag-border-color: var(--grid-border-color) !important;
+  --ag-row-border-color: var(--grid-border-color) !important;
+
+  /* Dimensions & Spacing */
+  --ag-row-height: var(--grid-row-height, 52px) !important;
+  --ag-header-height: var(--grid-header-height, 56px) !important;
+  --ag-cell-horizontal-padding: var(--grid-cell-horizontal-padding, 14px) !important;
+  --ag-grid-size: 8px !important;
+
+  /* Override default row background variables to transparent to enable custom row state rules */
+  --ag-row-hover-color: transparent !important;
+  --ag-row-hover-color-opacity: 0 !important;
+  --ag-selected-row-background-color: transparent !important;
+  --ag-selected-row-background-color-opacity: 0 !important;
+  --ag-background-color: transparent !important;
+
+  /* Header background — use AG Grid's own var so its internal CSS picks it up */
+  --ag-header-background-color: var(--primary-color) !important;
+  --ag-header-foreground-color: #ffffff !important;
+
+  /* Outer Grid Wrapper styling */
+  border-radius: var(--grid-border-radius, 6px) !important;
+  overflow: hidden !important;
+  border: 1px solid var(--grid-border-color) !important;
+  box-shadow: none !important;
+  background: transparent !important;
+
+  .ag-root-wrapper {
+    border: 1px solid var(--grid-border-color) !important;
+    border-radius: var(--grid-border-radius, 6px) !important;
+    overflow: hidden !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .ag-root-wrapper-body {
+    background-color: transparent !important;
+  }
+
+  /* Header Styling */
+  .ag-header {
+    background-color: var(--grid-header-bg-color) !important;
+    border-bottom: 1px solid var(--grid-border-color) !important;
+  }
+
+  .ag-header-row {
+    border-bottom: 1px solid var(--grid-border-color) !important;
+  }
+
+  .ag-cell-label-container:hover .ag-header-icon {
+    visibility: visible !important;
+  }
+
+  .ag-filter-body-wrapper~.ag-header-icon {
+    visibility: visible !important;
+  }
+
+  .ag-header-icon {
+    visibility: hidden !important;
+  }
+
+  .ag-header-cell,
+  .ag-header-cell-label,
+  .ag-header-cell-label span {
+    font-family: var(--primary-font) !important;
+    font-size: var(--grid-header-font-size, 0.95rem) !important;
+    font-weight: 600 !important;
+    color: var(--grid-header-text-color) !important;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
+    z-index: 0 !important;
+  }
+
+  /* Vertically center header cell text */
+  .ag-header-cell-label {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  /* Cell Styling */
+  .ag-cell {
+    font-family: var(--primary-font) !important;
+    color: var(--grid-cell-text-color) !important;
+    font-size: var(--grid-font-size, 0.85rem) !important;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border: none !important;
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+    &:focus,
+    &.ag-cell-focus {
+      outline: none !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    &.center-cell {
+      justify-content: center !important;
+    }
+
+    &.right-cell {
+      justify-content: flex-end !important;
+    }
+  }
+
+  /* Cell Hover Effects */
+  .ag-row .ag-cell {
+    background-color: var(--grid-row-unselected-bg) !important;
+  }
+
+  .ag-row-hover .ag-cell {
+    background-color: var(--grid-cell-hover-color) !important;
+  }
+
+  .ag-row-hover,
+  .ag-row:hover {
+    overflow: visible !important;
+    z-index: 999 !important;
+  }
+
+  .ag-row-hover .ag-cell.profile-cell,
+  .ag-row:hover .ag-cell.profile-cell {
+    overflow: visible !important;
+  }
+
+  /* Checkbox styling */
+  .ag-checkbox-input-wrapper {
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 4px !important;
+    border: 1.5px solid #6b7280 !important;
+    background: transparent !important;
+    transition: all 0.2s ease;
+
+    &::after {
+      color: var(--text-inverse, #ffffff) !important;
+    }
+
+    &.ag-checked {
+      background-color: var(--grid-accent-color) !important;
+      border-color: var(--grid-accent-color) !important;
+    }
+
+    &.ag-indeterminate {
+      border-color: #6b7280 !important;
+      background-color: transparent !important;
+
+      &::after {
+        color: #6b7280 !important;
+      }
+    }
+  }
+
+  /* Pagination Panel styling */
+  .ag-paging-panel {
+    background-color: rgba(26, 115, 232, 0.09) !important;
+    padding: 10px 16px !important;
+    font-family: var(--primary-font) !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: #f1f3f9 !important;
+    border-top: 1px solid var(--grid-border-color) !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .ag-paging-panel span {
+    color: #f1f3f9 !important;
+    font-weight: 600 !important;
+  }
+
+  .ag-paging-panel .ag-icon {
+    color: #f1f3f9 !important;
+  }
+
+  .ag-paging-row-summary-panel {
+    margin-right: auto !important;
+  }
+
+  .ag-paging-page-summary-panel {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .ag-paging-button {
+    background-color: transparent !important;
+    color: #f1f3f9 !important;
+    border: none !important;
+    font-family: var(--primary-font) !important;
+    padding: 4px 12px !important;
+    margin: 0 4px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease !important;
+    width: auto !important;
+    height: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1 !important;
+
+    &:hover:not(.ag-disabled) {
+      background-color: var(--grid-paging-btn-hover-bg, rgba(25, 95, 74, 0.1)) !important;
+      color: #f1f3f9 !important;
+      box-shadow: none !important;
+    }
+
+    &.ag-disabled {
+      color: rgba(241, 243, 249, 0.35) !important;
+      opacity: 0.5 !important;
+      background: transparent !important;
+      border: none !important;
+      cursor: not-allowed !important;
+    }
+
+    &.active {
+      background-color: var(--grid-paging-btn-active-bg, rgba(25, 95, 74, 0.15)) !important;
+      font-weight: 600 !important;
+    }
+  }
+
+  /* Empty state / Overlay styling */
+  .ag-overlay-loading-wrapper {
+    background-color: rgba(10, 12, 16, 0.65) !important;
+    backdrop-filter: blur(6px);
+  }
+
+  .ag-overlay-no-rows-wrapper {
+    color: var(--grid-header-text-color) !important;
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .no-rows-overlay {
+    padding: 10px 18px;
+    background: rgba(18, 22, 31, 0.95);
+    color: #8b9bb4;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  /* Icons: hidden by default, shown on hover or when filter/menu is active */
+  .ag-header-icon {
+    visibility: hidden !important;
+    opacity: 0;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+  }
+
+  /* Show when hovering the header cell */
+  .ag-header-cell:hover .ag-header-icon {
+    visibility: visible !important;
+    opacity: 1;
+  }
+
+  /* Show when the column menu is open */
+  .ag-header-cell.ag-column-menu-visible .ag-header-icon {
+    visibility: visible !important;
+    opacity: 1;
+  }
+
+  /* Show when the header cell is in active state (menu/sort clicked) */
+  .ag-header-cell.ag-header-active .ag-header-icon {
+    visibility: visible !important;
+    opacity: 1;
+  }
+
+  /* Show when a filter is applied on this column */
+  .ag-header-cell-filtered .ag-header-icon {
+    visibility: visible !important;
+    opacity: 1;
+  }
+
+  /* Always show the sort icon when sorted */
+  .ag-header-cell.ag-column-sorted .ag-sort-indicator-icon {
+    visibility: visible !important;
+    opacity: 1;
+  }
+
+  /* Icon font & color */
+  .ag-header-icon,
+  .ag-icon {
+    font-family: agGridAlpine, agGridClassic, Arial, sans-serif !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+  }
+
+  .ag-menu-option-part .ag-icon {
+    color: var(--grid-cell-text-color, var(--text-main)) !important;
+  }
+
+  .ag-header-cell .ag-icon-filter,
+  .ag-header-cell .ag-icon-menu-alt,
+  .ag-sort-indicator-icon .ag-icon,
+  .ag-sort-ascending-icon .ag-icon,
+  .ag-sort-descending-icon .ag-icon,
+  .ag-icon-asc,
+  .ag-icon-desc {
+    color: #ffffff !important;
+  }
+
+  /* Choose Columns Popup / Tool Panel */
+  .ag-tool-panel-wrapper,
+  .ag-column-select-panel,
+  .ag-column-select,
+  .ag-popup-child {
+    background-color: #12161f !important;
+    border: 1px solid var(--grid-border-color) !important;
+    border-radius: var(--input-radius, 8px) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    color: var(--grid-cell-text-color) !important;
+  }
+
+  .ag-column-select-header {
+    color: var(--grid-header-text-color) !important;
+    border-bottom: 1px solid var(--grid-border-color) !important;
+  }
+
+  .ag-panel-title-bar {
+    background-color: var(--grid-header-bg-color) !important;
+    color: #ffffff !important;
+
+    .ag-panel-title-bar-title,
+    .ag-panel-title-bar-button,
+    .ag-panel-title-bar-button-icon,
+    .ag-icon-cross,
+    .ag-icon {
+      color: #ffffff !important;
+    }
+  }
+
+  .ag-column-select-column-label,
+  .ag-column-select-column-group-label {
+    color: var(--grid-cell-text-color) !important;
+  }
+
+  /* Popups, Dropdowns & Menus */
+  .ag-menu,
+  .ag-select-list,
+  .ag-autocomplete-list {
+    background-color: var(--bg-card, #12161f) !important;
+    border: 1px solid var(--grid-border-color) !important;
+    border-radius: var(--input-radius, 8px) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    color: var(--grid-cell-text-color) !important;
+    backdrop-filter: blur(20px);
+
+    .ag-menu-option {
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: var(--grid-cell-hover-color) !important;
+        color: var(--grid-cell-text-color) !important;
+      }
+    }
+  }
+
+  /* Custom Webkit scrollbar matching application */
+  .ag-body-viewport {
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--grid-border-color);
+      border-radius: 4px;
+
+      &:hover {
+        background: var(--grid-header-text-color);
+      }
+    }
+  }
+}
+
+/* Light / Morning Mode Specific Dropdowns Override */
+[data-theme="morning"] {
+
+  .grid_con_res {
+
+    .ag-menu,
+    .ag-select-list,
+    .ag-autocomplete-list,
+    .ag-tool-panel-wrapper,
+    .ag-column-select-panel,
+    .ag-column-select,
+    .ag-popup-child {
+      background-color: #ffffff !important;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    .ag-column-select-column-label,
+    .ag-column-select-column-group-label {
+      color: var(--text-main) !important;
+    }
+
+    .ag-paging-panel,
+    .ag-paging-panel span,
+    .ag-paging-button {
+      color: #1a1a2e !important;
+    }
+
+    .ag-paging-panel .ag-icon,
+    .ag-paging-button .ag-icon {
+      color: #1a1a2e !important;
+    }
+
+    .ag-paging-button.ag-disabled {
+      color: rgba(26, 26, 46, 0.35) !important;
+    }
+
+    .ag-header-icon,
+    .ag-icon {
+      color: #374151 !important;
+    }
+
+    .ag-header-cell .ag-icon-filter,
+    .ag-header-cell .ag-icon-menu-alt,
+    .ag-sort-indicator-icon .ag-icon,
+    .ag-sort-ascending-icon .ag-icon,
+    .ag-sort-descending-icon .ag-icon,
+    .ag-icon-asc,
+    .ag-icon-desc {
+      color: #ffffff !important;
+    }
+
+    .ag-panel-title-bar .ag-icon,
+    .ag-panel-title-bar .ag-icon-cross,
+    .ag-panel-title-bar .ag-panel-title-bar-button-icon {
+      color: #ffffff !important;
+    }
+
+    .no-rows-overlay {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+  }
+}
+
+/* Status Chip Styles */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  height: 24px !important;
+  border-radius: 9999px;
+  border: 1px solid var(--status-info-border);
+  background-color: var(--status-info-bg);
+  color: var(--status-info-fg);
+  text-transform: capitalize;
+}
+
+/* Active / Approved / Success / True */
+.status-chip.status-approved,
+.status-chip.status-active,
+.status-chip.status-success,
+.status-chip.status-completed,
+.status-chip.status-paid,
+.status-chip.status-true {
+  background-color: var(--status-approved-bg);
+  color: var(--status-approved-fg);
+  border-color: var(--status-approved-border);
+}
+
+/* Rejected / Inactive / Failed / False */
+.status-chip.status-rejected,
+.status-chip.status-inactive,
+.status-chip.status-failed,
+.status-chip.status-unpaid,
+.status-chip.status-false {
+  background-color: var(--status-rejected-bg);
+  color: var(--status-rejected-fg);
+  border-color: var(--status-rejected-border);
+}
+
+/* Hold / Under Review */
+.status-chip.status-hold,
+.status-chip.status-initiated,
+.status-chip.status-under_review {
+  background-color: var(--status-hold-bg);
+  color: var(--status-hold-fg);
+  border-color: var(--status-hold-border);
+}
+
+/* Pending */
+.status-chip.status-pending {
+  background-color: var(--status-pending-bg);
+  color: var(--status-pending-fg);
+  border-color: var(--status-pending-border);
+}
+
+/* Draft */
+.status-chip.status-draft {
+  background-color: var(--status-draft-bg);
+  color: var(--status-draft-fg);
+  border-color: var(--status-draft-border);
+}

@@ -1,0 +1,394 @@
+<div class="loading-wrap" *ngIf="loadingStepData">
+  <div class="spinner"></div>
+  <p>{{ 'SPECIALIST.ONBOARDING.LOADING_DATA' | translate }}</p>
+</div>
+
+<div class="onboarding-container animate-fade-in" *ngIf="!loadingStepData" [ngStyle]="stepperStyle">
+
+  <!-- Mobile Top Bar (visible only on mobile) -->
+  <div class="mobile-top-bar" *ngIf="profileConfig || props['mobileburgerbuttonshow'] || props['isEmbedded']">
+    <div class="mobile-top-bar-left">
+      <button *ngIf="props['mobileburgerbuttonshow']" class="mobile-menu-btn" (click)="isMobileSidebarOpen = true" title="Open menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="mobile-top-avatar" [style.background]="'conic-gradient(var(--primary-color) ' + progressPercentage + '%, rgba(26, 115, 232, 0.15) 0)'" *ngIf="profileConfig">
+        <div class="avatar-inner">
+          <img *ngIf="profilePhoto" [src]="profilePhoto" alt="Profile" class="avatar-img" />
+          <span *ngIf="!profilePhoto" class="avatar-initials">{{ profileInitials }}</span>
+        </div>
+      </div>
+      <span class="mobile-top-name" *ngIf="profileConfig">{{ profileName || 'Patient Name' }}</span>
+    </div>
+    <div class="mobile-top-bar-right">
+    </div>
+  </div>
+
+  <!-- Mobile Steps Bar: progress + step pills (visible only on mobile, outside drawer) -->
+  <div class="mobile-steps-bar" *ngIf="props['mobileprogressbarshow']">
+    <div class="mobile-progress-bar" *ngIf="visibleSteps[activeStepIndex]">
+      <div class="progress-bar-text">
+        <span>{{ 'SPECIALIST.ONBOARDING.COMPLETION_PROGRESS' | translate }}</span>
+        <span class="progress-value">{{ progressPercentage }}%</span>
+      </div>
+      <div class="progress-bar-outer">
+        <div class="progress-bar-inner" [style.width.%]="progressPercentage"></div>
+      </div>
+    </div>
+    <div class="mobile-steps-scroll">
+      <div *ngFor="let step of visibleSteps; let i = index" class="step-item" [class.active]="activeStepIndex === i"
+        [class.completed]="i <= maxReachedStepIndex && i !== activeStepIndex"
+        [class.clickable]="i <= maxReachedStepIndex && i !== activeStepIndex" (click)="goToStep(i)">
+        <div class="step-status">
+          <mat-icon class="completed-icon" *ngIf="i <= maxReachedStepIndex && i !== activeStepIndex">check</mat-icon>
+          <ng-container *ngIf="i > maxReachedStepIndex || i === activeStepIndex">
+            <i *ngIf="step.icon" [class]="'step-icon fa ' + step.icon"></i>
+            <span *ngIf="!step.icon" class="step-number">{{ '0' + (i + 1) }}</span>
+          </ng-container>
+        </div>
+        <div class="step-info">
+          <span class="step-label">{{ 'SPECIALIST.ONBOARDING.STEP' | translate }} {{ i + 1 }}</span>
+          <h4 class="step-name">{{ step.title | translate }}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Sidebar Overlay Backdrop -->
+  <div class="mobile-sidebar-backdrop" [class.open]="isMobileSidebarOpen" (click)="isMobileSidebarOpen = false"></div>
+
+  <!-- Left Progress Sidebar (on desktop: full sidebar; on mobile: drawer with profile only) -->
+  <div class="sidebar" [class.mobile-open]="isMobileSidebarOpen">
+
+    <!-- Mobile sidebar close button -->
+    <button class="mobile-sidebar-close" (click)="isMobileSidebarOpen = false">
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <!-- ── Profile Header (shown when profileConfig is set) ── -->
+    <div class="sidebar-profile" *ngIf="profileConfig">
+      <div class="profile-avatar" [style.background]="'conic-gradient(var(--primary-color) ' + progressPercentage + '%, rgba(26, 115, 232, 0.15) 0)'">
+        <div class="avatar-inner">
+          <img *ngIf="profilePhoto" [src]="profilePhoto" alt="Profile" class="avatar-img" />
+          <span *ngIf="!profilePhoto" class="avatar-initials">{{ profileInitials }}</span>
+        </div>
+      </div>
+      <div class="profile-info">
+        <p class="profile-name">{{ profileName || 'Patient Name' }}</p>
+        <p class="profile-email">{{ profileEmail || 'email@example.com' }}</p>
+        <a *ngIf="props['onBack']" href="javascript:void(0)" (click)="onBackClick()" class="change-info-link">{{ 'SPECIALIST.ONBOARDING.CHANGE_INFO' | translate }}</a>
+      </div>
+    </div>
+
+    <div class="step-list">
+      <div class="pageheading" *ngIf="props['pageHeading']">
+        @if (props['prefixicon']) {
+        <i class="fa-solid" [class]="props['prefixicon']" [style.color]="props['iconcolor']">
+        </i>
+        }
+        <h2>{{ props['pageHeading'] | translate }}</h2>
+      </div>
+      <div class="progress-bar-container" *ngIf="visibleSteps[activeStepIndex]">
+        <div class="progress-bar-text">
+          <span>{{ 'SPECIALIST.ONBOARDING.COMPLETION_PROGRESS' | translate }}</span>
+          <span class="progress-value">{{ progressPercentage }}%</span>
+        </div>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" [style.width.%]="progressPercentage"></div>
+        </div>
+      </div>
+      
+      <div class="steps-scroll-wrapper">
+        <div *ngFor="let step of visibleSteps; let i = index" class="step-item" [class.active]="activeStepIndex === i"
+          [class.completed]="i <= maxReachedStepIndex && i !== activeStepIndex"
+          [class.clickable]="i <= maxReachedStepIndex && i !== activeStepIndex" (click)="goToStep(i)">
+          <div class="step-status">
+            <mat-icon class="completed-icon" *ngIf="i <= maxReachedStepIndex && i !== activeStepIndex">check</mat-icon>
+            <ng-container *ngIf="i > maxReachedStepIndex || i === activeStepIndex">
+              <i *ngIf="step.icon" [class]="'step-icon fa ' + step.icon"></i>
+              <span *ngIf="!step.icon" class="step-number">{{ '0' + (i + 1) }}</span>
+            </ng-container>
+          </div>
+          <div class="step-info">
+            <span class="step-label">{{ 'SPECIALIST.ONBOARDING.STEP' | translate }} {{ i + 1 }}</span>
+            <h4 class="step-name">{{ step.title | translate }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="main-content" [class.is-edit]="isEdit">
+    <div class="glass-panel content-card">
+      <div class="card-header" *ngIf="visibleSteps[activeStepIndex]">
+        <div class="header-text">
+          <h1 class="gradient-text step-main-title">{{ visibleSteps[activeStepIndex].title | translate }}</h1>
+          <p class="step-desc">{{ visibleSteps[activeStepIndex].description | translate }}</p>
+        </div>
+        <div class="header-actions" id="stepper-header-actions"></div>
+        <button type="button" class="close-btn" (click)="$event.stopPropagation(); closeStepper()" title="Close" *ngIf="!props['donotShowCancel'] && !props['hideCancelButton'] && !props['isEmbedded']">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <!-- Progress Bar Indicator -->
+
+
+      <div class="card-body">
+        <div *ngIf="activeStepIndex < visibleSteps.length - 1">
+          <ng-container *ngIf="visibleSteps[activeStepIndex] as step">
+            <form [formGroup]="step._formGroup || getStepFormGroup(step)">
+              <formly-form [fields]="step.fields" [model]="onboardingModel[step.key]" [form]="step._formGroup || getStepFormGroup(step)" (modelChange)="onModelChange($event)">
+              </formly-form>
+            </form>
+          </ng-container>
+        </div>
+
+        <!-- Review Summary Step (Last Step) -->
+        <div *ngIf="activeStepIndex === visibleSteps.length - 1" class="review-step animate-fade-in">
+
+          <ng-container *ngIf="props['showPatientDetailsReview']; else defaultReview">
+            <div style="margin-bottom: 2rem;">
+              <app-patient-details-view
+                [patient]="onboardingModel.patient_id || onboardingModel.id"
+                [model]="onboardingModel"
+                [hideHeader]="isEdit">
+              </app-patient-details-view>
+            </div>
+          </ng-container>
+
+          <ng-template #defaultReview>
+            @if(this.props["viewtype"] == "component"){
+               <app-specialist-view [specialistId]="onboardingModel.id" [isModal]="true"></app-specialist-view>
+            }@else {
+              <!-- Professional Profile Header -->
+              @if(visibleSteps[activeStepIndex].hideviewprofile == false){
+              <div class="review-profile-header">
+                <div class="review-avatar">
+                  <img *ngIf="profilePhoto" [src]="profilePhoto" alt="Profile" />
+                  <span *ngIf="!profilePhoto">{{ profileInitials }}</span>
+                </div>
+                <div class="review-profile-details">
+                  <h2>{{ profileName || 'Patient Name' }}</h2>
+                  <p>{{ profileEmail || 'email@example.com' }}</p>
+                  <div class="review-status-badge">
+                    <mat-icon>check_circle</mat-icon> {{ 'SPECIALIST.ONBOARDING.READY_ONBOARDING' | translate }}
+                  </div>
+                </div>
+              </div>
+              }
+           
+
+            <div class="review-content-wrapper">
+              <div class="review-list-compact">
+                <div class="review-section-compact" *ngFor="let step of getVisibleStepsForReview(); let i = index">
+                  <div class="section-header-compact">
+                    <div class="header-title-group">
+                      <div class="icon-wrapper">
+                        <i *ngIf="step.icon" [class]="'step-icon fa ' + step.icon"></i>
+                      </div>
+                      <h4>{{ step.title | translate }}</h4>
+                    </div>
+                    <button type="button" class="btn-text-edit" (click)="activeStepIndex = i">
+                      {{ 'SPECIALIST.ACTION.EDIT' | translate }}
+                    </button>
+                  </div>
+
+                  <div class="section-body-compact">
+
+                    <ng-container *ngIf="isArrayStep(step)">
+                      <div class="data-array-block">
+                        <ng-container *ngIf="getStepArrayData(step) as rows">
+                          <div class="array-items-wrapper" *ngIf="rows.length > 0; else emptyStepArray">
+                            <div class="array-item-card" *ngFor="let item of rows; let idx = index">
+                              <span class="array-item-index">{{ idx + 1 }}</span>
+                              <div class="array-item-fields">
+                                <div class="array-field-row" *ngFor="let entry of getPreviewItemEntries(step, item)">
+                                  <span class="array-field-label">{{ entry.label }}</span>
+                                  <span class="array-field-value">{{ entry.value }}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <ng-template #emptyStepArray>
+                            <span class="text-muted">{{ 'SPECIALIST.ONBOARDING.NO_RECORDS' | translate }}</span>
+                          </ng-template>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+
+                    <!-- ══ FLAT STEP: scalar previewFields (no payloadArrayKey) ══ -->
+                    <ng-container *ngIf="!isArrayStep(step)">
+                      <ng-container *ngFor="let pf of getVisiblePreviewFields(step)">
+
+                        <!-- Scalar value -->
+                        <div class="data-item" *ngIf="!isArrayValue(step, pf)">
+                          <span class="data-label">{{ pf.label }}</span>
+                          <span class="data-value" [class.text-muted]="!onboardingModel[step.key]?.[pf.key]">
+                            {{ getPreviewDisplayValue(step, pf) }}
+                          </span>
+                        </div>
+
+                        <!-- Array-of-objects inside a single previewField -->
+                        <div class="data-array-block" *ngIf="isArrayValue(step, pf)">
+                          <span class="data-label array-label">{{ pf.label }}</span>
+                          <div class="array-items-wrapper">
+                            <ng-container *ngIf="onboardingModel[step.key]?.[pf.key]?.length; else emptyInlineArray">
+                              <div class="array-item-card"
+                                *ngFor="let item of onboardingModel[step.key]?.[pf.key]; let idx = index">
+                                <span class="array-item-index">{{ idx + 1 }}</span>
+                                <div class="array-item-fields">
+                                  <div class="array-field-row" *ngFor="let entry of getArrayItemEntries(pf, item)">
+                                    <span class="array-field-label">{{ entry.label }}</span>
+                                    <span class="array-field-value">{{ entry.value }}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                            <ng-template #emptyInlineArray>
+                              <span class="text-muted">—</span>
+                            </ng-template>
+                          </div>
+                        </div>
+
+                      </ng-container>
+                    </ng-container>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+             }
+          </ng-template>
+
+          @if (this.props["viewtype"] !== "component" && isOnboardFlow) {
+          <div class="consent-container" >
+            <div class="checkbox-group">
+              <label class="custom-checkbox" (click)="toggleTerms($event)">
+                <span class="checkmark" [class.checked]="acceptTerms"></span>
+                <span class="checkbox-text">{{ 'SPECIALIST.ONBOARDING.I_AGREE_TO' | translate }} <a href="#" (click)="viewTerms($event)">{{ 'SPECIALIST.ONBOARDING.TERMS_OF_SERVICE' | translate }}</a> {{ 'SPECIALIST.ONBOARDING.CONFIRM_CORRECT' | translate }}</span>
+              </label>
+              <label class="custom-checkbox" (click)="togglePrivacy($event)">
+                <span class="checkmark" [class.checked]="acceptPrivacy"></span>
+                <span class="checkbox-text">{{ 'SPECIALIST.ONBOARDING.I_ACCEPT' | translate }} <a href="#" (click)="viewPrivacy($event)">{{ 'SPECIALIST.ONBOARDING.PRIVACY_POLICY' | translate }}</a> {{ 'SPECIALIST.ONBOARDING.CONSENT_PROCESSING' | translate }}</span>
+              </label>
+            </div>
+          </div>
+          }
+          
+        </div>
+
+        <!-- Stepper Navigation Footer -->
+        <div class="card-footer">
+          <div class="btn-group">
+            @if(this.props['skipFinalSubmit'] == true && islaststeper){
+            <div class="right-buttons">
+              <button type="button" class="btn-submit-onboarding" (click)="submitRegistration()">
+                {{ 'SPECIALIST.ONBOARDING.VERIFY_CLOSE' | translate }}
+              </button>
+            </div>
+            }@else{
+            <button type="button" class="btn-secondary" (click)="prevStep()" [disabled]="isSubmitting"
+              *ngIf="activeStepIndex > 0">
+              <mat-icon>arrow_back</mat-icon>
+              {{ 'SPECIALIST.ONBOARDING.BACK' | translate }}
+            </button>
+
+            <div class="right-buttons">
+              <button type="button" class="btn-primary" (click)="nextStep()"
+                [disabled]="isSavingStep"
+                *ngIf="activeStepIndex < visibleSteps.length - 1">
+                <span *ngIf="isSavingStep" class="spinner"></span>
+                <span *ngIf="!isSavingStep">
+                  {{ visibleSteps[activeStepIndex]?.actIndividual ? (isEdit ? ('SPECIALIST.ONBOARDING.NEXT' | translate) : ('SPECIALIST.ONBOARDING.SAVE_NEXT' | translate)) : ('SPECIALIST.ONBOARDING.NEXT' | translate) }}
+                </span>
+                <mat-icon *ngIf="!isSavingStep">arrow_forward</mat-icon>
+              </button>
+
+              <!-- Final Submit Button (Review & Consent step) -->
+              <button type="button" class="btn-submit-onboarding" (click)="submitRegistration()"
+                [disabled]="(this.props['viewtype'] !== 'component' && isOnboardFlow && (!acceptTerms || !acceptPrivacy)) || isSubmitting"
+                *ngIf="activeStepIndex === visibleSteps.length - 1">
+                <span *ngIf="!isSubmitting">{{ (isEdit && !isOnboardFlow) ? ('SPECIALIST.ONBOARDING.UPDATE_CLOSE' | translate) : ('SPECIALIST.ONBOARDING.COMPLETE_ACTIVATION' | translate) }}</span>
+                <span *ngIf="isSubmitting" class="spinner"></span>
+                <mat-icon *ngIf="!isSubmitting">{{ (isEdit && !isOnboardFlow) ? 'save' : 'verified' }}</mat-icon>
+              </button>
+
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- Terms of Service Dialog Template -->
+<ng-template #termsPopup>
+  <div class="popup-dialog-container">
+    <div class="popup-dialog-header">
+      <h2>{{ 'SPECIALIST.ONBOARDING.TERMS_TITLE' | translate }}</h2>
+      <button type="button" class="popup-close-btn" (click)="dialogService.closeModal()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="popup-dialog-content">
+      <p>{{ 'SPECIALIST.ONBOARDING.TERMS_INTRO' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC1_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC1_DESC' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC2_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC2_DESC' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC3_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC3_DESC' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC4_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC4_DESC' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC5_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.TERMS_SEC5_DESC' | translate }}</p>
+    </div>
+    <div class="popup-dialog-actions">
+      <button type="button" class="btn-dialog-cancel" (click)="dialogService.closeModal()">{{ 'SPECIALIST.ONBOARDING.CLOSE' | translate }}</button>
+      <button type="button" class="btn-dialog-accept" (click)="acceptTermsDialog()">{{ 'SPECIALIST.ONBOARDING.ACCEPT_TERMS' | translate }}</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Privacy Policy Dialog Template -->
+<ng-template #privacyPopup>
+  <div class="popup-dialog-container">
+    <div class="popup-dialog-header">
+      <h2>{{ 'SPECIALIST.ONBOARDING.PRIVACY_TITLE' | translate }}</h2>
+      <button type="button" class="popup-close-btn" (click)="dialogService.closeModal()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="popup-dialog-content">
+      <p>{{ 'SPECIALIST.ONBOARDING.PRIVACY_INTRO' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC1_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC1_DESC' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC2_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC2_DESC' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC3_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC3_DESC' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC4_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC4_DESC' | translate }}</p>
+
+      <h3>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC5_TITLE' | translate }}</h3>
+      <p>{{ 'SPECIALIST.ONBOARDING.PRIVACY_SEC5_DESC' | translate }}</p>
+    </div>
+    <div class="popup-dialog-actions">
+      <button type="button" class="btn-dialog-cancel" (click)="dialogService.closeModal()">{{ 'SPECIALIST.ONBOARDING.CLOSE' | translate }}</button>
+      <button type="button" class="btn-dialog-accept" (click)="acceptPrivacyDialog()">{{ 'SPECIALIST.ONBOARDING.ACCEPT_PRIVACY' | translate }}</button>
+    </div>
+  </div>
+</ng-template>

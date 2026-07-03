@@ -1,0 +1,172 @@
+{
+  "pageHeading": "NOTIFICATION_MODULE.TEMPLATES.TITLE",
+  "pageDescription": "NOTIFICATION_MODULE.TEMPLATES.DESCRIPTION",
+  "screenId": "notification-template",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "screenWidth": "720px",
+  "showbutton": true,
+  "rowModelType": "clientSide",
+  "filterOptions": [
+    {
+      "type": "input",
+      "label": "NOTIFICATION_MODULE.FIELDS.TEMPLATE_NAME",
+      "columnName": "name",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "input",
+      "label": "NOTIFICATION_MODULE.FIELDS.SUBJECT",
+      "columnName": "subject",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "select",
+      "label": "NOTIFICATION_MODULE.FIELDS.STATUS",
+      "columnName": "status",
+      "operator": "EQUALS",
+      "valueProp": "value",
+      "labelProp": "label",
+      "options": [
+        {
+          "value": "active",
+          "label": "NOTIFICATION_MODULE.STATUS.ACTIVE"
+        },
+        {
+          "value": "inactive",
+          "label": "NOTIFICATION_MODULE.STATUS.INACTIVE"
+        }
+      ]
+    }
+  ],
+  "defaultViewMode": "grid",
+  "cardItemSize": 240,
+  "cardSchema": {
+    "titleKey": "name",
+    "subtitleKey": "subject",
+    "fields": [
+      {
+        "key": "event_id",
+        "label": "NOTIFICATION_MODULE.FIELDS.EVENT_ID",
+        "type": "text"
+      },
+      {
+        "key": "channel_id",
+        "label": "NOTIFICATION_MODULE.FIELDS.CHANNEL_ID",
+        "type": "text"
+      },
+      {
+        "key": "body",
+        "label": "NOTIFICATION_MODULE.FIELDS.BODY_CONTENT",
+        "type": "text",
+        "span": 2
+      },
+      {
+        "key": "status",
+        "label": "NOTIFICATION_MODULE.FIELDS.STATUS",
+        "type": "badge",
+        "badgeColor": "success"
+      },
+      {
+        "key": "created_on",
+        "label": "NOTIFICATION_MODULE.FIELDS.CREATED_ON",
+        "type": "date"
+      }
+    ],
+    "actions": [
+      {
+        "label": "FORM.COMMON.EDIT",
+        "icon": "edit",
+        "action": "edit",
+        "color": "primary"
+      },
+      {
+        "label": "FORM.COMMON.DELETE",
+        "icon": "delete",
+        "action": "delete",
+        "color": "warn"
+      }
+    ],
+    "virtualScroll": {
+      "enabled": true,
+      "itemSize": 240
+    }
+  },
+  "actions": [
+    {
+      "label": "FORM.COMMON.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "FORM.COMMON.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.TEMPLATE_NAME",
+      "field": "name",
+      "filter": "agTextColumnFilter",
+      "flex": 1.2
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.EVENT_ID",
+      "field": "event_id",
+      "filter": "agTextColumnFilter",
+      "flex": 1.1
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.CHANNEL_ID",
+      "field": "channel_id",
+      "filter": "agTextColumnFilter",
+      "flex": 0.9
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.SUBJECT",
+      "field": "subject",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.BODY_CONTENT",
+      "field": "body",
+      "filter": "agTextColumnFilter",
+      "flex": 2,
+      "tooltipField": "body"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.STATUS",
+      "field": "status",
+      "filter": "agTextColumnFilter",
+      "maxWidth": 120,
+      "cellRenderer": "function(params) { return `<span class='badge ${params.value === 'active' ? 'badge-active' : 'badge-suspended'}'>${params.value || 'inactive'}</span>`; }"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.CREATED_ON",
+      "field": "created_on",
+      "type": "date",
+      "filter": "agDateColumnFilter",
+      "flex": 1,
+      "valueFormatter": "function(params) { return params.value ? new Date(params.value).toLocaleDateString() : ''; }"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.CREATED_BY",
+      "field": "created_by",
+      "filter": "agTextColumnFilter",
+      "flex": 0.8
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "NOTIFICATION_MODULE.FIELDS.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 85,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

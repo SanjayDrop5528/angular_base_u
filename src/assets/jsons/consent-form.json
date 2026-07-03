@@ -1,0 +1,254 @@
+{
+    "moduleName": "ConsentMgmt",
+    "screenName": "Create / Edit Consent Notice",
+    "pageHeading": "CONSENT_MGMT.PAGE_HEADING",
+    "editPageHeading": "CONSENT_MGMT.PAGE_HEADING",
+    "formType": "simple",
+    "editMode": "popup",
+    "screenEditMode": "popup",
+    "diffMethod": true,
+    "saveEndPoint": "consent/api/notices",
+    "updateEndPoint": "consent/api/notices/{{id}}",
+    "keyField": "id",
+    "form": {
+        "collectionName": "consent",
+        "fields": [
+            {
+                "fieldGroupClassName": "form-row-2",
+                "fieldGroup": [
+                    {
+                        "key": "name",
+                        "type": "mat-text-input",
+                        "props": {
+                            "label": "CONSENT_MGMT.FIELD_NOTICE_TITLE",
+                            "placeholder": "e.g. EU OpenAI Webinar consent",
+                            "required": true
+                        }
+                    },
+                    {
+                        "key": "entity",
+                        "type": "select-input",
+                        "props": {
+                            "label": "CONSENT_MGMT.FIELD_ENTITY_NAME",
+                            "required": true,
+                            "valueProp": "id",
+                            "labelProp": "name",
+                            "needSearch": false,
+                            "optionsDataSource": {
+                                "collectionName": "entities"
+                            }
+                        }
+                    },
+                    {
+                        "key": "event_id",
+                        "type": "mat-text-input",
+                        "props": {
+                            "label": "CONSENT_MGMT.FIELD_EVENT_ID",
+                            "placeholder": "1234",
+                            "required": true
+                        }
+                    },
+                    {
+                        "key": "geoScope",
+                        "type": "select-input",
+                        "props": {
+                            "label": "CONSENT_MGMT.FIELD_GEO_SCOPE",
+                            "required": true,
+                            "valueProp": "value",
+                            "labelProp": "label",
+                            "defaultValue": "NONE",
+                            "options": [
+                                {
+                                    "value": "NONE",
+                                    "label": "CONSENT_MGMT.SCOPE_NONE"
+                                },
+                                {
+                                    "value": "Country",
+                                    "label": "CONSENT_MGMT.SCOPE_COUNTRY"
+                                },
+                                {
+                                    "value": "Region",
+                                    "label": "CONSENT_MGMT.SCOPE_REGION"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "region",
+                        "type": "select-input",
+                        "hideExpression": "model.geoScope === 'NONE' || !model.geoScope",
+                        "props": {
+                            "label": "CONSENT_MGMT.FIELD_TARGET_REGION",
+                            "required": true,
+                            "valueProp": "value",
+                            "labelProp": "label",
+                            "options": [
+                                {
+                                    "value": "NONE",
+                                    "label": "CONSENT_MGMT.REGION_NONE"
+                                },
+                                {
+                                    "value": "US",
+                                    "label": "United States"
+                                },
+                                {
+                                    "value": "IN",
+                                    "label": "India"
+                                },
+                                {
+                                    "value": "MY",
+                                    "label": "Malaysia"
+                                },
+                                {
+                                    "value": "SG",
+                                    "label": "Singapore"
+                                },
+                                {
+                                    "value": "EU",
+                                    "label": "European Union"
+                                },
+                                {
+                                    "value": "APAC",
+                                    "label": "Asia Pacific"
+                                },
+                                {
+                                    "value": "NA",
+                                    "label": "North America"
+                                },
+                                {
+                                    "value": "LATAM",
+                                    "label": "Latin America"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "displayType",
+                        "type": "select-input",
+                        "props": {
+                            "label": "CONSENT_MGMT.FIELD_DISPLAY_MODE",
+                            "required": true,
+                            "valueProp": "value",
+                            "labelProp": "label",
+                            "defaultValue": "fulldocument",
+                            "options": [
+                                {
+                                    "value": "fulldocument",
+                                    "label": "CONSENT_MGMT.DISPLAY_FULL"
+                                },
+                                {
+                                    "value": "shortlink",
+                                    "label": "CONSENT_MGMT.DISPLAY_SHORTLINK"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "linkmodel",
+                        "type": "select-input",
+                        "hideExpression": "model.displayType !== 'shortlink'",
+                        "props": {
+                            "label": "Short Link Model",
+                            "required": true,
+                            "valueProp": "value",
+                            "labelProp": "label",
+                            "defaultValue": "popup",
+                            "options": [
+                                {
+                                    "value": "popup",
+                                    "label": "Pop Up"
+                                },
+                                {
+                                    "value": "page",
+                                    "label": "Page"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "termslabel",
+                        "type": "mat-text-input",
+                        "hideExpression": "model.displayType !== 'shortlink'",
+                        "props": {
+                            "label": "Enter Label",
+                            "placeholder": "Term Label",
+                            "defaultValue": "I agree to the terms and conditions"
+                        }
+                    },
+                    {
+                        "key": "status",
+                        "type": "select-input",
+                        "hideExpression": "!model.isEdit",
+                        "props": {
+                            "label": "status",
+                            "valueProp": "value",
+                            "labelProp": "label",
+                            "defaultValue": "active",
+                            "options": [
+                                {
+                                    "value": "active",
+                                    "label": "Active"
+                                },
+                                {
+                                    "value": "deactive",
+                                    "label": "Deactive"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "resend",
+                        "type": "select-input",
+                        "hideExpression": "!model.isEdit",
+                        "props": {
+                            "label": "Resend",
+                            "valueProp": "value",
+                            "labelProp": "label",
+                            "defaultValue": "yes",
+                            "options": [
+                                {
+                                    "value": "yes",
+                                    "label": "yes"
+                                },
+                                {
+                                    "value": "no",
+                                    "label": "no"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "fieldGroupClassName": "display-flex-gap",
+                "fieldGroup": [
+                    {
+                        "key": "changeSummary",
+                        "type": "mat-textarea-input",
+                        "hideExpression": "!model.isEdit",
+                        "props": {
+                            "label": "CONSENT_MGMT.LABEL_CHANGE_SUMMARY",
+                            "placeholder": "CONSENT_MGMT.PLACEHOLDER_CHANGE_SUMMARY",
+                            "rows": 3
+                        }
+                    }
+                ]
+            },
+            {
+                "fieldGroupClassName": "display-flex-gap",
+                "fieldGroup": [
+                    {
+                        "key": "template",
+                        "type": "html-input",
+                        "props": {
+                            "label": "CONSENT_MGMT.LABEL_TEMPLATE",
+                            "required": true
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "actionHide": true,
+    "onCancelRoute": "/consent-mgmt/notices"
+}

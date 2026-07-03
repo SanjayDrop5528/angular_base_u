@@ -1,0 +1,97 @@
+{
+  "pageHeading": "CALENDAR_MODULE.ROASTER_CONFIG.TITLE",
+  "pageDescription": "CALENDAR_MODULE.ROASTER_CONFIG.DESCRIPTION",
+  "screenId": "roaster-config",
+  "editMode": "page",
+  "screenEditMode": "page",
+  "showbutton": true,
+  "rowModelType": "clientSide",
+  "defaultViewMode": "grid",
+  "keyField": "id",
+  "addRoute": "/add/roaster-config",
+  "editRoute": "/add/roaster-config",
+  "deleteEndpoint": "roaster/api/roaster-configs",
+  "actions": [
+    {
+      "label": "CALENDAR_MODULE.ROASTER_CONFIG.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "CALENDAR_MODULE.ROASTER_CONFIG.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.USER",
+      "field": "user_id",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5,
+      "valueFormatter": "function(params) { const names = {'u1': 'Dr. Alice Smith', 'u2': 'Dr. Bob Employee', 'u3': 'Dr. Charlie Brown', 'u4': 'Dr. David Miller'}; return names[params.value] || params.value; }"
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.ENTITY_TYPE",
+      "field": "entity_type",
+      "filter": "agTextColumnFilter",
+      "flex": 1,
+      "valueFormatter": "function(params) { return params.value ? params.value.charAt(0).toUpperCase() + params.value.slice(1) : ''; }"
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.ROASTER_TYPE",
+      "field": "roaster_type",
+      "filter": "agTextColumnFilter",
+      "flex": 1.2,
+      "valueFormatter": "function(params) { return params.value ? params.value.charAt(0).toUpperCase() + params.value.slice(1) : ''; }"
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.FREQUENCY",
+      "field": "freq",
+      "filter": "agTextColumnFilter",
+      "flex": 1,
+      "valueFormatter": "function(params) { return params.value ? params.value.charAt(0).toUpperCase() + params.value.slice(1) : ''; }"
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.INTERVAL",
+      "field": "interval_val",
+      "filter": "agNumberColumnFilter",
+      "flex": 0.8
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.DURATION",
+      "field": "duration",
+      "filter": "agNumberColumnFilter",
+      "flex": 1
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.START_DATE",
+      "field": "start_date",
+      "type": "date",
+      "filter": "agDateColumnFilter",
+      "flex": 1.2,
+      "valueFormatter": "function(params) { return params.value ? new Date(params.value).toLocaleDateString() : ''; }"
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.END_DATE",
+      "field": "end_date",
+      "type": "date",
+      "filter": "agDateColumnFilter",
+      "flex": 1.2,
+      "valueFormatter": "function(params) { return params.value ? new Date(params.value).toLocaleDateString() : ''; }"
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "FORM.COMMON.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "minWidth": 100,
+      "width": 120,
+      "maxWidth": 150,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

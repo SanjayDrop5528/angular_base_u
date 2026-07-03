@@ -1,0 +1,58 @@
+{
+    "pageHeading": "PLAN.CATEGORY.FORM.PLAN_CATEGORY",
+    "formType": "simple",
+    "editMode": "drawer",
+    "screenEditMode": "drawer",
+    "diffMehthod": true,
+    "saveEndPoint": "entities/api/subscriptions/categories",
+    "updateEndPoint": "entities/api/subscriptions/categories/{{model.id}}",
+    "getendpoint": "entities/api/subscriptions/categories/{{id}}",
+    "keyField": "id",
+    "saveMessage": "Category created successfully",
+    "updateMessage": "Category updated successfully",
+    "form": {
+        "collectionName": "category",
+        "fields": [
+            {
+                "key": "name",
+                "type": "mat-text-input",
+                "props": {
+                    "label": "PLAN.CATEGORY.FORM.CATEGORY_NAME",
+                    "placeholder": "PLAN.CATEGORY.FORM.DIAGNOSTICS_PLACEHOLDER",
+                    "required": true
+                }
+            },
+            {
+                "key": "short_description",
+                "type": "mat-textarea-input",
+                "className": "col-12",
+                "props": {
+                    "label": "PLAN.CATEGORY.FORM.SHORT_DESCRIPTION",
+                    "placeholder": "PLAN.CATEGORY.FORM.DESC_PLACEHOLDER",
+                    "row": 4
+                }
+            },
+            {
+                "key": "status",
+                "type": "select-input",
+                "hideExpression": "!model.id",
+                "props": {
+                    "label": "PLAN.CATEGORY.FORM.STATUS",
+                    "required": true,
+                    "valueProp": "value",
+                    "labelProp": "label",
+                    "options": [
+                        {
+                            "label": "PLAN.CATEGORY.FORM.ACTIVE",
+                            "value": "active"
+                        },
+                        {
+                            "label": "PLAN.CATEGORY.FORM.INACTIVE",
+                            "value": "inactive"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

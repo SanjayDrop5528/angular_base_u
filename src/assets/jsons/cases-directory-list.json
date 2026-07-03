@@ -1,0 +1,388 @@
+{
+  "pageHeading": "CASE_MGMT.PAGE_DIRECTORY",
+  "pageDescription": "CASE_MGMT.PAGE_DIRECTORY_DESC",
+  "filterOptions": [
+    {
+      "type": "input",
+      "label": "CASE_MGMT.MEMBERS.COL_CASE_NO",
+      "columnName": "case_no",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "input",
+      "label": "CASE_MGMT.MEMBERS.COL_PATIENT",
+      "columnName": "patient_name",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "select",
+      "label": "SHARED.STATUS",
+      "columnName": "status",
+      "multiSelection": false,
+      "labelProp": "label",
+      "valueProp": "value",
+      "options": [
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_NEW",
+          "value": "new"
+        },
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_UNDER_REVIEW",
+          "value": "under_review"
+        },
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_DOCTOR_ASSIGNED",
+          "value": "doctor_assigned"
+        },
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_REPORT_READY",
+          "value": "report_ready"
+        },
+        {
+          "label": "CASE_MGMT.OPTION.STATUS_CLOSED",
+          "value": "closed"
+        }
+      ]
+    }
+  ],
+  "collectionName": "cases",
+  "editMode": "page",
+  "showbutton": false,
+  "actions": [
+    {
+      "label": "View",
+      "icon": "visibility",
+      "formAction": "view"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "CASE_MGMT.MEMBERS.COL_CASE_NO",
+      "field": "case_no",
+      "filter": "agTextColumnFilter",
+      "maxWidth": 200
+    },
+    {
+      "headerName": "CASE_MGMT.MEMBERS.COL_PATIENT",
+      "field": "patient_name",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "CASE_MGMT.FIELD_PRICING_PLAN",
+      "field": "plan_name",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "CASE_MGMT.MEMBERS.COL_INTAKE_COMPLAINT",
+      "field": "primary_diagnosis",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "CASE_MGMT.MEMBERS.COL_PRIORITY",
+      "field": "priority",
+      "filter": "agTextColumnFilter",
+      "maxWidth": 120
+    },
+    {
+      "headerName": "CASE_MGMT.COL_PAYMENT_STATUS",
+      "field": "is_paid",
+      "type": "statusColor",
+      "backgroundColor": {
+        "defaultColor": "rgba(239, 68, 68, 0.15)",
+        "config": [
+          {
+            "status": "true",
+            "color": "rgba(16, 185, 129, 0.15)"
+          },
+          {
+            "status": "false",
+            "color": "rgba(239, 68, 68, 0.15)"
+          }
+        ]
+      },
+      "textColor": {
+        "defaultColor": "#ef4444",
+        "config": [
+          {
+            "status": "true",
+            "color": "#10b981"
+          },
+          {
+            "status": "false",
+            "color": "#ef4444"
+          }
+        ]
+      },
+      "maxWidth": 140,
+      "lockPinned": true,
+      "filter": "agSetColumnFilter",
+      "filterParams": {
+        "values": [
+          "true",
+          "false"
+        ]
+      }
+    },
+    {
+      "headerName": "SHARED.STATUS",
+      "field": "status",
+      "type": "statusColor",
+      "backgroundColor": {
+        "defaultColor": "rgba(99, 102, 241, 0.12)",
+        "config": [
+          {
+            "status": "new",
+            "color": "rgba(99, 102, 241, 0.12)"
+          },
+          {
+            "status": "under_review",
+            "color": "rgba(99, 102, 241, 0.12)"
+          },
+          {
+            "status": "doctor_assigned",
+            "color": "rgba(99, 102, 241, 0.12)"
+          },
+          {
+            "status": "report_ready",
+            "color": "rgba(99, 102, 241, 0.12)"
+          },
+          {
+            "status": "closed",
+            "color": "rgba(99, 102, 241, 0.12)"
+          }
+        ]
+      },
+      "textColor": {
+        "defaultColor": "#6366f1",
+        "config": [
+          {
+            "status": "new",
+            "color": "#15c05c"
+          },
+          {
+            "status": "under_review",
+            "color": "#f59e0b"
+          },
+          {
+            "status": "doctor_assigned",
+            "color": "#9c27b0"
+          },
+          {
+            "status": "report_ready",
+            "color": "#10b981"
+          },
+          {
+            "status": "closed",
+            "color": "#f44336"
+          }
+        ]
+      },
+      "lockPosition": "right",
+      "maxWidth": 150,
+      "lockPinned": true,
+      "pinned": "right",
+      "filter": "agSetColumnFilter",
+      "filterParams": {
+        "values": [
+          "new",
+          "doctor_assigned",
+          "closed"
+        ]
+      }
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "SHARED.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 120,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ],
+  "cardSchema": {
+    "type": "container",
+    "className": "column",
+    "customStyles": {
+      "padding": "9px 14px",
+      "gap": "5px"
+    },
+    "children": [
+      {
+        "type": "container",
+        "className": "row",
+        "customStyles": {
+          "justify-content": "space-between"
+        },
+        "children": [
+          {
+            "type": "text",
+            "variant": "title",
+            "fontSize": "15px",
+            "key": "case_no"
+          },
+          {
+            "type": "status",
+            "key": "status",
+            "customStyles": {
+              "position": "absolute",
+              "top": "12px",
+              "right": "16px"
+            }
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "className": "row",
+        "customStyles": {
+          "flex-wrap": "nowrap"
+        },
+        "children": [
+          {
+            "type": "text",
+            "variant": "stat",
+            "key": "patientName",
+            "textLength": 20,
+            "fontSize": "14px",
+            "fontWeight": 600
+          },
+          {
+            "type": "icon",
+            "key": "gender",
+            "fontSize": "35px",
+            "fontWeight": 600,
+            "color": "accent"
+          },
+          {
+            "type": "date",
+            "elapsed": true,
+            "key": "date_of_birth"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "className": "col column",
+        "customStyles": {
+          "justify-content": "space-between"
+        },
+        "children": [
+          {
+            "type": "container",
+            "className": "row",
+            "customStyles": {
+              "flex-wrap": "nowrap"
+            },
+            "children": [
+              {
+                "type": "container",
+                "className": "row",
+                "customStyles": {
+                  "flex-wrap": "nowrap"
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "variant": "subtitle",
+                    "label": "Category:",
+                    "fontSize": "14px"
+                  },
+                  {
+                    "type": "text",
+                    "key": "Category",
+                    "textColor": "var(--primary-color)",
+                    "fontSize": "14px"
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "className": "row",
+                "customStyles": {
+                  "flex-wrap": "nowrap"
+                },
+                "children": [
+                  {
+                    "type": "text",
+                    "variant": "subtitle",
+                    "label": "Created On:",
+                    "fontSize": "14px"
+                  },
+                  {
+                    "type": "date",
+                    "key": "created_on",
+                    "textColor": "var(--primary-color)",
+                    "fontSize": "12px"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "className": "row",
+            "customStyles": {
+              "flex-wrap": "nowrap"
+            },
+            "children": [
+              {
+                "type": "container",
+                "className": "row",
+                "children": [
+                  {
+                    "type": "text",
+                    "variant": "subtitle",
+                    "label": "Plan:",
+                    "fontSize": "14px"
+                  },
+                  {
+                    "type": "text",
+                    "key": "planName",
+                    "textColor": "var(--primary-color)",
+                    "fontSize": "14px"
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "className": "row",
+                "children": [
+                  {
+                    "type": "text",
+                    "variant": "subtitle",
+                    "label": "Avaliable On:",
+                    "fontSize": "14px"
+                  },
+                  {
+                    "type": "date",
+                    "key": "available_on",
+                    "textColor": "var(--primary-color)",
+                    "fontSize": "12px"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "className": "row",
+            "customStyles": {
+              "flex-wrap": "nowrap",
+              "justify-content": "end"
+            },
+            "children": [
+              {
+                "type": "boolean",
+                "variant": "payment",
+                "key": "is_paid"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

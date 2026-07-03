@@ -1,0 +1,168 @@
+<div class="dashboard-shell">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.mobile-open]="isSidebarOpen">
+    <div class="sidebar-header">
+      <img [src]="org.logoUrl || 'assets/default-logo.png'" alt="Org Logo" class="org-logo">
+      <div class="org-name">{{ org.name }}</div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item" (click)="navigate('dashboard')" [class.active]="activeTab === 'dashboard'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg>
+        <span>{{ t('NAV_DASHBOARD') }}</span>
+      </a>
+
+      <a class="nav-item" *appHasPermission="['user-management-module', 'all-users', 'list']"
+        (click)="navigate('users')" [class.active]="activeTab === 'users'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <span>{{ t('NAV_MEMBERS') }}</span>
+      </a>
+
+
+      <a class="nav-item" *appHasPermission="['user-management-module', 'all-users', 'list']"
+        (click)="navigate('sessions')" [class.active]="activeTab === 'sessions'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+        <span>{{ t('NAV_SESSIONS') }}</span>
+      </a>
+
+      <a class="nav-item" *appHasPermission="['notification-module', 'notification-center', 'list']"
+        (click)="navigate('notifications')" [class.active]="activeTab === 'notifications'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        <span>{{ t('NAV_NOTIFICATIONS') }}</span>
+      </a>
+
+      <a class="nav-item" *appHasPermission="['storage-module', 'file-explorer', 'list']" (click)="navigate('storage')"
+        [class.active]="activeTab === 'storage'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+        </svg>
+        <span>{{ t('NAV_STORAGE') }}</span>
+      </a>
+
+      <a class="nav-item" *appHasPermission="['user-management-module', 'user-profile', 'create']"
+        (click)="navigate('organisation')" [class.active]="activeTab === 'organisation'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>{{ t('NAV_ORGANISATIONS') }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="nav-item" (click)="logout()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+        <span>{{ t('NAV_LOGOUT') }}</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Sidebar Backdrop overlay for mobile drawer -->
+  <div class="sidebar-backdrop" *ngIf="isSidebarOpen" (click)="toggleSidebar()"></div>
+
+  <!-- Main Area -->
+  <main class="main-area">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div style="display: flex; align-items: center; gap: 0.8rem;">
+        <button class="hamburger-btn" (click)="toggleSidebar()"
+          style="display: none; background: none; border: none; color: var(--text-main); cursor: pointer; padding: 0.5rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <h3 style="font-weight: 700;">{{ t('NAV_CONTROL_CENTER') }}</h3>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Developer Mailbox Simulator Panel -->
+        <button class="mailbox-btn" (click)="toggleMailbox()" title="Simulated Email Inbox Logs">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <span class="badge-count" *ngIf="mails.length > 0">{{ mails.length }}</span>
+        </button>
+
+        <!-- Mailbox Dropdown overlay -->
+        <div class="mailbox-dropdown" *ngIf="showMailbox">
+          <div class="mailbox-header">
+            <span>Simulated Outbox (Invite & Resets)</span>
+            <span style="color: var(--color-warning); cursor: pointer;" (click)="fetchMails()">Refresh</span>
+          </div>
+          <div class="mailbox-list">
+            <div *ngIf="mails.length === 0" style="padding: 1.5rem; text-align: center; color: var(--text-muted);">
+              Outbox is empty. Invite a user or request a password reset to see links here.
+            </div>
+            <div class="mail-item" *ngFor="let mail of mails">
+              <div class="mail-meta">
+                <span class="mail-to">To: {{ mail.email }}</span>
+                <span>{{ mail.type }}</span>
+              </div>
+              <div style="color: var(--text-muted); font-size: 0.8rem;">
+                Sent: {{ mail.sent_at | date:'shortTime' }} | Expires: {{ mail.expires_at | date:'shortTime' }}
+              </div>
+              <a [href]="mail.link" target="_blank" class="mail-link" (click)="showMailbox=false">Click to Onboard/Reset
+                &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-profile" (click)="navigate('settings')">
+          <div class="avatar">{{ user.name ? user.name[0] : 'U' }}</div>
+          <div class="user-name">{{ user.name }}</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Router/Container body -->
+    <div class="content-body">
+      <!-- We load child views based on active tab -->
+      <ng-container [ngSwitch]="activeTab">
+        <app-dashboard-home *ngSwitchCase="'dashboard'"></app-dashboard-home>
+        <app-users *ngSwitchCase="'users'"></app-users>
+        <app-sessions *ngSwitchCase="'sessions'"></app-sessions>
+        <app-notifications *ngSwitchCase="'notifications'"></app-notifications>
+        <app-storage-settings *ngSwitchCase="'storage'"></app-storage-settings>
+        <app-settings *ngSwitchCase="'settings'"></app-settings>
+        <div *ngSwitchCase="'unauthorized'" class="glass-panel"
+          style="padding: 4rem; text-align: center; border: 1px dashed var(--color-error); border-radius: 12px; margin-top: 2rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24"
+            stroke="#ef4444" style="margin-bottom: 1rem; display: inline-block;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <h2 style="font-weight: 800; color: var(--color-error); margin-bottom: 0.5rem;">Access Denied</h2>
+          <p style="color: var(--text-muted);">You do not have the required permissions to view this screen. This
+            unauthorized access attempt has been logged.</p>
+        </div>
+      </ng-container>
+    </div>
+  </main>
+</div>

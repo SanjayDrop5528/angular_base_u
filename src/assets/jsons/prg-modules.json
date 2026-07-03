@@ -1,0 +1,52 @@
+{
+  "pageHeading": "PRG_MODULES.FORM_CREATE_TITLE",
+  "editPageHeading": "PRG_MODULES.FORM_EDIT_TITLE",
+  "formType": "simple",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "form": {
+    "collectionName": "prg_modules",
+    "fields": [
+      {
+        "key": "name",
+        "type": "mat-text-input",
+        "props": {
+          "label": "PRG_MODULES.LABEL_NAME",
+          "placeholder": "PRG_MODULES.PLACEHOLDER_NAME",
+          "required": true,
+          "minLength": 2
+        }
+      },
+      {
+        "key": "descriptions",
+        "type": "mat-textarea-input",
+        "props": {
+          "label": "PRG_MODULES.LABEL_DESCRIPTION",
+          "placeholder": "PRG_MODULES.PLACEHOLDER_DESCRIPTION",
+          "rows": 3
+        }
+      },
+      {
+        "key": "status",
+        "type": "select-input",
+        "props": {
+          "label": "PRG_MODULES.LABEL_STATUS",
+          "required": true,
+          "options": [
+            {
+              "value": "Active",
+              "label": "PRG_MODULES.STATUS_ACTIVE"
+            },
+            {
+              "value": "Inactive",
+              "label": "PRG_MODULES.STATUS_INACTIVE"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label",
+          "defaultValue": "Active"
+        }
+      }
+    ]
+  }
+}

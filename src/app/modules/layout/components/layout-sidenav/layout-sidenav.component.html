@@ -1,0 +1,128 @@
+<!-- Mobile backdrop -->
+<div class="sidenav-backdrop"
+     *ngIf="mobileOpen"
+     (click)="closeMobileDrawer()"
+     aria-hidden="true">
+</div>
+
+<aside
+  class="layout-sidenav"
+  [class.collapsed]="collapsed"
+  [class.mobile-open]="mobileOpen"
+  [style.width]="mobileOpen || isMobile ? null : (collapsed ? '64px' : (config.sidenavWidth ?? 260) + 'px')"
+  role="navigation"
+  aria-label="Sidebar navigation">
+
+  <!-- ── Sidenav Header ──────────────────────────────────────────── -->
+  <div class="sidenav-header" *ngIf="config.mode !== 'header-sidenav' || isMobile">
+    <div class="sidenav-header-content">
+      <button class="logo-area" (click)="logoClick.emit()">
+        <img *ngIf="org?.logoUrl || config.logoUrl"
+             [src]="org?.logoUrl || config.logoUrl"
+             class="sidenav-logo" alt="Logo" />
+        <span *ngIf="!(org?.logoUrl || config.logoUrl)" class="logo-fallback">
+          {{ (config.appName || org?.name || 'A') | slice:0:1 }}
+        </span>
+        <span class="sidenav-app-name" *ngIf="!collapsed">
+          {{ config.appName || org?.name }}
+        </span>
+      </button>
+
+      <button type="button" class="sidenav-toggle-btn"
+              (click)="closeMobileDrawer()"
+              matTooltip="Close menu">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Section label (header-sidenav mode) ─────────────────────── -->
+  <div class="section-label-area" *ngIf="config.mode === 'header-sidenav' && activeSectionLabel && !isMobile">
+    <span class="section-label" *ngIf="!collapsed">{{ activeSectionLabel | translate }}</span>
+    <span class="section-label-dot" *ngIf="collapsed" [matTooltip]="activeSectionLabel | translate"></span>
+  </div>
+
+  <!-- ── Navigation Items ───────────────────────────────────────────── -->
+  <nav class="sidenav-nav">
+    <ng-template #navItemTemplate let-item="item" let-depth="depth">
+      <!-- Divider -->
+      <div class="nav-divider" *ngIf="item.dividerAfter && !collapsed && depth === 0"></div>
+
+      <!-- nav-node wraps trigger + children so CSS > selector works -->
+      <div class="nav-node">
+
+        <!-- Item with children (group) -->
+        <ng-container *ngIf="hasChildren(item)">
+          <div
+            class="nav-item group-trigger"
+            [class.active]="isActive(item)"
+            [class.has-active-child]="hasActiveDescendant(item)"
+            [class.expanded]="isExpanded(item.id)"
+            [class.disabled]="item.disabled"
+            (click)="onItemClick(item)"
+            (keydown.enter)="onItemClick(item)"
+            (keydown.space)="$event.preventDefault(); onItemClick(item)"
+            [attr.tabindex]="item.disabled ? -1 : 0"
+            role="button"
+            [matTooltip]="collapsed ? (item.label | translate) : ''"
+            matTooltipPosition="right">
+            <mat-icon class="nav-icon">{{ item.icon ?? 'folder' }}</mat-icon>
+            <span class="nav-label" *ngIf="!collapsed">{{ item.label | translate }}</span>
+            <span class="nav-badge-chip" *ngIf="item.badge && !collapsed">{{ item.badge }}</span>
+            <button
+              type="button"
+              class="group-toggle-btn"
+              *ngIf="!collapsed"
+              (click)="toggleGroup(item.id); $event.stopPropagation()"
+              [disabled]="item.disabled ?? false"
+              [matTooltip]="isExpanded(item.id) ? 'Collapse' : 'Expand'"
+              matTooltipPosition="right">
+              <mat-icon class="expand-icon">
+                {{ isExpanded(item.id) ? 'expand_less' : 'expand_more' }}
+              </mat-icon>
+            </button>
+          </div>
+
+          <!-- Children recursive rendering -->
+          <div class="nav-children" *ngIf="isExpanded(item.id) && !collapsed">
+            <ng-container *ngFor="let child of item.children">
+              <ng-container *ngTemplateOutlet="navItemTemplate; context: { item: child, depth: depth + 1 }"></ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <!-- Flat item (no children) -->
+        <button
+          *ngIf="!hasChildren(item)"
+          class="nav-item"
+          [class.active]="isActive(item)"
+          [class.nav-child]="depth > 0"
+          [disabled]="item.disabled ?? false"
+          (click)="onItemClick(item)"
+          [matTooltip]="collapsed ? (item.label | translate) : ''"
+          matTooltipPosition="right">
+          <mat-icon class="nav-icon" [class.child-icon]="depth > 0">{{ item.icon ?? (depth > 0 ? 'chevron_right' : 'circle') }}</mat-icon>
+          <span class="nav-label" *ngIf="!collapsed">{{ item.label | translate }}</span>
+          <span class="nav-badge-chip" *ngIf="item.badge && !collapsed">{{ item.badge }}</span>
+        </button>
+
+      </div>
+    </ng-template>
+
+    <ng-container *ngFor="let item of displayItems">
+      <ng-container *ngTemplateOutlet="navItemTemplate; context: { item: item, depth: 0 }"></ng-container>
+    </ng-container>
+  </nav>
+
+  <!-- ── Collapse Toggle ────────────────────────────────────────────── -->
+  <button
+    *ngIf="config.sidenavCollapsible !== false"
+    class="collapse-btn"
+    (click)="toggleCollapse()"
+    [matTooltip]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+    matTooltipPosition="right"
+    aria-label="Toggle sidebar">
+    <mat-icon>{{ collapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+  </button>
+
+</aside>

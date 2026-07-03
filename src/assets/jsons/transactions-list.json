@@ -1,0 +1,287 @@
+{
+  "pageHeading": "PAYMENTS.TITLE",
+  "pageDescription": "PAYMENTS.SUBTITLE",
+  "screenId": "transactions",
+  "rowModelType": "clientSide",
+  "viewRoute": "/payment/transactions",
+  "keyField": "id",
+  "collectionName": "transactions",
+  "apiEndpoint": "payment/api",
+  "showbutton": false,
+  "filterOptions": [
+    {
+      "type": "input",
+      "label": "PAYMENTS.FILTER_PAYMENT_ID",
+      "columnName": "payment_id",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "input",
+      "label": "PAYMENTS.COL_USER_NAME",
+      "columnName": "patient_name",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "select",
+      "label": "PAYMENTS.COL_STATUS",
+      "columnName": "status",
+      "selectedValue": "",
+      "multiSelection": false,
+      "labelProp": "label",
+      "valueProp": "value",
+      "options": [
+        { "label": "Completed", "value": "SUCCESS" },
+        { "label": "Pending", "value": "PENDING" },
+        { "label": "Initiated", "value": "INITIATED" },
+        { "label": "Failed", "value": "FAILED" },
+        { "label": "Refunded", "value": "REFUNDED" }
+      ]
+    },
+    {
+      "type": "datepicker",
+      "label": "PAYMENTS.COL_CREATED_AT",
+      "columnName": "created_on"
+    }
+  ],
+  "actions": [
+    {
+      "label": "PAYMENTS.ACTION_VIEW",
+      "icon": "visibility",
+      "formAction": "view"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "PAYMENTS.COL_PAYMENT_ID",
+      "field": "payment_id",
+      "filter": "agTextColumnFilter",
+      "width": 150,
+      "flex": 1,
+      "sort": "desc",
+      "cellStyle": {
+        "fontWeight": "600",
+        "color": "#6366f1"
+      }
+    },
+    {
+      "headerName": "PAYMENTS.COL_USER_NAME",
+      "field": "patient_name",
+      "filter": "agTextColumnFilter",
+      "flex": 1.2
+    },
+    {
+      "headerName": "PAYMENTS.COL_GATEWAY",
+      "field": "gateway_name",
+      "filter": "agSetColumnFilter",
+      "flex": 0.8
+    },
+    {
+      "headerName": "PAYMENTS.COL_AMOUNT",
+      "field": "amount",
+      "type": "paymentAmount",
+      "filter": "agNumberColumnFilter",
+      "flex": 1
+    },
+    {
+      "headerName": "PAYMENTS.COL_STATUS",
+      "field": "status",
+      "type": "statusColor",
+      "filter": "agSetColumnFilter",
+      "flex": 1,
+      "backgroundColor": {
+        "defaultColor": "#f3f4f6",
+        "config": [
+          {
+            "status": "success",
+            "color": "#ecfdf5"
+          },
+          {
+            "status": "pending",
+            "color": "#fef3c7"
+          },
+          {
+            "status": "initiated",
+            "color": "#eff6ff"
+          },
+          {
+            "status": "failed",
+            "color": "#fef2f2"
+          },
+          {
+            "status": "refunded",
+            "color": "#f3e8ff"
+          }
+        ]
+      },
+      "textColor": {
+        "defaultColor": "#1f2937",
+        "config": [
+          {
+            "status": "success",
+            "color": "#065f46"
+          },
+          {
+            "status": "pending",
+            "color": "#92400e"
+          },
+          {
+            "status": "initiated",
+            "color": "#1e40af"
+          },
+          {
+            "status": "failed",
+            "color": "#991b1b"
+          },
+          {
+            "status": "refunded",
+            "color": "#6b21a8"
+          }
+        ]
+      }
+    },
+    {
+      "headerName": "PAYMENTS.COL_CREATED_AT",
+      "field": "created_on",
+      "type": "paymentDate",
+      "filter": "agDateColumnFilter",
+      "flex": 1.2
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "FORM.COMMON.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "minWidth": 100,
+      "width": 120,
+      "maxWidth": 150,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ],
+  "cardSchema": {
+    "type": "container",
+    "className": "column",
+    "children": [
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "12px 16px",
+          "gap": "12px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "icon": "payments",
+            "customStyles": {
+              "font-size": "32px",
+              "color": "#0582f7"
+            }
+          },
+          {
+            "type": "container",
+            "className": "col column no-gap",
+            "children": [
+              {
+                "type": "title",
+                "key": "payment_id"
+              },
+              {
+                "type": "subtitle",
+                "key": "gateway_name"
+              }
+            ]
+          },
+          {
+            "type": "status",
+            "key": "status"
+          }
+        ]
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "container",
+        "className": "row",
+        "children": [
+          {
+            "type": "container",
+            "className": "col column",
+            "customStyles": {
+              "padding": "0 20px"
+            },
+            "children": [
+              {
+                "type": "subtitle",
+                "label": "PAYMENTS.COL_AMOUNT",
+                "textColor": "#0582f7"
+              },
+              {
+                "type": "stat",
+                "key": "amount",
+                "prefix": "₹",
+                "fontWeight": 700
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "className": "col column align-items-end",
+            "customStyles": {
+              "padding": "0 20px"
+            },
+            "children": [
+              {
+                "type": "subtitle",
+                
+                "label": "PAYMENTS.COL_USER_NAME",
+                "textColor": "#0582f7"
+              },
+              {
+                "type": "stat",
+                "key": "patient_name",
+                "fontWeight": 700
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "10px 16px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "icon": "calendar_today",
+            "color": "primary"
+          },
+          {
+            "type": "subtitle",
+            "label": "PAYMENTS.COL_CREATED_AT",
+            "className": "col",
+            "customStyles": {
+              "margin-left": "10px",
+              "font-size": "11px"
+            }
+          },
+          {
+            "type": "date",
+            "key": "created_on",
+            "customStyles": {
+              "font-size": "13px"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

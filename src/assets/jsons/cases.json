@@ -1,0 +1,117 @@
+{
+  "pageHeading": "CASE_MGMT.PAGE_CREATE",
+  "formType": "simple",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "saveEndPoint": "entities/cases",
+  "keyField": "id",
+  "form": {
+    "collectionName": "cases",
+    "defaultValues": [
+      {
+        "colName": "case_no",
+        "value": "@case_no"
+      },
+      {
+        "colName": "status",
+        "defaultValue": "new"
+      },
+      {
+        "colName": "journey_stage",
+        "defaultValue": "intake"
+      },
+      {
+        "colName": "version",
+        "defaultValue": 1
+      },
+      {
+        "colName": "opened_at",
+        "type": "date"
+      }
+    ],
+    "fields": [
+      {
+        "key": "patient_id",
+        "type": "select-input",
+        "props": {
+          "label": "CASE_MGMT.FIELD_SELECT_PATIENT",
+          "required": true,
+          "options": [],
+          "optionsDataSource": {
+            "collectionName": "patients"
+          },
+          "valueProp": "id",
+          "labelProp": "patient_name",
+          "needSearch": true
+        }
+      },
+      {
+        "key": "category_id",
+        "type": "select-input",
+        "props": {
+          "label": "CASE_MGMT.FIELD_SERVICE_CATEGORY",
+          "required": true,
+          "options": [],
+          "optionsDataSource": {
+            "collectionName": "service_categories"
+          },
+          "valueProp": "id",
+          "labelProp": "name"
+        }
+      },
+      {
+        "key": "plan_id",
+        "type": "select-input",
+        "props": {
+          "label": "CASE_MGMT.FIELD_PRICING_PLAN",
+          "required": true,
+          "options": [],
+          "optionsDataSource": {
+            "collectionName": "subscription_plans"
+          },
+          "valueProp": "id",
+          "labelProp": "name"
+        }
+      },
+      {
+        "key": "primary_diagnosis",
+        "type": "mat-textarea-input",
+        "props": {
+          "label": "CASE_MGMT.FIELD_PRIMARY_COMPLAINTS",
+          "placeholder": "Describe main symptoms, diagnosis query, or clinical goals...",
+          "rows": 4,
+          "required": true
+        }
+      },
+      {
+        "key": "priority",
+        "type": "select-input",
+        "props": {
+          "label": "CASE_MGMT.FIELD_PRIORITY_LEVEL",
+          "required": true,
+          "options": [
+            {
+              "value": "low",
+              "label": "CASE_MGMT.PRIORITY_LOW"
+            },
+            {
+              "value": "medium",
+              "label": "CASE_MGMT.PRIORITY_MEDIUM"
+            },
+            {
+              "value": "high",
+              "label": "CASE_MGMT.PRIORITY_HIGH"
+            },
+            {
+              "value": "critical",
+              "label": "CASE_MGMT.PRIORITY_CRITICAL"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label",
+          "defaultValue": "medium"
+        }
+      }
+    ]
+  }
+}

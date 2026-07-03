@@ -1,0 +1,102 @@
+{
+  "pageHeading": "NOTIFICATION_MODULE.FORMS.EVENT_TITLE",
+  "formType": "simple",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "screenWidth": "620px",
+  "form": {
+    "collectionName": "notification-event",
+    "defaultValues": [
+      {
+        "colName": "status",
+        "value": "active",
+        "type": "string"
+      }
+    ],
+    "fields": [
+      {
+        "key": "id",
+        "type": "mat-text-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.EVENT_ID",
+          "placeholder": "NOTIFICATION_MODULE.PLACEHOLDERS.EVENT_ID",
+          "required": true
+        }
+      },
+      {
+        "key": "name",
+        "type": "mat-text-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.EVENT_NAME",
+          "placeholder": "NOTIFICATION_MODULE.PLACEHOLDERS.EVENT_NAME",
+          "required": true
+        }
+      },
+      {
+        "key": "entity_id",
+        "type": "select-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.ENTITY_ID",
+          "required": true,
+          "options": [
+            {
+              "value": "PATIENT",
+              "label": "NOTIFICATION_MODULE.OPTION.PATIENT"
+            },
+            {
+              "value": "USER",
+              "label": "NOTIFICATION_MODULE.OPTION.USER"
+            },
+            {
+              "value": "allusers",
+              "label": "NOTIFICATION_MODULE.OPTION.ALL_USERS"
+            },
+            {
+              "value": "DOCTOR",
+              "label": "NOTIFICATION_MODULE.OPTION.DOCTOR"
+            },
+            {
+              "value": "APPOINTMENT",
+              "label": "NOTIFICATION_MODULE.OPTION.APPOINTMENT"
+            },
+            {
+              "value": "BILLING",
+              "label": "NOTIFICATION_MODULE.OPTION.BILLING"
+            },
+            {
+              "value": "PAYMENT",
+              "label": "NOTIFICATION_MODULE.OPTION.PAYMENT"
+            },
+            {
+              "value": "SYSTEM",
+              "label": "NOTIFICATION_MODULE.OPTION.SYSTEM"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label"
+        }
+      },
+      {
+        "key": "status",
+        "type": "select-input",
+        "hideExpression": "!model.isEdit",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.STATUS",
+          "required": true,
+          "options": [
+            {
+              "value": "active",
+              "label": "NOTIFICATION_MODULE.STATUS.ACTIVE"
+            },
+            {
+              "value": "inactive",
+              "label": "NOTIFICATION_MODULE.STATUS.INACTIVE"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "pageHeading": "NOTIFICATION_MODULE.FORMS.CHANNEL_TITLE",
+  "formType": "simple",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "form": {
+    "collectionName": "notification-channel",
+    "defaultValues": [
+      {
+        "colName": "status",
+        "value": "active",
+        "type": "string"
+      },
+      {
+        "colName": "maximum_retry",
+        "value": 10,
+        "type": "number"
+      }
+    ],
+    "fields": [
+      {
+        "key": "name",
+        "type": "select-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.CHANNEL_NAME",
+          "required": true,
+          "options": [
+            {
+              "value": "Email",
+              "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.EMAIL"
+            },
+            {
+              "value": "SMS",
+              "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.SMS"
+            },
+            {
+              "value": "WhatsApp",
+              "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.WHATSAPP"
+            },
+            {
+              "value": "Push",
+              "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.PUSH"
+            },
+            {
+              "value": "Telegram",
+              "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.TELEGRAM"
+            },
+            {
+              "value": "Webhook",
+              "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.WEBHOOK"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label"
+        }
+      },
+      {
+        "key": "config",
+        "type": "mat-textarea-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.CONFIGURATION_JSON",
+          "placeholder": "NOTIFICATION_MODULE.PLACEHOLDERS.CONFIGURATION_JSON",
+          "type": "json",
+          "rows": 10,
+          "required": true
+        }
+      },
+      {
+        "key": "maximum_retry",
+        "type": "numeric-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.MAXIMUM_RETRY",
+          "placeholder": "NOTIFICATION_MODULE.PLACEHOLDERS.MAXIMUM_RETRY",
+          "required": true,
+          "min": 0,
+          "max": 10,
+          "defaultValue": 10
+        }
+      },
+      {
+        "key": "status",
+        "type": "select-input",
+        "hideExpression": "!model.isEdit",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.STATUS",
+          "required": true,
+          "options": [
+            {
+              "value": "active",
+              "label": "NOTIFICATION_MODULE.STATUS.ACTIVE"
+            },
+            {
+              "value": "inactive",
+              "label": "NOTIFICATION_MODULE.STATUS.INACTIVE"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label"
+        }
+      }
+    ]
+  }
+}

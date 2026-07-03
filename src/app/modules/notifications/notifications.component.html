@@ -1,0 +1,333 @@
+<div class="notifications-view animate-fade-in">
+  <div class="notifications-layout">
+
+    <div class="tab-panel animate-fade-in" *ngIf="activeSubTab === 'inbox'">
+      <section class="notification-inbox">
+        <header class="notification-inbox-header">
+          <div>
+            <h2>Notifications</h2>
+            <p>{{ inboxUnreadCount }} unread notification{{ inboxUnreadCount === 1 ? '' : 's' }}</p>
+          </div>
+          <div class="notification-inbox-actions">
+            <button type="button" (click)="loadInbox()">
+              <span class="material-icons">refresh</span>
+              <span>Refresh</span>
+            </button>
+            <button type="button" (click)="markAllInboxNotificationsRead()" [disabled]="!inboxUnreadCount">
+              <span class="material-icons">done_all</span>
+              <span>Mark all read</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="notification-inbox-list" *ngIf="inboxNotifications.length; else emptyInbox">
+          <article
+            class="notification-inbox-card"
+            *ngFor="let notification of inboxNotifications"
+            [class.unread]="!notification.read"
+            (click)="markInboxNotificationRead(notification)">
+            <div class="notification-inbox-icon">
+              <span class="material-icons">{{ notification.source === 'fcm' ? 'notifications_active' : 'notifications' }}</span>
+            </div>
+            <div class="notification-inbox-copy">
+              <div class="notification-inbox-card-header">
+                <h3>{{ notification.title }}</h3>
+                <span>{{ getInboxNotificationTime(notification) }}</span>
+              </div>
+              <p>{{ notification.body || 'No message content' }}</p>
+            </div>
+            <span class="notification-inbox-status" *ngIf="!notification.read">New</span>
+          </article>
+        </div>
+
+        <ng-template #emptyInbox>
+          <div class="notification-inbox-empty">
+            <span class="material-icons">notifications_none</span>
+            <strong>No notifications yet</strong>
+            <p>New in-app and FCM notifications will appear here.</p>
+          </div>
+        </ng-template>
+      </section>
+    </div>
+
+    <div class="tab-panel animate-fade-in" *ngIf="activeSubTab === 'channels'">
+      <core-grid #channelsGrid [listName]="'notification-channel'" [formName]="'notification-channel'"
+        [gridRowModelType]="'clientSide'" [listData]="channels" (actionClicked)="onGridAction($event)"
+        (deleteRequest)="onChannelDeleteRequest($event)"
+        class="notification-grid"></core-grid>
+    </div>
+
+    <div class="tab-panel animate-fade-in" *ngIf="activeSubTab === 'events'">
+      <core-grid #eventsGrid [listName]="'notification-event'" [formName]="'notification-event'" [gridRowModelType]="'clientSide'"
+        [listData]="events" (actionClicked)="onGridAction($event)" (deleteRequest)="onEventDeleteRequest($event)"
+        class="notification-grid"></core-grid>
+    </div>
+
+    <div class="tab-panel animate-fade-in" *ngIf="activeSubTab === 'templates'">
+      <core-grid #templatesGrid [listName]="'notification-template'" [formName]="'notification-template'"
+        [gridRowModelType]="'clientSide'" [listData]="templates" (actionClicked)="onGridAction($event)"
+        (deleteRequest)="onTemplateDeleteRequest($event)"
+        class="notification-grid"></core-grid>
+    </div>
+
+    <div class="tab-panel animate-fade-in" *ngIf="activeSubTab === 'delivery-logs'">
+      <core-grid #deliveryLogsGrid [listName]="'notification-log'" [formName]="'notification-log'"
+        [gridRowModelType]="'serverSide'" [apiObservable]="deliveryLogApi"
+        (actionClicked)="onDeliveryLogAction($event)"
+        class="notification-grid"></core-grid>
+
+      <div
+        class="delivery-log-drawer-backdrop"
+        *ngIf="isDeliveryLogDrawerOpen"
+        (click)="closeDeliveryLogDrawer()"></div>
+
+      <aside class="delivery-log-drawer" *ngIf="isDeliveryLogDrawerOpen && selectedDeliveryLog">
+        <header class="delivery-log-drawer-header">
+          <div>
+            <span class="drawer-kicker">{{ 'NOTIFICATION_MODULE.DELIVERY_LOGS.DETAILS' | translate }}</span>
+            <h2>{{ selectedDeliveryLog.subject || ('NOTIFICATION_MODULE.DELIVERY_LOGS.NOTIFICATION' | translate) }}</h2>
+          </div>
+          <button type="button" class="icon-button drawer-close-button" (click)="closeDeliveryLogDrawer()" [title]="'NOTIFICATION_MODULE.DELIVERY_LOGS.CLOSE' | translate">
+            <span class="material-icons">close</span>
+          </button>
+        </header>
+
+        <div class="delivery-log-status-row">
+          <span class="delivery-log-status" [ngClass]="getDeliveryStatusClass(selectedDeliveryLog.status)">
+            {{ getDeliveryStatusLabel(selectedDeliveryLog.status) | translate }}
+          </span>
+          <span>{{ getDeliveryDateTime(selectedDeliveryLog) }}</span>
+        </div>
+
+        <div class="delivery-log-detail-grid">
+          <div>
+            <span>{{ 'NOTIFICATION_MODULE.FIELDS.DELIVERY_DATE_TIME' | translate }}</span>
+            <strong>{{ getDeliveryDateTime(selectedDeliveryLog) }}</strong>
+          </div>
+          <div>
+            <span>{{ 'NOTIFICATION_MODULE.FIELDS.CHANNEL' | translate }}</span>
+            <strong>{{ selectedDeliveryLog.channel || '-' }}</strong>
+          </div>
+          <div>
+            <span>{{ 'NOTIFICATION_MODULE.FIELDS.RECIPIENT' | translate }}</span>
+            <strong>{{ selectedDeliveryLog.recipient || '-' }}</strong>
+          </div>
+          <div>
+            <span>{{ 'NOTIFICATION_MODULE.FIELDS.TRIGGER_TYPE' | translate }}</span>
+            <strong>{{ selectedDeliveryLog.trigger_type || '-' }}</strong>
+          </div>
+          <div>
+            <span>{{ 'NOTIFICATION_MODULE.FIELDS.SEVERITY' | translate }}</span>
+            <strong>{{ selectedDeliveryLog.severity || '-' }}</strong>
+          </div>
+          <div>
+            <span>{{ 'NOTIFICATION_MODULE.FIELDS.READ' | translate }}</span>
+            <strong>{{ getBooleanLabel(selectedDeliveryLog.is_read) | translate }}</strong>
+          </div>
+          <div class="wide">
+            <span>{{ 'NOTIFICATION_MODULE.FIELDS.LOG_ID' | translate }}</span>
+            <strong>{{ selectedDeliveryLog.id || selectedDeliveryLog._id || '-' }}</strong>
+          </div>
+          <div class="wide">
+            <span>{{ 'NOTIFICATION_MODULE.FIELDS.SUBJECT' | translate }}</span>
+            <strong>{{ selectedDeliveryLog.subject || '-' }}</strong>
+          </div>
+        </div>
+
+        <section class="delivery-log-text-block">
+          <span>{{ 'NOTIFICATION_MODULE.FIELDS.MESSAGE' | translate }}</span>
+          <pre>{{ selectedDeliveryLog.message || '-' }}</pre>
+        </section>
+
+        <section class="delivery-log-text-block error" *ngIf="selectedDeliveryLog.error_message">
+          <span>{{ 'NOTIFICATION_MODULE.FIELDS.ERROR_MESSAGE' | translate }}</span>
+          <pre>{{ selectedDeliveryLog.error_message }}</pre>
+        </section>
+      </aside>
+    </div>
+
+    <div class="tab-panel animate-fade-in" *ngIf="activeSubTab === 'check'">
+      <div class="template-tester-screen">
+        <header class="tester-heading">
+          <div>
+            <h2>Template Tester</h2>
+            <p>Preview notification templates, edit sample variables, and send a test across active channels.</p>
+          </div>
+          <div class="tester-summary">
+            <span>{{ events.length }} Events</span>
+            <span>{{ templates.length }} Templates</span>
+          </div>
+        </header>
+
+        <div class="notification-check">
+        <section class="template-picker">
+          <div class="check-section-header">
+            <div>
+              <h3>Events</h3>
+              <span>{{ getFilteredEvents().length }} of {{ events.length }}</span>
+            </div>
+            <button type="button" class="icon-button" [disabled]="isLoadingLists" (click)="loadLists()" title="Refresh events">
+              <span class="material-icons">refresh</span>
+            </button>
+          </div>
+
+          <label class="event-search">
+            <span class="material-icons">search</span>
+            <input
+              type="search"
+              [(ngModel)]="eventSearchText"
+              placeholder="Search event name or ID">
+          </label>
+
+          <div class="template-list">
+            <div class="template-list-state" *ngIf="isLoadingLists">
+              Loading events...
+            </div>
+            <button
+              type="button"
+              class="template-row"
+              *ngFor="let event of getFilteredEvents()"
+              [class.active]="getEventId(selectedEvent) === getEventId(event)"
+              (click)="selectEvent(event)">
+              <span class="template-main">
+                <strong>{{ event.name }}</strong>
+                <small>{{ event.id || event.event_id }}</small>
+              </span>
+              <span class="template-meta">
+                {{ getEventId(selectedEvent) === getEventId(event) ? templates.length : 'View' }}
+              </span>
+            </button>
+            <div class="template-list-state" *ngIf="!isLoadingLists && !events.length">
+              No events configured.
+            </div>
+            <div class="template-list-state" *ngIf="!isLoadingLists && events.length && !getFilteredEvents().length">
+              No events match your search.
+            </div>
+          </div>
+        </section>
+
+        <section class="template-test" *ngIf="selectedEvent">
+          <div class="check-section-header">
+            <div>
+              <h3>{{ selectedEvent.name }}</h3>
+              <span>{{ getEventId(selectedEvent) }}</span>
+            </div>
+            <button
+              *ngIf="templates.length"
+              type="button"
+              class="send-test-button"
+              [disabled]="isSendingTest || isLoadingEventTemplates"
+              (click)="sendTemplateTest()">
+              <span class="material-icons">send</span>
+              <span>{{ isSendingTest ? 'Sending' : 'Send Test' }}</span>
+            </button>
+          </div>
+
+          <div class="event-template-list">
+            <div class="template-list-state inline-state" *ngIf="isLoadingEventTemplates">
+              Loading templates...
+            </div>
+            <button
+              type="button"
+              class="event-template-button"
+              *ngFor="let template of templates"
+              [class.active]="getTemplateId(selectedTemplate) === getTemplateId(template)"
+              (click)="selectTemplate(template)">
+              <span>{{ template.name }}</span>
+              <small>{{ template.channel_id }}</small>
+            </button>
+          </div>
+
+          <div class="template-list-state inline-state" *ngIf="!isLoadingEventTemplates && !templates.length">
+            No templates configured for this event.
+          </div>
+
+          <ng-container *ngIf="templates.length">
+            <div class="section-title">Recipients</div>
+            <div class="event-recipient-list">
+              <div class="event-recipient-card" *ngFor="let template of templates">
+                <div class="recipient-template-meta">
+                  <strong>{{ template.name }}</strong>
+                  <span>{{ template.channel_id }}</span>
+                </div>
+                <div class="check-grid recipient-grid">
+                  <label *ngFor="let field of getRecipientFieldsForTemplate(template)">
+                    <span>{{ field.label }}</span>
+                    <input
+                      [type]="field.type"
+                      [ngModel]="getTemplateRecipientValue(template, field.key)"
+                      (ngModelChange)="setTemplateRecipientValue(template, field.key, $event)">
+                  </label>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="selectedTemplate">
+            <div class="selected-template-heading">
+              <strong>{{ selectedTemplate.name }}</strong>
+              <div class="selected-template-actions">
+                <span>{{ selectedTemplate.channel_id }}</span>
+              </div>
+            </div>
+
+            <div class="section-title">Template Variables</div>
+            <div class="variable-bar" *ngIf="getTemplateVariables(selectedTemplate).length">
+            <span class="variable-chip" *ngFor="let variable of getTemplateVariables(selectedTemplate)">
+              {{ variable }}
+            </span>
+            </div>
+
+            <label class="json-field">
+            <span>Variables JSON</span>
+            <textarea rows="8" [(ngModel)]="testVariablesText"></textarea>
+            </label>
+
+            <div class="preview-band">
+            <div>
+              <span>Subject</span>
+              <strong>{{ getRenderedPreview(selectedTemplate.subject) }}</strong>
+            </div>
+            <div *ngIf="!isEmailTemplate(selectedTemplate)">
+              <span>Body</span>
+              <p>{{ getRenderedPreview(selectedTemplate.body) }}</p>
+            </div>
+            <div class="email-preview-card" *ngIf="isEmailTemplate(selectedTemplate)">
+              <span>Email HTML Preview</span>
+              <iframe
+                class="email-preview-frame"
+                title="Email HTML preview"
+                sandbox
+                [src]="getRenderedEmailPreviewUrl()"
+              ></iframe>
+            </div>
+            </div>
+
+            <div class="test-result success" *ngIf="testResponse">
+            <span class="material-icons">check_circle</span>
+            <div>
+              <strong>{{ getTestResultTitle() }}</strong>
+              <small>{{ getTestResultSummary() }}</small>
+            </div>
+            </div>
+
+            <div class="test-result error" *ngIf="testError">
+            <span class="material-icons">error</span>
+            <div>
+              <strong>Test failed</strong>
+              <small>{{ testError }}</small>
+            </div>
+            </div>
+          </ng-container>
+        </section>
+
+        <section class="template-test empty-state" *ngIf="!isLoadingLists && !selectedEvent">
+          <span class="material-icons">event</span>
+          <p>No events configured.</p>
+        </section>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

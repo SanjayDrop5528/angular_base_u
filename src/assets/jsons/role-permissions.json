@@ -1,0 +1,35 @@
+{
+  "pageHeading": "PERMISSIONS.FORM_CREATE_TITLE",
+  "editPageHeading": "PERMISSIONS.FORM_EDIT_TITLE",
+  "formType": "simple",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "form": {
+    "collectionName": "role_wise_screen_permissions",
+    "fields": [
+      {
+        "key": "roleid",
+        "type": "select-input",
+        "props": {
+          "label": "PERMISSIONS.LABEL_ROLE",
+          "required": true,
+          "methodType": "get",
+          "endPoint": "user/api/roles",
+          "valueProp": "id",
+          "labelProp": "name"
+        }
+      },
+
+      {
+        "key": "permission",
+        "type": "mat-textarea-input",
+        "props": {
+          "label": "PERMISSIONS.LABEL_PERMISSION_JSON",
+          "placeholder": "PERMISSIONS.PLACEHOLDER_PERMISSION_JSON",
+          "type": "json",
+          "rows": 10
+        }
+      }
+    ]
+  }
+}

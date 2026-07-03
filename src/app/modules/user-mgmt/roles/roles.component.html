@@ -1,0 +1,366 @@
+<div class="animate-fade-in container-wrapper">
+
+  <!-- Roles List View -->
+  <div *ngIf="activeTab === 'list'" class="animate-fade-in">
+    <core-grid #roleGrid [listName]="'roles'" [formName]="'roles'" [gridRowModelType]="'serverSide'"
+      [apiObservable]="rolesApi" [showHeader]="true" (actionClicked)="onGridAction($event)"
+      (deleteRequest)="onDeleteRequest($event)">
+    </core-grid>
+
+    <!-- Selected Role Detail Panel -->
+    <div class="detail-panel glass-panel animate-fade-in mt-16" *ngIf="selectedRole">
+      <div class="detail-header d-flex justify-content-between align-items-center">
+        <h3>{{ 'ROLES.ROLE_DETAIL' | translate }}: {{ selectedRole.name }}</h3>
+        <div class="detail-actions d-flex gap-8">
+          <button class="btn-icon-panel" (click)="startEditFully(selectedRole)" title="Edit Fully">
+            <span class="material-icons text-sm">edit</span> Edit Fully
+          </button>
+          <button class="btn-icon-panel" (click)="startEditPermissions(selectedRole)" title="Edit Permissions Only">
+            <span class="material-icons text-sm">security</span> Permissions
+          </button>
+          <button class="btn-icon-panel" (click)="startEditMenu(selectedRole)" title="Edit Menu Only">
+            <span class="material-icons text-sm">menu</span> Sidenav Menu
+          </button>
+          <button class="btn-icon-panel" (click)="cloneRole(selectedRole)" title="Clone Role">
+            <span class="material-icons text-sm">file_copy</span> Clone
+          </button>
+          <button class="btn-icon-panel" [ngClass]="selectedRole.status === 'active' ? 'warning' : 'success'"
+            (click)="confirmToggleStatus(selectedRole)" [disabled]="isSystemRole(selectedRole)"
+            [title]="selectedRole.status === 'active' ? 'Deactivate' : 'Activate'">
+            <!-- <span class="material-icons text-sm">power_settings_new</span> -->
+            {{ selectedRole.status === 'active' ? 'Deactivate' : 'Activate' }}
+          </button>
+          <button class="btn-icon-panel danger" (click)="confirmDelete(selectedRole)"
+            [disabled]="isSystemRole(selectedRole)" title="Delete Role">
+            <span class="material-icons text-sm">delete</span> Delete
+          </button>
+        </div>
+      </div>
+
+      <div class="roles-detail-row mt-12">
+        <div class="form-group flex-1">
+          <label class="form-label">{{ 'ROLES.LABEL_DESCRIPTION' | translate }}</label>
+          <div class="description-box">
+            {{ selectedRole.description || ('ROLES.NO_DESCRIPTION' | translate) }}
+          </div>
+        </div>
+        <div class="form-group status-box">
+          <label class="form-label">Status</label>
+          <div class="status-badge" [ngClass]="selectedRole.status === 'active' ? 'active-badge' : 'inactive-badge'">
+            {{ selectedRole.status | uppercase }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unified Config Stepper View -->
+  <div *ngIf="activeTab === 'stepper'" class="stepper-container glass-panel animate-fade-in">
+    <div class="stepper-header mb-16 d-flex justify-content-between align-items-center">
+      <div>
+        <h2 class="stepper-title">{{ editingRole ? 'Edit Role Configuration' : 'Create New Role' }}</h2>
+        <p class="text-muted text-sm">{{ editingRole ? 'Modify details, permissions matrix, and sidenav menus for ' +
+          editingRole.name : 'Setup a new security role with custom permissions and navigation links' }}</p>
+      </div>
+      <button class="btn btn-secondary btn-sm" (click)="switchTab('list')">
+        <span class="material-icons btn-icon-main">arrow_back</span> Cancel & Back
+      </button>
+    </div>
+
+    <mat-stepper [selectedIndex]="selectedStepIndex" (selectionChange)="onStepChange($event)"
+      class="roles-stepper-component">
+
+      <!-- Step 1: Info -->
+      <mat-step [stepControl]="roleForm" label="Info">
+        <div class="step-content-box">
+          <form [formGroup]="roleForm" class="info-step-form">
+            <div class="form-group mb-16">
+              <label class="form-label font-bold">Role Name <span class="text-danger">*</span></label>
+              <input type="text" formControlName="name" class="form-control"
+                placeholder="Enter role name (e.g. Doctor, Nurse, Billing Office)">
+              <div *ngIf="roleForm.get('name')?.touched && roleForm.get('name')?.invalid" class="form-helper-text">
+                Role name is required (minimum 2 characters).
+              </div>
+            </div>
+
+            <div class="form-group mb-16">
+              <label class="form-label font-bold">Description</label>
+              <textarea formControlName="description" class="form-control" rows="13"
+                placeholder="Briefly describe the purpose of this role..."></textarea>
+            </div>
+
+            <div class="form-group mb-16" *ngIf="editingRole">
+              <label class="form-label font-bold">Status</label>
+              <select formControlName="status" class="form-control">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              <p class="form-helper-text info-helper">Inactive roles prevent members from logging in.</p>
+            </div>
+          </form>
+        </div>
+      </mat-step>
+
+      <!-- Step 2: Permissions -->
+      <mat-step label="Permissions">
+        <div class="step-content-box">
+          <div class="module-quick-select mb-12">
+            <span class="quick-select-label font-bold">Modules Quick Selection:</span>
+            <div class="quick-select-chips">
+              <div class="quick-select-chip" *ngFor="let mod of modules">
+                <input type="checkbox" [id]="'quick-select-' + mod.id" [checked]="isModuleAllSelected(mod.id)"
+                  [indeterminate]="isModulePartiallySelected(mod.id)"
+                  (change)="toggleAllForModule(mod.id); refreshGrid()">
+                <label [for]="'quick-select-' + mod.id">{{ mod.name }}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="permissions-matrix-grid">
+            <ag-grid-angular #agGrid class="ag-theme-quartz permissions-grid-ag" [defaultColDef]="gridDefaultColDef"
+              [columnDefs]="gridColumnDefs" [rowData]="gridRowData" [gridOptions]="gridOptions"
+              [autoGroupColumnDef]="autoGroupColumnDef" [context]="gridContext" (gridReady)="onGridReady($event)">
+            </ag-grid-angular>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 3: Menu Configuration -->
+      <mat-step label="Menu Configuration">
+        <div class="step-content-box">
+          <div class="builder-layout">
+
+            <!-- Tree structure builder panel -->
+            <div class="panel-left card">
+              <div class="structure-header">
+                <span class="structure-title font-bold">Menu Structure</span>
+                <button class="btn btn-outline btn-sm" (click)="addRootItem()">
+                  <span class="material-icons text-xs">add</span> Add Root Item
+                </button>
+              </div>
+
+              <div class="tree-container">
+                <div *ngIf="menuItems.length === 0" class="empty-state">
+                  <p>No navigation links created yet. Click "Add Root Item" to start building the sidenav hierarchy.</p>
+                </div>
+
+                <!-- Recursive Node Template -->
+                <ng-template #nodeTemplate let-node="node" let-parent="parent" let-index="index" let-isLast="isLast">
+                  <li class="tree-node-wrapper">
+                    <div class="tree-node" [class.child-node]="parent !== null"
+                      [class.selected]="selectedItem?.id === node.id"
+                      (click)="selectItem(node, parent); $event.stopPropagation()">
+                      <!-- Toggle Expand/Collapse Button for Parent Nodes -->
+                      <button class="expand-toggle-btn" *ngIf="node.children && node.children.length > 0"
+                        (click)="toggleNodeExpanded(node); $event.stopPropagation()" type="button">
+                        <span class="material-icons" style="font-size: 1.1rem;">
+                          {{ node.expanded !== false ? 'expand_more' : 'chevron_right' }}
+                        </span>
+                      </button>
+                      <span class="expand-spacer" *ngIf="!node.children || node.children.length === 0"></span>
+
+                      <span class="node-icon">
+                        <i class="material-icons">{{ node.icon || (node.children && node.children.length > 0 ? 'folder'
+                          : 'link') }}</i>
+                      </span>
+                      <span class="node-label">
+                        {{ node.displayName || 'Untitled Link' }}
+                      </span>
+                      <span class="node-badge" *ngIf="node.children && node.children.length > 0">
+                        {{ node.children.length }}
+                      </span>
+
+                      <div class="node-actions" (click)="$event.stopPropagation()">
+                        <button class="btn-icon" [disabled]="index === 0" (click)="moveUp(index, parent)"
+                          title="Move Up">
+                          ▲
+                        </button>
+                        <button class="btn-icon" [disabled]="isLast" (click)="moveDown(index, parent)"
+                          title="Move Down">
+                          ▼
+                        </button>
+                        <button class="btn-icon success" (click)="addChildItem(node)" title="Add Child Item">
+                          ✚
+                        </button>
+                        <button class="btn-icon danger" (click)="deleteItem(node, parent)" title="Delete Link">
+                          ✖
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Child nodes recursive rendering -->
+                    <ul class="tree-children"
+                      *ngIf="node.children && node.children.length > 0 && node.expanded !== false">
+                      <ng-container *ngFor="let child of node.children; let j = index; let lastChild = last">
+                        <ng-container
+                          *ngTemplateOutlet="nodeTemplate; context: { node: child, parent: node, index: j, isLast: lastChild }"></ng-container>
+                      </ng-container>
+                    </ul>
+                  </li>
+                </ng-template>
+
+                <ul class="tree-root">
+                  <ng-container *ngFor="let rootItem of menuItems; let i = index; let lastRoot = last">
+                    <ng-container
+                      *ngTemplateOutlet="nodeTemplate; context: { node: rootItem, parent: null, index: i, isLast: lastRoot }"></ng-container>
+                  </ng-container>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Item properties panel -->
+            <div class="panel-right card">
+              <div *ngIf="!selectedItem" class="property-empty">
+                <div class="empty-icon">account_tree</div>
+                <h3>Menu Properties</h3>
+                <p>Click on any menu node in the structure on the left to configure its name, path, icon, password
+                  settings, or permissions constraints.</p>
+              </div>
+
+              <div *ngIf="selectedItem" class="property-form">
+                <h3 class="property-header">Edit Navigation Node</h3>
+
+                <div class="form-group mb-12">
+                  <label class="form-label font-bold">Display Title</label>
+                  <input type="text" class="form-control" [(ngModel)]="selectedItem.displayName"
+                    placeholder="Enter link display label">
+                </div>
+
+                <div class="form-group mb-12">
+                  <label class="form-label font-bold">Material Icon</label>
+                  <div class="icon-input-group">
+                    <input type="text" class="form-control" [(ngModel)]="selectedItem.icon"
+                      placeholder="e.g. dashboard, settings, people">
+                    <span class="icon-preview" *ngIf="selectedItem.icon">
+                      <i class="material-icons">{{ selectedItem.icon }}</i>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Submenu check -->
+                <div class="form-group check-group mb-12">
+                  <label class="check-label">
+                    <input type="checkbox" [checked]="selectedItem.children && selectedItem.children.length > 0"
+                      (change)="onHasSubmenuChange(selectedItem, $event)">
+                    <span>Has Dropdown Submenu?</span>
+                  </label>
+                </div>
+
+                <!-- Route path input -->
+                <div class="form-group mb-12" *ngIf="!selectedItem.children || selectedItem.children.length === 0">
+                  <label class="form-label font-bold">Route Link Path</label>
+                  <input type="text" class="form-control" [(ngModel)]="selectedItem.route"
+                    placeholder="e.g. /user-mgmt/dashboard">
+                </div>
+
+                <!-- Password protection constraint -->
+                <div class="form-group mb-12" *ngIf="!selectedItem.children || selectedItem.children.length === 0">
+                  <label class="form-label font-bold">Route Password Constraint (Optional)</label>
+                  <input type="password" class="form-control" [(ngModel)]="selectedItem.password"
+                    placeholder="Enter password protection value">
+                  <p class="form-helper-text warning-helper">Users will be prompted to enter this password before this
+                    screen opens.</p>
+                </div>
+
+                <!-- Menu close option -->
+                <div class="form-group check-group mb-12"
+                  *ngIf="!selectedItem.children || selectedItem.children.length === 0">
+                  <label class="check-label">
+                    <input type="checkbox" [(ngModel)]="selectedItem.menuClose">
+                    <span>Close Menu on Click?</span>
+                  </label>
+                  <p class="form-helper-text info-helper">If checked, clicking this navigation link will automatically
+                    close/collapse the menu.</p>
+                </div>
+
+                <!-- Container route placeholder -->
+                <div class="form-group mb-12" *ngIf="selectedItem.children && selectedItem.children.length > 0">
+                  <label class="form-label font-bold">Route Link Path</label>
+                  <input type="text" class="form-control" disabled value="Disabled for container nodes">
+                  <p class="form-helper-text info-helper">Root items containing child links do not redirect to paths.
+                  </p>
+                </div>
+
+                <!-- Permissions binding -->
+                <div class="permission-section mt-16">
+                  <h4 class="font-bold">Required Permissions Constraint</h4>
+                  <p class="permission-helper text-muted text-xs">Optionally bind this menu node to a module and screen
+                    permission. Link is hidden if the user does not hold this permission.</p>
+
+                  <div class="form-group mb-12">
+                    <label class="form-label font-bold">Module Check</label>
+                    <select class="form-control" *ngIf="selectedItem.permission"
+                      [(ngModel)]="selectedItem.permission[0]" (change)="onPermissionModuleChange()">
+                      <option value="">-- No Module Constraint --</option>
+                      <option *ngFor="let mod of modules" [value]="mod.name">{{ mod.name }}</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group mb-12" *ngIf="selectedItem.permission && selectedItem.permission[0]">
+                    <label class="form-label font-bold">Screen Check</label>
+                    <select class="form-control" [(ngModel)]="selectedItem.permission[1]">
+                      <option value="">-- No Screen Constraint --</option>
+                      <option *ngFor="let scr of getScreensForModule(selectedItem.permission[0])" [value]="scr.name">{{
+                        scr.name }}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group mt-16 text-right">
+                  <button class="btn btn-outline btn-sm danger-text"
+                    (click)="deleteItem(selectedItem, selectedItemParent)">
+                    Delete Menu Link
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </mat-step>
+
+    </mat-stepper>
+
+    <!-- Stepper persistent footer -->
+    <div class="stepper-footer mt-16 p-16 d-flex justify-content-between align-items-center">
+      <button type="button" class="btn btn-secondary" (click)="switchTab('list')">
+        <span class="material-icons btn-icon-main">close</span> Cancel
+      </button>
+
+      <div class="d-flex gap-8">
+        <button type="button" class="btn btn-outline" *ngIf="selectedStepIndex > 0"
+          (click)="selectedStepIndex = selectedStepIndex - 1">
+          <span class="material-icons btn-icon-main">navigate_before</span> Previous
+        </button>
+        <button type="button" class="btn btn-outline" *ngIf="selectedStepIndex < 2"
+          [disabled]="selectedStepIndex === 0 && roleForm.invalid" (click)="selectedStepIndex = selectedStepIndex + 1">
+          Next <span class="material-icons btn-icon-main right-icon">navigate_next</span>
+        </button>
+        <button type="button" class="btn btn-primary" [disabled]="saving || roleForm.invalid"
+          (click)="saveRoleConfig()">
+          <span *ngIf="!saving" class="material-icons btn-icon-main">save</span>
+          <span *ngIf="!saving">Save Configuration</span>
+          <span *ngIf="saving">Saving Configuration...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="confirm-overlay" *ngIf="showConfirmModal">
+    <div class="confirm-modal animate-fade-in">
+      <h3>{{ confirmTitle }}</h3>
+      <p>{{ confirmMessage }}</p>
+      <div class="confirm-actions">
+        <button class="btn-secondary btn btn-outline" (click)="dismissConfirm()">{{ 'ROLES.BTN_CANCEL' | translate
+          }}</button>
+        <button class="btn-primary btn"
+          [style.background]="confirmAction === 'delete' ? 'var(--color-error)' : 'var(--color-warning)'"
+          (click)="executeConfirm()">
+          {{ confirmAction === 'delete' ? ('ROLES.BTN_DELETE_PERMANENTLY' | translate) : ('ROLES.BTN_CONFIRM' |
+          translate) }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

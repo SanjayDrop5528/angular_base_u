@@ -1,0 +1,270 @@
+{
+  "moduleName": "ConsentMgmt",
+  "screenName": "Create / Edit Consent Notice",
+  "pageHeading": "CONSENT_MGMT.PAGE_HEADING",
+  "editPageHeading": "CONSENT_MGMT.PAGE_HEADING",
+  "formType": "simple",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "diffMethod": true,
+  "saveEndPoint": "consent/api/notices",
+  "updateEndPoint": "consent/api/notices/{{id}}",
+  "keyField": "id",
+  "form": {
+    "collectionName": "consent",
+    "defaultValues": [
+      {
+        "colName": "geoScope",
+        "value": "NONE",
+        "type": "string"
+      },
+      {
+        "colName": "region",
+        "value": "NONE",
+        "type": "string"
+      },
+      {
+        "colName": "version",
+        "value": "1.0",
+        "type": "string"
+      },
+      {
+        "colName": "display_type",
+        "value": "fulldocument",
+        "type": "string"
+      },
+      {
+        "colName": "is_active",
+        "value": false,
+        "type": "boolean"
+      }
+    ],
+    "fields": [
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "name",
+            "type": "mat-text-input",
+            "props": {
+              "label": "CONSENT_MGMT.FIELD_NOTICE_TITLE",
+              "placeholder": "e.g. EU OpenAI Webinar consent",
+              "required": true
+            }
+          },
+          {
+            "key": "entity",
+            "type": "select-input",
+            "props": {
+              "label": "CONSENT_MGMT.FIELD_ENTITY_NAME",
+              "required": true,
+              "methodType": "get",
+              "endPoint": "user/api/entities",
+              "valueProp": "name",
+              "labelProp": "name",
+              "needSearch": true
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "geoScope",
+            "type": "select-input",
+            "props": {
+              "label": "CONSENT_MGMT.FIELD_GEO_SCOPE",
+              "required": true,
+              "valueProp": "value",
+              "labelProp": "label",
+              "defaultValue": "NONE",
+              "options": [
+                {
+                  "value": "NONE",
+                  "label": "CONSENT_MGMT.SCOPE_NONE"
+                },
+                {
+                  "value": "Country",
+                  "label": "CONSENT_MGMT.SCOPE_COUNTRY"
+                },
+                {
+                  "value": "Region",
+                  "label": "CONSENT_MGMT.SCOPE_REGION"
+                }
+              ]
+            }
+          },
+          {
+            "key": "region",
+            "type": "select-input",
+            "hideExpression": "model.geoScope === 'NONE' || !model.geoScope",
+            "props": {
+              "label": "CONSENT_MGMT.FIELD_TARGET_REGION",
+              "required": true,
+              "valueProp": "value",
+              "labelProp": "label",
+              "options": [
+                {
+                  "value": "NONE",
+                  "label": "CONSENT_MGMT.REGION_NONE"
+                },
+                {
+                  "value": "US",
+                  "label": "United States"
+                },
+                {
+                  "value": "IN",
+                  "label": "India"
+                },
+                {
+                  "value": "MY",
+                  "label": "Malaysia"
+                },
+                {
+                  "value": "SG",
+                  "label": "Singapore"
+                },
+                {
+                  "value": "EU",
+                  "label": "European Union"
+                },
+                {
+                  "value": "APAC",
+                  "label": "Asia Pacific"
+                },
+                {
+                  "value": "NA",
+                  "label": "North America"
+                },
+                {
+                  "value": "LATAM",
+                  "label": "Latin America"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "event",
+            "type": "select-input",
+            "props": {
+              "label": "CONSENT_MGMT.FIELD_EVENT_TRIGGER",
+              "required": true,
+              "valueProp": "value",
+              "labelProp": "label",
+              "options": [
+                {
+                  "value": "MARKETING",
+                  "label": "Marketing"
+                },
+                {
+                  "value": "NEWSLETTER",
+                  "label": "Newsletter"
+                },
+                {
+                  "value": "GENERAL-CONSENT",
+                  "label": "General Consent"
+                },
+                {
+                  "value": "GDPR-CONSENT",
+                  "label": "GDPR Consent"
+                },
+                {
+                  "value": "WEBINAR",
+                  "label": "Webinar"
+                },
+                {
+                  "value": "CONFERENCE",
+                  "label": "Conference"
+                },
+                {
+                  "value": "WORKSHOP",
+                  "label": "Workshop"
+                }
+              ]
+            }
+          },
+          {
+            "key": "key",
+            "type": "mat-text-input",
+            "props": {
+              "label": "CONSENT_MGMT.FIELD_COMPUTED_KEY",
+              "readonly": true,
+              "disabled": true,
+              "placeholder": "Will compute automatically..."
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "version",
+            "type": "mat-text-input",
+            "props": {
+              "label": "Version",
+              "readonly": true,
+              "disabled": true,
+              "defaultValue": "1.0"
+            }
+          },
+          {
+            "key": "display_type",
+            "type": "select-input",
+            "props": {
+              "label": "CONSENT_MGMT.FIELD_DISPLAY_MODE",
+              "required": true,
+              "valueProp": "value",
+              "labelProp": "label",
+              "defaultValue": "fulldocument",
+              "options": [
+                {
+                  "value": "fulldocument",
+                  "label": "CONSENT_MGMT.DISPLAY_FULL"
+                },
+                {
+                  "value": "shortlink",
+                  "label": "CONSENT_MGMT.DISPLAY_SHORTLINK"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "template",
+            "type": "html-input",
+            "props": {
+              "label": "CONSENT_MGMT.FIELD_TEMPLATE",
+              "required": true
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "is_active",
+            "type": "toogle",
+            "props": {
+              "label": "CONSENT_MGMT.FIELD_PUBLISH",
+              "defaultValue": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "actionHide": true,
+  "onCancelRoute": "/consent-mgmt/notices"
+}

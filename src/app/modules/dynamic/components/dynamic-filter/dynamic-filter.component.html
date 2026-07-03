@@ -1,0 +1,224 @@
+<div class="container">
+  @for (fo of filterOptions; track fo ) {
+  <div style="display: flex; width: 100%;">
+    <!-- margin-left:20px; -->
+    @if (fo.type == 'autocomplete') {
+    <!--       <mat-form-field    > -->
+    <mat-form-field appearance="outline">
+      <mat-label>{{fo.label|translate}}</mat-label>
+      <input type="text" [(ngModel)]="fo.selectedValue" [name]="fo.columnName" matInput
+        (input)="filteredData(fo.selectedValue)" [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        @for (row of filteredOptions; track row) {
+        <mat-option [value]="row[fo.valueProp]">
+          {{row[fo.labelProp]}} - {{row[fo.valueProp]}}
+        </mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    } @else if (fo.type == 'input') {
+    <mat-form-field appearance="outline">
+      <mat-label>{{fo.label|translate}}</mat-label>
+      <input [type]="fo?.['inputType'] ?? 'text' " [(ngModel)]="fo.selectedValue" [name]="fo.columnName" matInput
+        (input)="triggerFilter()" [pattern]="fo.pattern ? fo.pattern:''">
+      <mat-icon matSuffix *ngIf="fo.icon">{{ fo.icon }}</mat-icon>
+    </mat-form-field>
+    }@else if (fo.type == 'select') {
+    <!--         <mat-form-field    > -->
+    <mat-form-field appearance="outline">
+      <mat-label>{{ fo.label | translate }}</mat-label>
+      <mat-select [(ngModel)]="fo.selectedValue" [name]="fo.columnName"
+        [multiple]="fo.multiSelection && fo.multiSelection == true">
+        <mat-option value="" (click)="triggerFilter()">{{ 'COMMON.ALL' | translate }} {{ fo.label | translate
+          }}</mat-option>
+        <mat-option *ngFor="let row of fo.options" [value]="row[fo.valueProp]" (click)="triggerFilter()">
+          {{ row[fo.labelProp] | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    }@else if (fo.type == 'date_range') {
+    <!--         <mat-form-field    > -->
+    <!-- <mat-form-field    >
+            <mat-label>{{ fo.label }}</mat-label>
+             <input matInput type="text" ngxDaterangepickerMd   [maxDate]="fo.maxDate"             [(ngModel)]="fo.selectedValue"
+            [keepCalendarOpeningWithRange]="false" [ranges]="ranges" [timePicker]="true" [showCustomRangeLabel]="true" [showRangeLabelOnInput]="true"
+            [locale]="{ format: 'MM/DD/YYYY' }" autocomplete="off" [showClearButton]="true"
+            name="daterange" [timePicker]="true" name="selected" (datesUpdated)="triggerFilter()"
+            [readonly]="!fo.readonly" /> 
+                
+            </mat-form-field>  -->
+
+    <div class="zindex-20 date-picker-wrapper">
+      <!-- <div class="date-picker-container">
+    <div class="input-wrapper">
+      <input
+        readonly
+        ngxDaterangepickerMd
+        #dateInput
+        [keepCalendarOpeningWithRange]="false"
+        id="datefilter"
+        [ranges]="ranges"
+        [showCustomRangeLabel]="true"
+        [showRangeLabelOnInput]="true"
+        [(ngModel)]="fo.selectedValue"
+        [locale]="{ format: 'DD/MM/YYYY' }"
+        autocomplete="off"
+        [showClearButton]="true"
+        name="daterange"
+        (datesUpdated)="triggerFilter()"
+        class="datepicker-calendar-input"
+      />
+      <span class="calendar-icon" (click)="dateInput.click()">📅</span>
+    </div>
+  </div> -->
+    </div>
+
+    }@else if (fo.type == 'datepicker') {
+    <mat-form-field appearance="outline">
+      <mat-label>{{ fo.label | translate }}</mat-label>
+      <input matInput [(ngModel)]="fo.selectedValue" [min]="fo.minDate" [max]="fo.maxDate" [matDatepicker]="picker"
+        (dateChange)="triggerFilter()" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    }@else if (fo.type == 'popup') {
+    <!--         <mat-form-field    (click)="OpenDialog(fo)"> -->
+    <mat-form-field appearance="outline" (click)="OpenDialog(fo)">
+      <mat-label>{{fo.label | translate}}</mat-label>
+      <input readonly [name]="fo.columnName" matInput [(ngModel)]="fo[fo?.['labelKey']]">
+    </mat-form-field>
+    <span>
+      @if (fo?.icon) {
+      @if(fo?.['prefix'] ){
+      @if(fo?.isSvgIcon){
+      <!-- matTextPrefix -->
+      <mat-icon class="online" (click)="OpenDialog(fo)" [svgIcon]="fo.icon"
+        [ngClass]="fo.class ? fo.icon : '' "></mat-icon>
+      }@else {
+      <mat-icon class="online" (click)="OpenDialog(fo)">{{fo?.icon}}</mat-icon>
+      }
+      }@else if(fo?.['suffix'] ){
+      <!-- matSuffix -->
+      @if(fo?.isSvgIcon){
+      <mat-icon class="online" (click)="OpenDialog(fo)" [svgIcon]="fo.icon"
+        [ngClass]="fo.class ? fo.icon : '' "></mat-icon>
+      }@else {
+      <mat-icon class="online" (click)="OpenDialog(fo)">{{fo?.icon}}</mat-icon>
+      }
+      }
+      }
+    </span>
+    } @else if (fo.type == 'label') {
+    <div style="display: flex; align-items: center;">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ fo.label | translate }}</mat-label>
+
+        <input matInput [value]="fo.options[0]?.[fo.labelProp]" readonly />
+      </mat-form-field>
+    </div>
+    } @else if (fo.type == 'multiSearch') {
+    <mat-form-field>
+      <mat-label>{{fo.label | translate}}</mat-label>
+      <input type="text" [(ngModel)]="fo.selectedValue" [name]="fo.columnName" matInput
+        (input)="triggerFilter()">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    } @else if (fo.type == 'button' && config['ShowFilterButton']) {
+    <span style="margin-top: 15px;">
+      <button mat-raised-button color="secondary" (click)="triggerFilter(false)">
+        <mat-icon>view_list</mat-icon>
+        {{config['filterText'] ? config['filterText']: "Filter"}}
+      </button>
+    </span>
+    }
+
+  </div>
+  }
+</div>
+
+<!-- <span *ngIf="filterOptions">
+<span *ngFor="let fo of filterOptions" class="filter-container">
+  <mat-form-field    class="small"*ngIf="fo.type == 'select'">
+    <mat-label>{{ fo.label }}</mat-label>
+    <mat-select
+      [(ngModel)]="fo.selectedValue"
+      [name]="fo.columnName"
+      [multiple]="fo.multiSelection && fo.multiSelection == true"
+      >
+      <mat-option value="" (onSelectionChange)="toggleSelectAll($event)"
+        >All {{ fo.label }}</mat-option
+        >
+        <mat-option *ngFor="let row of fo.options" [value]="row[fo.valueProp]">
+          {{ row[fo.labelProp] }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field    class="small"*ngIf="fo.type == 'datepicker'">
+      <mat-label>{{ fo.label }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="fo.selectedValue"
+        [min]="fo.minDate"
+        [max]="fo.maxDate"
+        [matDatepicker]="picker"
+        />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field    class="small"*ngIf="fo.type == 'text'">
+      <input
+        matInput
+        [(ngModel)]="fo.selectedValue"
+        type="text"
+        placeholder="{{ fo.label }}"
+        />
+    </mat-form-field>
+    <mat-form-field    class="small"*ngIf="fo.type == 'data'">
+      <input
+        matInput
+        [(ngModel)]="fo.selectedValue"
+        type="text"
+        placeholder="{{ fo.label }}"
+        />
+    </mat-form-field>
+  </span>
+
+  <span *ngIf="config['showPrintButton']">
+    <button mat-raised-button color="secondary" (click)="generatePdf()">
+      <mat-icon>print</mat-icon>
+      Print
+    </button>
+  </span>
+  <span *ngIf="config['showLaserPrintButton']">
+    <button mat-raised-button color="secondary">
+      <mat-icon>print</mat-icon>
+      Print Laser
+    </button>
+  </span>
+  <span *ngIf="config['showLaserPlainPaperButton']">
+    <button mat-raised-button color="secondary">
+      <mat-icon>print</mat-icon>
+      Print Laser Plain Paper
+    </button>
+  </span>
+</span> -->
+
+<ng-template #formlypopup class="example-sidenav" mode="over" style="height: auto" let-data>
+
+  <div class="center" style="width: 100%; margin: 5px">
+    <h2 style="text-align: center;" class="page-title">{{ poppageHeading }} <mat-icon
+        style="right: 13px;position: absolute;" (click)='this.dialogService.CloseALL()'>close</mat-icon>
+    </h2>
+  </div>
+
+  <div style="padding: 0px 20px;">
+    <formly-form [model]="data" [fields]="popfields"></formly-form>
+  </div>
+  <div style="display: flex;justify-content: flex-end;margin-right: 13px;">
+    <button style="margin: 5px" mat-button (click)="cancel()">Cancel</button>
+    <button style="margin: 5px;  background:rgb(59,146,155)" mat-raised-button color="warn"
+      (click)="frmSubmit(data)">Save</button>
+  </div>
+
+</ng-template>

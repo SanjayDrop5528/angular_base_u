@@ -1,0 +1,226 @@
+{
+    "pageHeading": "PLAN.FEATURE.LIST.PAGE_HEADING",
+    "formHeading": "PLAN.FEATURE.FORM.PAGE_HEADING",
+    "pageDescription": "PLAN.FEATURE.LIST.PAGE_DESCRIPTION",
+    "collectionName": "service",
+    "editMode": "drawer",
+    "screenEditMode": "drawer",
+    "screenWidth": "600px",
+    "cardSchema": {
+        "type": "container",
+        "className": "column",
+        "customStyles": {
+            "border-radius": "14px",
+            "overflow": "hidden",
+            "border": "1px solid var(--border-color)",
+            "padding": "0"
+        },
+        "children": [
+            {
+                "type": "container",
+                "className": "row align-center",
+                "customStyles": {
+                    "padding": "14px 16px",
+                    "gap": "12px"
+                },
+                "children": [
+                    {
+                        "type": "avatar",
+                        "key": "image_url",
+                        "nameKey": "name",
+                        "avatarFolder": "service_images"
+                    },
+                    {
+                        "type": "container",
+                        "className": "col column no-gap",
+                        "children": [
+                            {
+                                "type": "title",
+                                "key": "name",
+                                "fontSize": 16,
+                                "fontWeight": 700
+                            },
+                            {
+                                "type": "text",
+                                "key": "shortdescription",
+                                "fontSize": 13,
+                                "textColor": "var(--text-muted)"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "button",
+                        "menu": true,
+                        "menuItems": [
+                            {
+                                "label": "PLAN.FEATURE.LIST.EDIT",
+                                "icon": "edit",
+                                "action": "edit"
+                            },
+                            {
+                                "label": "PLAN.FEATURE.LIST.DELETE",
+                                "icon": "delete",
+                                "action": "delete"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "container",
+                "className": "row align-center",
+                "customStyles": {
+                    "padding": "12px 16px"
+                },
+                "children": [
+                    {
+                        "type": "icon",
+                        "icon": "category",
+                        "color": "primary"
+                    },
+                    {
+                        "type": "text",
+                        "label": "PLAN.FEATURE.LIST.CATEGORY_LABEL",
+                        "variant": "subtitle",
+                        "className": "col",
+                        "customStyles": {
+                            "margin-left": "10px"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "key": "category_name"
+                    }
+                ]
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "container",
+                "className": "row",
+                "customStyles": {
+                    "padding-right": "10px"
+                },
+                "children": [
+                    {
+                        "type": "container",
+                        "className": "col column",
+                        "customStyles": {
+                            "padding": "8px 12px"
+                        },
+                        "children": [
+                            {
+                                "type": "container",
+                                "className": "row align-center",
+                                "children": [
+                                    {
+                                        "type": "icon",
+                                        "icon": "layers",
+                                        "color": "primary"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "label": "PLAN.FEATURE.LIST.PLAN_LABEL",
+                                        "variant": "subtitle",
+                                        "customStyles": {
+                                            "margin-left": "10px"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "text",
+                                "key": "plan_name"
+                            }
+                        ]
+                    },
+                    {
+                        "customStyles": {
+                            "margin-right": "10px"
+                        },
+                        "type": "status",
+                        "key": "status"
+                    }
+                ]
+            }
+        ]
+    },
+    "filterOptions": [
+        {
+            "type": "input",
+            "label": "SUBSCRIPTIONS.FIELD_FEATURE_NAME",
+            "columnName": "name",
+            "operator": "CONTAINS"
+        },
+        {
+            "type": "select",
+            "label": "SHARED.STATUS",
+            "columnName": "status",
+            "multiSelection": false,
+            "labelProp": "label",
+            "valueProp": "value",
+            "options": [
+                {
+                    "label": "SHARED.STATUS_ACTIVE",
+                    "value": "active"
+                },
+                {
+                    "label": "SHARED.STATUS_INACTIVE",
+                    "value": "inactive"
+                }
+            ]
+        }
+    ],
+    "showbutton": true,
+    "actions": [
+        {
+            "label": "PLAN.FEATURE.LIST.EDIT",
+            "icon": "edit",
+            "formAction": "edit"
+        },
+        {
+            "label": "PLAN.FEATURE.LIST.DELETE",
+            "icon": "delete",
+            "formAction": "delete"
+        }
+    ],
+    "columnDefs": [
+        {
+            "field": "name",
+            "headerName": "PLAN.FEATURE.LIST.COLUMN_FEATURE_NAME",
+            "flex": 1.5,
+            "minWidth": 250
+        },
+        {
+            "field": "category_name",
+            "headerName": "PLAN.FEATURE.LIST.CATEGORY_LABEL",
+            "flex": 1.2,
+            "minWidth": 180
+        },
+        {
+            "field": "plan_name",
+            "headerName": "PLAN.FEATURE.LIST.COLUMN_PLANS",
+            "flex": 2,
+            "minWidth": 300
+        },
+        {
+            "field": "status",
+            "headerName": "PLAN.FEATURE.LIST.COLUMN_STATUS",
+            "minWidth": 120
+        },
+        {
+            "headerName": "PLAN.FEATURE.LIST.COLUMN_ACTION",
+            "field": "Action",
+            "cellRenderer": "buttonRenderer",
+            "lockPosition": "right",
+            "pinned": "right",
+            "lockPinned": true,
+            "maxWidth": 130,
+            "menuTabs": []
+        }
+    ]
+}

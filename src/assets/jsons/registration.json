@@ -1,0 +1,105 @@
+{
+  "pageHeading": "REGISTER.APPOINTMENT_BOOKINGS",
+  "formType": "simple",
+  "editMode": "page",
+  "screenEditMode": "page",
+  "onCancelRoute": "/bookings/registration",
+  "diffMehthod": true,
+  "saveEndPoint": "roaster/api/bookings",
+  "updateEndPoint": "roaster/api/bookings/{{id}}",
+  "keyField": "id",
+  "form": {
+    "collectionName": "bookings",
+    "fields": [
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "patient_name",
+            "type": "mat-text-input",
+            "props": {
+              "label": "REGISTER.FORM.PATIENT_NAME",
+              "placeholder": "REGISTER.FORM.ENTER_PATIENT_NAME",
+              "required": true
+            }
+          },
+          {
+            "key": "email",
+            "type": "mat-text-input",
+            "props": {
+              "label": "REGISTER.FORM.EMAIL_ADDRESS",
+              "placeholder": "REGISTER.FORM.ENTER_EMAIL_ADDRESS",
+              "type": "email",
+              "required": true
+            }
+          },
+          {
+            "key": "phone",
+            "type": "mat-text-input",
+            "props": {
+              "label": "REGISTER.FORM.PHONE_NUMBER",
+              "placeholder": "REGISTER.FORM.ENTER_PHONE_NUMBER",
+              "required": true
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "dob",
+            "type": "date-input",
+            "props": {
+              "label": "REGISTER.FORM.DATE_OF_BIRTH",
+              "required": true,
+              "attributes": {
+                "hide": "future_date"
+              }
+            }
+          },
+          {
+            "key": "user_id",
+            "type": "select-input",
+            "props": {
+              "label": "REGISTER.FORM.SELECT_DOCTOR",
+              "required": true,
+              "valueProp": "id",
+              "labelProp": "name",
+              "methodType": "get",
+              "endPoint": "user/api/users"
+            }
+          },
+          {
+            "key": "booking_date",
+            "type": "date-input",
+            "props": {
+              "label": "REGISTER.FORM.APPOINTMENT_DATE",
+              "required": true,
+              "attributes": {
+                "hide": "past_date"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "fieldGroupClassName": "display-flex-gap",
+        "fieldGroup": [
+          {
+            "key": "appointmentSlot",
+            "type": "callender-Booking-slot",
+            "props": {
+              "label": "REGISTER.FORM.AVAILABLE_TIME_SLOTS",
+              "required": true,
+              "doctorFieldKey": "user_id",
+              "dateFieldKey": "booking_date",
+              "slotDurationMinutes": 60,
+              "calenderType": "CONSULTATION"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

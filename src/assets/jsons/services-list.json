@@ -1,0 +1,43 @@
+{
+  "pageHeading": "SERVISE.SERVISE_LIST",
+  "screenId": "services",
+  "columnDefs": [
+    {
+      "field": "name",
+      "headerName": "SERVISE.FEATURE_NAME",
+      "width": 180,
+      "cellRenderer": "function(params) { const img = params.data.image_url || '⚙️'; return `<span>${img} ${params.value}</span>`; }"
+    },
+    {
+      "field": "category_id",
+      "headerName": "SERVISE.CATEGORY",
+      "width": 150,
+      "valueFormatter": "function(params) { return params.context.componentParent.getCategoryName(params.value); }"
+    },
+    {
+      "field": "shortdescription",
+      "headerName": "SERVISE.DESCRIPTION",
+      "width": 300,
+      "tooltip": "function(params) { return params.value || '—'; }"
+    },
+    {
+      "field": "status",
+      "headerName": "SERVISE.STATUS",
+      "width": 100,
+      "cellRenderer": "function(params) { return `<span class='badge ${params.value === 'active' ? 'badge-active' : 'badge-suspended'}'>${params.value}</span>`; }"
+    }
+  ],
+  "rowModelType": "clientSide",
+  "actions": [
+    {
+      "id": "edit",
+      "label": "SERVISE.EDIT",
+      "icon": "edit"
+    },
+    {
+      "id": "delete",
+      "label": "SERVISE.DELETE",
+      "icon": "delete"
+    }
+  ]
+}

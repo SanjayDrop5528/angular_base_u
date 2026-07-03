@@ -1,0 +1,104 @@
+{
+  "pageHeading": "SCREENS.TITLE",
+  "pageDescription": "SCREENS.SUBTITLE",
+  "screenId": "screens",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "screenWidth": "720px",
+  "showbutton": true,
+  "rowModelType": "clientSide",
+  "defaultViewMode": "grid",
+  "cardSchema": {
+    "titleKey": "name",
+    "subtitleKey": "descriptions",
+    "fields": [
+      {
+        "key": "type",
+        "label": "SCREENS.COL_TYPE",
+        "type": "badge",
+        "badgeColor": "primary"
+      },
+      {
+        "key": "moduleNames",
+        "label": "SCREENS.COL_PARENT_MODULES",
+        "type": "text"
+      }
+    ],
+    "actions": [
+      {
+        "label": "Edit",
+        "icon": "edit",
+        "action": "edit",
+        "color": "primary"
+      },
+      {
+        "label": "Delete",
+        "icon": "delete",
+        "action": "delete",
+        "color": "warn"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "label": "FORM.COMMON.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "FORM.COMMON.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "SCREENS.COL_NAME",
+      "field": "name",
+      "filter": "agTextColumnFilter",
+      "flex": 1
+    },
+    {
+      "headerName": "SCREENS.COL_DESCRIPTION",
+      "field": "descriptions",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "headerName": "SCREENS.COL_TYPE",
+      "field": "type",
+      "filter": "agTextColumnFilter",
+      "flex": 0.8,
+      "valueFormatter": "function(params) { return params.value ? params.value.charAt(0).toUpperCase() + params.value.slice(1) : ''; }"
+    },
+    {
+      "headerName": "SCREENS.COL_ROUTE",
+      "field": "route",
+      "filter": "agTextColumnFilter",
+      "flex": 1.2
+    },
+    {
+      "headerName": "SCREENS.COL_PARENT_MODULES",
+      "field": "moduleNames",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "headerName": "SCREENS.COL_PERMISSIONS",
+      "field": "formattedPermissions",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "FORM.COMMON.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 85,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

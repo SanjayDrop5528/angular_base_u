@@ -1,0 +1,461 @@
+{
+  "pageHeading": "MENU_CONFIG.SPECIALISTS",
+  "prefixicon": "fa-user-doctor",
+  "iconcolor": "#9c27b0",
+  "pageDescription": "MENU_CONFIG.SPECIALISTS_DESCRIPTION",
+  "collectionName": "specialists",
+  "keyField": "id",
+  "editMode": "page",
+  "screenEditMode": "page",
+  "showbutton": true,
+  "addRoute": "/specialists/add/specialist-onboarding",
+  "editRoute": "",
+  "cardSchema": {
+    "type": "container",
+    "className": "column",
+    "children": [
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "20px 20px 0px 20px",
+          "gap": "0px"
+        },
+        "children": [
+          {
+            "type": "avatar",
+            "key": "profile_photo",
+            "nameKey": "name",
+            "avatarFolder": "specialist_profiles"
+          },
+          {
+            "type": "container",
+            "className": "col column no-gap",
+            "children": [
+              {
+                "type": "container",
+                "className": "row align-center",
+                "customStyles": {
+                  "gap": "4px"
+                },
+                "children": [
+                  {
+                    "type": "icon",
+                    "customStyles": {
+                      "font-size": "25px",
+                      "color":"gray"
+                    },
+                    "key": "gender",
+                    "iconMap": {
+                      "male": "boy",
+                      "female": "girl",
+                      "other": "person"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "variant": "title",
+                    "key": "name"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "variant": "subtitle",
+                "key": "current_designation"
+              }
+            ]
+          },
+          {
+            "type": "button",
+            "menu": true,
+            "customStyles": {
+              "bottom": "12px",
+              "left": "20px",
+              "color":"gray"
+            },
+            "menuItems": [
+              {
+                "label": "SPECIALIST.ACTION.EDIT",
+                "icon": "edit",
+                "action": "edit"
+              },
+              {
+                "label": "SPECIALIST.ACTION.DELETE",
+                "icon": "delete",
+                "action": "delete"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type":"container",
+        "customStyles": {
+          "padding": "10px 0 10px 20px",
+          "display": "flex",
+          "align-items": "center",
+          "gap": "10px"
+        },
+       "children": [
+          {
+            "type": "contact",
+            "subType": "email",
+            "key": "email",
+            "customStyles": {
+              "font-size": "13px"
+            }
+          },
+           {
+            "type": "contact",
+            "subType": "phone",
+            "key": "primary_phone",
+            "customStyles": {
+              "font-size": "13px"
+            }
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "customStyles": {
+          "border-bottom": "1px solid #e0e0e0",
+          "padding-bottom": "10px",
+          "margin-bottom": "10px"
+        },
+        "className": "row",
+        "children": [
+          {
+            "type": "container",
+            "className": "col column align-center",
+            "children": [
+              {
+                "type": "text",
+                "variant": "subtitle",
+                "label": "SPECIALIST.CARD.EXPERIENCE",
+                "textColor": "#0582f7"
+              },
+              {
+                "type": "date",
+                "key": "working_since",
+                "elapsed": true,
+                "fontWeight": 700
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "className": "col column align-center",
+            "children": [
+              {
+                "type": "text",
+                "variant": "subtitle",
+                "label": "SPECIALIST.CARD.RATING",
+                "textColor": "#0582f7"
+              },
+              {
+                "type": "text",
+                "variant": "stat",
+                "key": "ratings",
+                "fontWeight": 700
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "className": "col column align-center",
+            "children": [
+              {
+                "type": "text",
+                "variant": "subtitle",
+                "label": "SPECIALIST.CARD.PATIENTS",
+                "textColor": "#0582f7"
+              },
+              {
+                "type": "number",
+                "key": "patient_count",
+                "compact": true,
+                "fontWeight": 700
+              }
+            ]
+          }
+        ]
+      },
+      
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "10px 16px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "boxview": true,
+            "color": "#FF0000",
+            "icon": "medical_services",
+            "customStyles": {
+              "color": "#FF0000"
+            }
+          },
+          {
+            "type": "text",
+            "variant": "subtitle",
+            "label": "SPECIALIST.CARD.SPECIALIST",
+            "className": "col",
+            "customStyles": {
+              "margin-left": "0px",
+               "max-width": "80px",
+               "min-width": "80px",
+              "font-size": "11px",
+              "letter-spacing": "0.5px"
+            }
+          },
+          {
+            "type": "list",
+            "key": "specialties",
+            "direction": "column",
+            "customStyles": {
+              "color": "#FF0000"
+            },
+            "itemConfig": {
+              "type": "text",
+              "limit": 1,
+              "labelKey": "specialty_name"
+            }
+          }
+        ]
+      },
+      
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "10px 16px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "icon": "translate",
+           "boxview": true,
+            "color": "primary"
+          },
+          {
+            "type": "text",
+            "variant": "subtitle",
+            "label": "SPECIALIST.CARD.LANGUAGE",
+            "className": "col",
+            "customStyles": {
+              "margin-left": "0px",
+              "max-width": "80px",
+               "min-width": "80px",
+              "font-size": "11px",
+              "letter-spacing": "0.5px"
+            }
+          },
+          {
+            "type": "list",
+            "key": "languages",
+            "direction": "row",
+            "separator": "pipe",
+            "itemConfig": {
+              "type": "text",
+              "limit": 2,
+              "labelKey": "language"
+            }
+          }
+        ]
+      },
+      
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "10px 16px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "icon": "location_on",
+            "boxview": true,
+            "color": "primary"
+          },
+          {
+            "type": "text",
+            "variant": "subtitle",
+            "label": "SPECIALIST.CARD.LOCATION",
+            "className": "col",
+            "customStyles": {
+              "margin-left": "0px",
+              "font-size": "11px",
+              "max-width": "80px",
+               "min-width": "80px",
+              "letter-spacing": "0.5px"
+            }
+          },
+          {
+            "type": "text",
+            "variant": "default",
+            "key": "country"
+          }
+        ]
+      },
+      
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "10px 16px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "icon": "verified_user",
+            "boxview": true,
+            "color": "primary"
+          },
+          {
+            "type": "text",
+            "variant": "subtitle",
+            "label": "SPECIALIST.CARD.STATUS",
+            "className": "col",
+            "customStyles": {
+              "margin-left": "0px",
+             "max-width": "80px",
+               "min-width": "80px",
+              "font-size": "11px",
+              "letter-spacing": "0.5px"
+            }
+          },
+          {
+            "type": "status",
+            "key": "status"
+          }
+        ]
+      }
+    ]
+  },
+  "filterOptions": [
+    {
+      "type": "input",
+      "label": "COMMON.FIELD_SPECIALIST_NAME",
+      "columnName": "name",
+      "operator": "CONTAINS"
+    },
+     {
+      "type": "input",
+      "label": "COMMON.SEARCH_BY_EMAIL",
+      "columnName": "email",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "select",
+      "label": "SHARED.STATUS",
+      "columnName": "status",
+      "multiSelection": false,
+      "labelProp": "label",
+      "selectedValue": "",
+      "valueProp": "value",
+      "options": [
+        {
+          "label": "SHARED.STATUS_APPROVED",
+          "value": "Approved"
+        },
+        {
+          "label": "SHARED.STATUS_DRAFT",
+          "value": "Draft"
+        },
+        {
+          "label": "SHARED.STATUS_PENDING",
+          "value": "Pending Approval"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "label": "SPECIALIST.ACTION.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "SPECIALIST.ACTION.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    },
+    {
+      "label": "SPECIALIST.ACTION.VIEW",
+      "icon": "remove_red_eye",
+      "formAction": "view"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "SPECIALIST.LIST.NAME",
+      "field": "name",
+      "type": "userProfile",
+      "showHoverCard": false,
+      "profileImageField": "profile_photo",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "SPECIALIST.LIST.EMAIL",
+      "field": "email",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "SPECIALIST.LIST.GENDER",
+      "field": "gender",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "SPECIALIST.LIST.DESIGNATION",
+      "field": "current_designation",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "SPECIALIST.LIST.RATING",
+      "field": "ratings",
+      "type": "ratings",
+      "viewtype": "stars",
+      "outof": 5,
+      "filter": "agNumberColumnFilter"
+    },
+    {
+      "headerName": "SPECIALIST.COL_PATIENT_COUNT",
+      "field": "patient_count",
+      "filter": "agNumberColumnFilter",
+      "type": "compactNumber"
+    },
+    {
+      "headerName": "SPECIALIST.LIST.STATUS",
+      "field": "status",
+      "type": "status",
+      "noTranslate": true,
+      "filter": "agSetColumnFilter",
+      "filterParams": {
+        "values": [
+          "Draft",
+          "Pending Approval",
+          "Approved",
+          "Rejected",
+          "Hold"
+        ]
+      },
+      "pinned": "right",
+      "width": 120,
+      "maxWidth": 120
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "SPECIALIST.LIST.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 85,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "pageHeading": "PATIENT.PAGE_MY_PATIENTS",
+  "prefixicon": "fa-hospital-user",
+  "iconcolor": "#2196f3",
+  "pageDescription": "PATIENT.PAGE_MY_PATIENTS_DESC",
+  "collectionName": "patients",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "screenWidth": "600px",
+  "showbutton": true,
+  "addRoute": "/addpatients",
+  "editRoute": "/onboard?patientId={{id}}",
+  "cardSchema": {
+    "titleKey": "name",
+    "subtitleKey": "email",
+    "fields": [
+      {
+        "key": "phone",
+        "label": "JSON_CONFIG.PHONE",
+        "type": "text"
+      },
+      {
+        "key": "status",
+        "label": "JSON_CONFIG.STATUS",
+        "type": "badge",
+        "badgeColor": "primary"
+      },
+      {
+        "key": "created_on",
+        "label": "JSON_CONFIG.CREATED",
+        "type": "date",
+        "dateFormat": "dd MMM yyyy, HH:mm"
+      }
+    ],
+    "actions": [
+      {
+        "label": "JSON_CONFIG.EDIT",
+        "icon": "edit",
+        "action": "edit",
+        "color": "primary"
+      },
+      {
+        "label": "JSON_CONFIG.DELETE",
+        "icon": "delete",
+        "action": "delete",
+        "color": "warn"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "label": "PATIENT.ACTION.EDIT",
+      "icon": "edit",
+      "action": "edit",
+      "color": "primary"
+    },
+    {
+      "label": "PATIENT.ACTION.DELETE",
+      "icon": "delete",
+      "action": "delete",
+      "color": "warn"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "PATIENT.LIST.NAME",
+      "field": "name",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "PATIENT.LIST.EMAIL",
+      "field": "email",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "PATIENT.LIST.PHONE",
+      "field": "phone",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.CREATED_ON",
+      "field": "created_at",
+      "type": "date",
+      "format": "DD MMM YYYY HH:mm",
+      "filter": "agDateColumnFilter"
+    },
+    {
+      "headerName": "PATIENT.LIST.STATUS",
+      "field": "status",
+      "lockPosition": "right",
+      "maxWidth": 120,
+      "lockPinned": true,
+      "pinned": "right",
+      "filter": "agSetColumnFilter",
+      "filterParams": {
+        "values": [
+          "active",
+          "invited",
+          "suspended"
+        ]
+      }
+    },
+    {
+      "headerName": "",
+      "field": "Action",
+      "lockPosition": "right",
+      "width": 100,
+      "maxWidth": 100,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

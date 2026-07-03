@@ -1,0 +1,27 @@
+<nav class="breadcrumb tinos-regular">
+  <ng-container *ngFor="let crumb of breadcrumbs; let last = last;let first = first;">
+    <div class="parent-crumb">
+
+      <div *ngIf="!last">
+        <a (click)="navigateTo(crumb.route,crumb.queryParams)" class="crumb link-color">
+          <ng-container *ngIf="first; else otherCrumb">
+            <i class="fa-solid fa-house"></i>
+          </ng-container>
+
+          <ng-template #otherCrumb>
+            {{ crumb?.personName ? crumb.personName : (crumb.name | titlecase ) }}
+          </ng-template>
+
+        </a>
+      </div>
+      <div *ngIf="last" class="crumb active-color">
+
+        {{ crumb?.["personName"] ? crumb?.["personName"] : crumb.name |titlecase}}
+      </div>
+      <div class="type" [ngClass]="{'type-active': last}">
+        {{ crumb?.type ?? '' }}
+      </div>
+    </div>
+    <span *ngIf="!last" class="separator">/</span>
+  </ng-container>
+</nav>

@@ -1,0 +1,149 @@
+{
+  "patientOptions": [
+    {
+      "id": "myself",
+      "label": "MEMBERS.RELATION_MYSELF",
+      "icon": "person"
+    },
+    {
+      "id": "son",
+      "label": "MEMBERS.RELATION_SON",
+      "icon": "child_care"
+    },
+    {
+      "id": "daughter",
+      "label": "MEMBERS.RELATION_DAUGHTER",
+      "icon": "child_care"
+    },
+    {
+      "id": "spouse",
+      "label": "MEMBERS.RELATION_SPOUSE",
+      "icon": "favorite"
+    },
+    {
+      "id": "mother",
+      "label": "MEMBERS.RELATION_MOTHER",
+      "icon": "elderly_woman"
+    },
+    {
+      "id": "father",
+      "label": "MEMBERS.RELATION_FATHER",
+      "icon": "elderly"
+    },
+    {
+      "id": "friend",
+      "label": "MEMBERS.RELATION_FRIEND",
+      "icon": "group"
+    },
+    {
+      "id": "cousin",
+      "label": "MEMBERS.RELATION_COUSIN",
+      "icon": "people"
+    },
+    {
+      "id": "brother",
+      "label": "MEMBERS.RELATION_BROTHER",
+      "icon": "man"
+    },
+    {
+      "id": "sister",
+      "label": "MEMBERS.RELATION_SISTER",
+      "icon": "woman"
+    },
+    {
+      "id": "relation",
+      "label": "MEMBERS.RELATION_OTHER",
+      "icon": "supervised_user_circle"
+    }
+  ],
+  "medicalQuestions": [
+    {
+      "key": "has_medication",
+      "label": "MEMBERS.QUESTION_MEDICATION",
+      "icon": "medication",
+      "iconClass": "med"
+    },
+    {
+      "key": "has_medical_reports",
+      "label": "MEMBERS.QUESTION_REPORTS",
+      "icon": "description",
+      "iconClass": "report"
+    },
+    {
+      "key": "has_allergy",
+      "label": "MEMBERS.QUESTION_ALLERGIES",
+      "icon": "warning_amber",
+      "iconClass": "allergy"
+    },
+    {
+      "key": "has_surgery",
+      "label": "MEMBERS.QUESTION_SURGERY",
+      "icon": "healing",
+      "iconClass": "surgery"
+    },
+    {
+      "key": "has_insurance",
+      "label": "MEMBERS.QUESTION_INSURANCE",
+      "icon": "health_and_safety",
+      "iconClass": "insurance"
+    }
+  ],
+  "patientFields": [
+    {
+      "fieldGroupClassName": "form-row-3",
+      "fieldGroup": [
+        {
+          "key": "patient_name",
+          "type": "mat-text-input",
+          "props": {
+            "label": "ONBOARD.LABELS.PATIENT_NAME",
+            "required": true,
+            "maxLength": 30,
+            "onlyLetters": true,
+            "pattern": "^[A-Za-z ]+$",
+            "patternErrorMessage": "Only letters are allowed"
+          }
+        },
+        {
+          "key": "patient_email",
+          "type": "mat-text-input",
+          "props": {
+            "label": "ONBOARD.LABELS.PATIENT_EMAIL",
+            "type": "email",
+            "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+            "patternErrorMessage": "Invalid email address"
+          },
+          "expressions": {
+            "props.readonly": "model.selectedPatient === 'myself'"
+          }
+        },
+        {
+          "key": "patient_phone",
+          "type": "dropdown-dynamic-input",
+          "props": {
+            "label": "ONBOARD.LABELS.PATIENT_PHONE",
+            "required": true,
+            "datatype": "number",
+             "pattern": "^[6-9][0-9]{9}$",
+            "minLength": 10,
+            "maxLength": 10,
+            "appendPrefixValueKey": "country",
+            "appendValue": "name",
+            "placeholder": "ONBOARD.LABELS.ENTER_PHONE",
+            "prefixOptions": {
+              "label": "Country Code",
+              "key": "patient_phone_code",
+               "defaultValue": "+91",
+              "needSearch": true,
+              "required": true,
+              "searchfield": "name",
+              "collectionName": "countries",
+              "labelProp": "{{flag_icon}} {{calling_code}}",
+              "valueProp": "calling_code"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

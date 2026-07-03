@@ -1,0 +1,47 @@
+{
+  "pageHeading": "CATEGORIES.PAGE_HEADING",
+  "collectionName": "plan_category",
+  "noForm": true,
+  "showbutton": false,
+  "keyField": "id",
+  "rowModelType": "clientSide",
+  "actions": [
+    {
+      "label": "SHARED.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "SHARED.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "field": "name",
+      "headerName": "SHARED.NAME",
+      "flex": 1.5
+    },
+    {
+      "field": "short_description",
+      "headerName": "CATEGORIES.COL_SHORT_DESCRIPTION",
+      "flex": 2
+    },
+    {
+      "field": "status",
+      "headerName": "SHARED.STATUS",
+      "flex": 0.8
+    },
+    {
+      "headerName": "SHARED.ACTIONS",
+      "field": "Action",
+      "cellRenderer": "buttonRenderer",
+      "lockPosition": "right",
+      "pinned": "right",
+      "lockPinned": true,
+      "maxWidth": 100,
+      "menuTabs": []
+    }
+  ]
+}

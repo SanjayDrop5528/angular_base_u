@@ -1,0 +1,244 @@
+{
+  "pageHeading": "NOTIFICATION_MODULE.DELIVERY_LOGS.TITLE",
+  "pageDescription": "NOTIFICATION_MODULE.DELIVERY_LOGS.DESCRIPTION",
+  "screenId": "notification-log",
+  "keyField": "id",
+  "showbutton": false,
+  "rowModelType": "serverSide",
+  "filterOptions": [
+    {
+      "type": "input",
+      "label": "NOTIFICATION_MODULE.FIELDS.RECIPIENT",
+      "columnName": "recipient",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "input",
+      "label": "NOTIFICATION_MODULE.FIELDS.SUBJECT",
+      "columnName": "subject",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "select",
+      "label": "NOTIFICATION_MODULE.FIELDS.CHANNEL",
+      "columnName": "channel",
+      "operator": "EQUALS",
+      "valueProp": "value",
+      "labelProp": "label",
+      "options": [
+        {
+          "value": "email",
+          "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.EMAIL"
+        },
+        {
+          "value": "sms",
+          "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.SMS"
+        },
+        {
+          "value": "whatsapp",
+          "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.WHATSAPP"
+        },
+        {
+          "value": "push",
+          "label": "NOTIFICATION_MODULE.CHANNEL_TYPES.PUSH"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "label": "NOTIFICATION_MODULE.FIELDS.STATUS",
+      "columnName": "status",
+      "operator": "EQUALS",
+      "valueProp": "value",
+      "labelProp": "label",
+      "options": [
+        {
+          "value": "success",
+          "label": "NOTIFICATION_MODULE.LOG_STATUS.SUCCESS"
+        },
+        {
+          "value": "delivered",
+          "label": "NOTIFICATION_MODULE.LOG_STATUS.DELIVERED"
+        },
+        {
+          "value": "failed",
+          "label": "NOTIFICATION_MODULE.LOG_STATUS.FAILED"
+        },
+        {
+          "value": "error",
+          "label": "NOTIFICATION_MODULE.LOG_STATUS.ERROR"
+        },
+        {
+          "value": "pending",
+          "label": "NOTIFICATION_MODULE.LOG_STATUS.PENDING"
+        }
+      ]
+    },
+    {
+      "type": "datepicker",
+      "label": "NOTIFICATION_MODULE.DELIVERY_LOGS.DELIVERED_FROM",
+      "columnName": "sent_at",
+      "operator": "GREATERTHANOREQUAL",
+      "timeZone": "Asia/Kolkata"
+    },
+    {
+      "type": "datepicker",
+      "label": "NOTIFICATION_MODULE.DELIVERY_LOGS.DELIVERED_TO",
+      "columnName": "sent_at",
+      "operator": "LESSTHANOREQUAL",
+      "timeZone": "Asia/Kolkata"
+    }
+  ],
+  "defaultViewMode": "grid",
+  "cardItemSize": 240,
+  "cardSchema": {
+    "titleKey": "recipient",
+    "subtitleKey": "subject",
+    "fields": [
+      {
+        "key": "channel",
+        "label": "NOTIFICATION_MODULE.FIELDS.CHANNEL",
+        "type": "badge"
+      },
+      {
+        "key": "status",
+        "label": "NOTIFICATION_MODULE.FIELDS.STATUS",
+        "type": "badge"
+      },
+      {
+        "key": "trigger_type",
+        "label": "NOTIFICATION_MODULE.FIELDS.TRIGGER_TYPE",
+        "type": "text"
+      },
+      {
+        "key": "sent_at",
+        "label": "NOTIFICATION_MODULE.FIELDS.DELIVERY_DATE_TIME",
+        "type": "date"
+      },
+      {
+        "key": "error_message",
+        "label": "NOTIFICATION_MODULE.FIELDS.ERROR_MESSAGE",
+        "type": "text",
+        "span": 2
+      }
+    ],
+    "actions": [],
+    "virtualScroll": {
+      "enabled": true,
+      "itemSize": 240
+    }
+  },
+  "actions": [],
+  "columnDefs": [
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.DELIVERY_DATE_TIME",
+      "field": "sent_at",
+      "type": "datetime",
+      "format": "DD MMM YYYY hh:mm A",
+      "timeZone": "Asia/Kolkata",
+      "filter": "agDateColumnFilter",
+      "sort": "desc",
+      "flex": 1.2
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.STATUS",
+      "field": "status",
+      "type": "statusColor",
+      "filter": "agTextColumnFilter",
+      "maxWidth": 130,
+      "backgroundColor": {
+        "defaultColor": "#f1f5f9",
+        "config": [
+          {
+            "status": "success",
+            "color": "#dcfce7"
+          },
+          {
+            "status": "delivered",
+            "color": "#dcfce7"
+          },
+          {
+            "status": "error",
+            "color": "#fee2e2"
+          },
+          {
+            "status": "failed",
+            "color": "#fee2e2"
+          },
+          {
+            "status": "failure",
+            "color": "#fee2e2"
+          },
+          {
+            "status": "pending",
+            "color": "#fef3c7"
+          }
+        ]
+      },
+      "textColor": {
+        "defaultColor": "#475569",
+        "config": [
+          {
+            "status": "success",
+            "color": "#166534"
+          },
+          {
+            "status": "delivered",
+            "color": "#166534"
+          },
+          {
+            "status": "error",
+            "color": "#991b1b"
+          },
+          {
+            "status": "failed",
+            "color": "#991b1b"
+          },
+          {
+            "status": "failure",
+            "color": "#991b1b"
+          },
+          {
+            "status": "pending",
+            "color": "#92400e"
+          }
+        ]
+      }
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.CHANNEL",
+      "field": "channel",
+      "filter": "agTextColumnFilter",
+      "maxWidth": 130,
+      "cellRenderer": "function(params) { return `<span class='badge badge-invited'>${(params.value || '-').toUpperCase()}</span>`; }"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.RECIPIENT",
+      "field": "recipient",
+      "filter": "agTextColumnFilter",
+      "flex": 1.2,
+      "tooltipField": "recipient"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.SUBJECT",
+      "field": "subject",
+      "filter": "agTextColumnFilter",
+      "flex": 1.3,
+      "tooltipField": "subject"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.MESSAGE",
+      "field": "message",
+      "filter": "agTextColumnFilter",
+      "flex": 1.8,
+      "tooltipField": "message"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.ERROR_MESSAGE",
+      "field": "error_message",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5,
+      "tooltipField": "error_message"
+    }
+  ]
+}

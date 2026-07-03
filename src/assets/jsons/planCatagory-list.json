@@ -1,0 +1,157 @@
+{
+    "pageHeading": "PLAN.CATEGORY.LIST.PLAN_CATEGORYS",
+    "formHeading": "PLAN.CATEGORY.FORM.PLAN_CATEGORY",
+    "pageDescription": "Group similar service capabilities under conceptual modules.",
+    "collectionName": "category",
+    "editMode": "drawer",
+    "screenEditMode": "drawer",
+    "screenWidth": "600px",
+    "showbutton": true,
+    "cardSchema": {
+        "type": "container",
+        "className": "column",
+        "customStyles": {
+            "border-top": "3px solid var(--primary-color)"
+        },
+        "children": [
+            {
+                "type": "container",
+                "className": "row align-center",
+                "customStyles": {
+                    "padding": "16px 16px 12px 16px",
+                    "gap": "12px"
+                },
+                "children": [
+                    {
+                        "type": "container",
+                        "className": "row align-center justify-center",
+                        "customStyles": {
+                            "width": "44px",
+                            "height": "24px",
+                            "border-radius": "12px",
+                            "background": "rgba(var(--primary-color-rgb), 0.12)",
+                            "flex-shrink": "0"
+                        },
+                        "children": [
+                            {
+                                "type": "icon",
+                                "icon": "medical_services",
+                                "color": "primary"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "container",
+                        "className": "col column no-gap",
+                        "children": [
+                            {
+                                "type": "title",
+                                "key": "name"
+                            },
+                            {
+                                "type": "text",
+                                "key": "short_description",
+                                "fontSize": 13,
+                                "textColor": "var(--text-muted)"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "status",
+                        "key": "status"
+                    },
+                    {
+                        "type": "button",
+                        "menu": true,
+                        "customStyles": {
+                            "bottom": "12px",
+                            "left": "20px"
+                        },
+                        "menuItems": [
+                            {
+                                "label": "Edit",
+                                "icon": "edit",
+                                "action": "edit"
+                            },
+                            {
+                                "label": "Delete",
+                                "icon": "delete",
+                                "action": "delete"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "filterOptions": [
+        {
+            "type": "input",
+            "label": "PLAN.CATEGORY.LIST.NAME",
+            "columnName": "name",
+            "operator": "CONTAINS"
+        },
+        {
+            "type": "select",
+            "label": "PLAN.CATEGORY.LIST.STATUS",
+            "columnName": "status",
+            "multiSelection": false,
+            "labelProp": "label",
+            "valueProp": "value",
+            "options": [
+                {
+                    "label": "PLAN.CATEGORY.LIST.ACTIVE",
+                    "value": "active"
+                },
+                {
+                    "label": "PLAN.CATEGORY.LIST.INACTIVE",
+                    "value": "inactive"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "label": "PLAN.CATEGORY.LIST.EDIT",
+            "icon": "edit",
+            "formAction": "edit"
+        },
+        {
+            "label": "PLAN.CATEGORY.LIST.DELETE",
+            "icon": "delete",
+            "formAction": "delete"
+        }
+    ],
+    "columnDefs": [
+        {
+            "field": "name",
+            "headerName": "PLAN.CATEGORY.LIST.NAME",
+            "flex": 1.5,
+            "minWidth": 220,
+            "type": "string"
+        },
+        {
+            "field": "short_description",
+            "headerName": "PLAN.CATEGORY.LIST.SHORT_DESCRIPTION",
+            "flex": 3,
+            "minWidth": 450,
+            "type": "string"
+        },
+        {
+            "field": "status",
+            "headerName": "PLAN.CATEGORY.LIST.STATUS",
+            "minWidth": 130,
+            "type": "string"
+        },
+        {
+            "headerName": "PLAN.CATEGORY.LIST.ACTION",
+            "field": "Action",
+            "cellRenderer": "buttonRenderer",
+            "lockPosition": "right",
+            "pinned": "right",
+            "lockPinned": true,
+            "maxWidth": 130,
+            "menuTabs": []
+        }
+    ]
+}

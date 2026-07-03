@@ -1,0 +1,1036 @@
+{
+  "pageHeading": "PATIENT.PAGE_ONBOARDING",
+  "screenEditMode": "page",
+  "doNotShowFormAction": true,
+  "form": {
+    "collectionName": "patients",
+    "fields": [
+      {
+        "type": "dynamic-stepper",
+        "props": {
+          "mobileburgerbuttonshow": true,
+          "mobileprogressbarshow": true,
+          "donotShowCancel": true,
+          "showPatientDetailsReview": true,
+          "isPatient": true,
+          "showBackButton": true,
+          "backUrl": "/user-mgmt/patients",
+          "submitEndpoint": "/entities/api/patients/onboard",
+          "profileConfig": {
+            "stepKey": "personal",
+            "nameField": "patient_name",
+            "emailField": "email",
+            "photoField": "profile_image",
+            "photoFolder": "patient_profiles"
+          },
+          "fieldGroup": [
+            {
+              "title": "Personal Info",
+              "description": "Basic patient details and address.",
+              "key": "personal",
+              "actIndividual": true,
+              "getDataEndpoint": "/entities/api/patients/{id}",
+              "updateEndpoint": "/entities/api/patients/onboard",
+              "payloadKey": "personal",
+              "icon": "fa-user",
+              "previewFields": [
+                {
+                  "key": "patient_name",
+                  "label": "PATIENT.FIELD_NAME"
+                },
+                {
+                  "key": "email",
+                  "label": "SHARED.EMAIL"
+                },
+                {
+                  "key": "phone",
+                  "label": "PATIENT.FIELD_PHONE"
+                },
+                {
+                  "key": "gender",
+                  "label": "DOCTOR.FIELD_GENDER"
+                },
+                {
+                  "key": "date_of_birth",
+                  "label": "DATE_OF_BIRTH"
+                },
+                {
+                  "key": "blood_group",
+                  "label": "PATIENT.FIELD_BLOOD_GROUP"
+                },
+                {
+                  "key": "marital_status",
+                  "label": "PATIENT.FIELD_MARITAL_STATUS"
+                },
+                {
+                  "key": "city",
+                  "label": "PATIENT.FIELD_CITY"
+                },
+                {
+                  "key": "country",
+                  "label": "CONSENT_MGMT.COL_COUNTRY"
+                }
+              ],
+              "fields": [
+                {
+                  "key": "profile_image",
+                  "type": "logo",
+                  "className": "col-12 text-center",
+                  "bind_key": "patient_name",
+                  "refId": "patient_name",
+                  "props": {
+                    "refId": "patient_name",
+                    "folder": "patient_profiles"
+                  },
+                  "templateOptions": {
+                    "refId": "patient_name",
+                    "folder": "patient_profiles"
+                  }
+                },
+                {
+                  "fieldGroupClassName": "form-row-3",
+                  "fieldGroup": [
+                    {
+                      "key": "patient_name",
+                      "type": "mat-text-input",
+                      "props": {
+                        "label": "PATIENT.FIELD_NAME",
+                        "placeholder": "PATIENT.FIELD_FULL_NAME",
+                        "maxLength": 60,
+                        "required": true,
+                        "pattern": "^[A-Za-z ]+$",
+                        "patternErrorMessage": "Only letters are allowed"
+                      }
+                    },
+                    {
+                      "key": "date_of_birth",
+                      "type": "dob-input",
+                      "props": {
+                        "label": "JSON_CONFIG.DATE_OF_BIRTH",
+                        "required": true
+                      }
+                    },
+                    {
+                      "key": "gender",
+                      "type": "select-input",
+                      "props": {
+                        "label": "JSON_CONFIG.GENDER",
+                        "required": true,
+                        "labelProp": "name",
+                        "valueProp": "id",
+                        "options": [
+                          {
+                            "name": "Male",
+                            "id": "male"
+                          },
+                          {
+                            "name": "Female",
+                            "id": "female"
+                          },
+                          {
+                            "name": "Other",
+                            "id": "other"
+                          }
+                        ]
+                      }
+                    },
+                  {
+  "key": "blood_group",
+  "type": "select-input",
+  "props": {
+    "label": "PATIENT.FIELD_BLOOD_GROUP",
+    "labelProp": "label",
+    "valueProp": "value",
+    "required": true,
+    "options": [
+      {
+        "label": "A+",
+        "value": "A+"
+      },
+      {
+        "label": "A-",
+        "value": "A-"
+      },
+      {
+        "label": "B+",
+        "value": "B+"
+      },
+      {
+        "label": "B-",
+        "value": "B-"
+      },
+      {
+        "label": "AB+",
+        "value": "AB+"
+      },
+      {
+        "label": "AB-",
+        "value": "AB-"
+      },
+      {
+        "label": "O+",
+        "value": "O+"
+      },
+      {
+        "label": "O-",
+        "value": "O-"
+      },
+      {
+        "label": "A1+",
+        "value": "A1+"
+      },
+      {
+        "label": "A1-",
+        "value": "A1-"
+      },
+      {
+        "label": "A1B+",
+        "value": "A1B+"
+      },
+      {
+        "label": "A1B-",
+        "value": "A1B-"
+      },
+      {
+        "label": "A2+",
+        "value": "A2+"
+      },
+      {
+        "label": "A2-",
+        "value": "A2-"
+      },
+      {
+        "label": "A2B+",
+        "value": "A2B+"
+      },
+      {
+        "label": "A2B-",
+        "value": "A2B-"
+      }
+    ]
+  }
+},
+                    {
+                      "key": "marital_status",
+                      "type": "select-input",
+                      "hide": true,
+                      "props": {
+                        "label": "PATIENT.FIELD_MARITAL_STATUS",
+                        "labelProp": "name",
+                        "valueProp": "id",
+                        "hide": true,
+                        "options": [
+                          {
+                            "name": "Single",
+                            "id": "single"
+                          },
+                          {
+                            "name": "Married",
+                            "id": "married"
+                          },
+                          {
+                            "name": "Divorced",
+                            "id": "divorced"
+                          },
+                          {
+                            "name": "Widowed",
+                            "id": "widowed"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "height_cm",
+                      "type": "numeric-input",
+                      "props": {
+                        "label": "PATIENT.FIELD_HEIGHT",
+                        "required": true,
+                        "min": 30,
+                        "max": 250,
+                        "minLength": 2,
+                        "maxLength": 3,
+                        "minErrorMessage": "Height must be at least 30 cm",
+                        "maxErrorMessage": "Height cannot exceed 250 cm"
+                      }
+                    },
+                    {
+                      "key": "weight_kg",
+                      "type": "numeric-input",
+                      "props": {
+                        "label": "PATIENT.FIELD_WEIGHT",
+                        "required": true,
+                        "min": 1,
+                        "max": 200,
+                        "minLength": 2,
+                        "maxLength": 3,
+                        "minErrorMessage": "Weight must be greater than 1 kg",
+                        "maxErrorMessage": "Weight cannot exceed 200 kg"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "template": "<p class='form-section-label'>Contact Details</p>"
+                },
+                {
+                  "fieldGroupClassName": "form-row-3",
+                  "fieldGroup": [
+                    {
+                      "key": "email",
+                      "type": "mat-text-input",
+                      "props": {
+                        "label": "SHARED.EMAIL",
+                        "placeholder": "email@example.com",
+                        "required": false
+                      }
+                    },
+                    {
+                      "key": "primary_phone",
+                      "type": "dropdown-dynamic-input",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_PRIMARY_PHONE",
+                         "required": true,
+                        "datatype": "number",
+                        "pattern": "^[6-9][0-9]{9}$",
+                        "minLength": 10,
+                        "maxLength": 10,
+                          "appendPrefixValueKey": "country",
+                        "appendValue":"name",
+                        "placeholder": "SPECIALIST.PLACEHOLDER_PHONE",
+                        "prefixOptions": {
+                          "lable": "Country Code",
+                          "key": "phone_code",
+                          "needSearch": true,
+                          "required": true,
+                          "searchfield": "name",
+                          "collectionName": "countries",
+                          "labelProp": "{{flag_icon}} {{calling_code}}",
+                          "valueProp": "calling_code"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "template": "<p class='form-section-label'>Communication Address</p>"
+                },
+                {
+                  "fieldGroupClassName": "form-row-3",
+                  "fieldGroup": [
+                    {
+                      "key": "country",
+                      "type": "select-input",
+                      "props": {
+                        "label": "CONSENT_MGMT.COL_COUNTRY",
+                        "placeholder": "e.g. India",
+                        "valueProp": "id",
+                        "labelProp": "name",
+                        "needSearch": true,
+                        "optionsDataSource": {
+                          "collectionName": "countries"
+                        }
+                      }
+                    },
+                    {
+                      "key": "state",
+                      "type": "select-input",
+                      "parentKey": "country",
+                      "props": {
+                        "label": "PATIENT.FIELD_STATE",
+                        "placeholder": "PATIENT.PLACEHOLDER_STATE",
+                        "valueProp": "id",
+                        "labelProp": "name",
+                        "needSearch": true,
+                        "optionsDataSource": {
+                          "collectionName": "states"
+                        }
+                      }
+                    },
+                    {
+                      "key": "city",
+                      "type": "select-input",
+                      "parentKey": "state",
+                      "props": {
+                        "label": "PATIENT.FIELD_CITY",
+                        "placeholder": "PATIENT.PLACEHOLDER_CITY",
+                        "valueProp": "name",
+                        "labelProp": "name",
+                        "needSearch": true,
+                        "optionsDataSource": {
+                          "collectionName": "cities"
+                        }
+                      }
+                    },
+                    {
+                      "key": "address",
+                      "type": "mat-text-input",
+                      "props": {
+                        "label": "PATIENT.FIELD_ADDRESS",
+                        "placeholder": "PATIENT.FIELD_STREET"
+                      }
+                    },
+                    {
+                      "key": "zipcode",
+                      "type": "mat-text-input",
+                      "className": "col-6",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_POSTAL_CODE",
+                        "placeholder": "e.g. 123456",
+                        "minLength": 6,
+                        "maxLength": 6,
+                        "pattern": "^[0-9]{6}$",
+                        "onlyNumbers": true
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "Medication",
+              "description": "Current medication details.",
+              "key": "medications_group",
+              "required": true,
+              "actIndividual": false,
+              "childKey": "medications",
+              "parentKey": "id",
+              "collectionName": "patient_medications",
+              "payloadArrayKey": "medications",
+              "getDataEndpoint": "/entities/api/patients/{id}",
+              "updateEndpoint": "/entities/api/patients/medications/bulk",
+              "icon": "fa-pills",
+              "hideExpression": "!model.has_medication",
+              "previewFields": [
+                {
+                  "key": "medication_name",
+                  "label": "PATIENT.FIELD_MED_NAME"
+                },
+                {
+                  "key": "dosage",
+                  "label": "PATIENT.FIELD_DOSAGE"
+                },
+                {
+                  "key": "dosage_unit",
+                  "label": "PATIENT.FIELD_DOSAGE_UNIT"
+                },
+                {
+                  "key": "frequency",
+                  "label": "PATIENT.FIELD_FREQUENCY"
+                },
+                {
+                  "key": "duration",
+                  "label": "PATIENT.FIELD_DURATION"
+                }
+              ],
+              "fields": [
+                {
+                  "type": "repeat",
+                  "key": "medications",
+                  "props": {
+                    "required": true,
+                    "label": "PATIENT.FIELD_MEDICATIONS",
+                    "repeatClassName": "medications-repeat",
+                    "collectionName": "patient_medications",
+                    "parentField": "patient_id"
+                  },
+                  "fieldArray": {
+                    "fieldGroup": [
+                      {
+                        "fieldGroupClassName": "",
+                        "fieldGroup": [
+                          {
+                            "key": "medication_name",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_MED_NAME",
+                              "placeholder": "e.g. Metformin",
+                              "required": true,
+                              "firstletter": true,
+                              "maxLength": 100,
+                              "pattern": ".*[a-zA-Z].*",
+                              "patternErrorMessage": "Medication name must contain letters"
+                            }
+                          },
+                          {
+                            "key": "dosage",
+                            "type": "dropdown-dynamic-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_DOSAGE",
+                              "placeholder": "e.g. 500",
+                              "required": true,
+                              "maxLength": 5,
+                              "onlyNumbers": true,
+                              "suffixOptions": {
+                                "lable": "Unit",
+                                "key": "dosage_unit",
+                                "options": [
+                                  {
+                                    "label": "mg",
+                                    "value": "mg"
+                                  },
+                                  {
+                                    "label": "ml",
+                                    "value": "ml"
+                                  },
+                                  {
+                                    "label": "mcg",
+                                    "value": "mcg"
+                                  },
+                                  {
+                                    "label": "g",
+                                    "value": "g"
+                                  },
+                                  {
+                                    "label": "IU",
+                                    "value": "iu"
+                                  },
+                                  {
+                                    "label": "tablet",
+                                    "value": "tablet"
+                                  },
+                                  {
+                                    "label": "capsule",
+                                    "value": "capsule"
+                                  },
+                                  {
+                                    "label": "drop",
+                                    "value": "drop"
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "key": "dosage_unit",
+                            "type": "input",
+                            "className": "hidden"
+                          },
+                          {
+                            "key": "frequency",
+                            "type": "select-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_FREQUENCY",
+                              "required": true,
+                              "labelProp": "name",
+                              "valueProp": "id",
+                              "options": [
+                                {
+                                  "name": "Once daily",
+                                  "id": "once_daily"
+                                },
+                                {
+                                  "name": "Twice daily",
+                                  "id": "twice_daily"
+                                },
+                                {
+                                  "name": "Three times a day",
+                                  "id": "thrice_daily"
+                                },
+                                {
+                                  "name": "As needed",
+                                  "id": "as_needed"
+                                },
+                                {
+                                  "name": "Weekly",
+                                  "id": "weekly"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "key": "duration",
+                            "type": "select-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_DURATION",
+                              "required": true,
+                              "labelProp": "name",
+                              "valueProp": "id",
+                              "options": [
+                                {
+                                  "name": "15 Days",
+                                  "id": "15_days"
+                                },
+                                {
+                                  "name": "1 Month",
+                                  "id": "1_month"
+                                },
+                                {
+                                  "name": "2 Months",
+                                  "id": "2_months"
+                                },
+                                {
+                                  "name": "3 Months",
+                                  "id": "3_months"
+                                },
+                                {
+                                  "name": "6 Months",
+                                  "id": "6_months"
+                                },
+                                {
+                                  "name": "1 Year",
+                                  "id": "1_year"
+                                },
+                                {
+                                  "name": "More than 1 Year",
+                                  "id": "more_than_1_year"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "key": "prescribed_by",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_PRESCRIBED_BY",
+                              "placeholder": "PATIENT.FIELD_DOCTOR_NAME",
+                              "firstletter": true
+                            }
+                          },
+                          {
+                            "key": "is_current",
+                            "type": "toogle",
+                            "props": {
+                              "label": "PATIENT.FIELD_CURRENTLY_TAKING"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "title": "Allergy",
+              "description": "Known allergies and reactions.",
+              "key": "allergy",
+              "required": true,
+              "actIndividual": false,
+              "collectionName": "patient_allergies",
+              "payloadArrayKey": "allergies",
+              "getDataEndpoint": "/entities/api/patients/{id}",
+              "updateEndpoint": "/entities/api/patients/allergies/bulk",
+              "icon": "fa-allergies",
+              "hideExpression": "!model.has_allergy",
+              "previewFields": [
+                {
+                  "key": "allergy_name_label",
+                  "label": "PATIENT.FIELD_ALLERGY_NAME"
+                },
+                {
+                  "key": "allergy_type_label",
+                  "label": "PATIENT.FIELD_ALLERGY_TYPE"
+                },
+                {
+                  "key": "reaction_label",
+                  "label": "PATIENT.FIELD_REACTION"
+                },
+                {
+                  "key": "severity_label",
+                  "label": "PATIENT.FIELD_REACTION_SEVERITY"
+                }
+              ],
+              "fields": [
+                {
+                  "key": "allergies",
+                  "type": "repeat",
+                  "props": {
+                    "required": true,
+                    "label": "PATIENT.FIELD_ALLERGIES",
+                    "repeatClassName": "allergies-repeat",
+                    "collectionName": "patient_allergy",
+                    "parentField": "patient_id"
+                  },
+                  "fieldArray": {
+                    "fieldGroup": [
+                      {
+                        "fieldGroupClassName": "",
+                        "fieldGroup": [
+                          {
+                            "key": "allergy_type_label",
+                            "type": "input",
+                            "className": "!hidden"
+                          },
+                          {
+                            "key": "allergy_name_label",
+                            "type": "input",
+                            "className": "!hidden"
+                          },
+                          {
+                            "key": "reaction_label",
+                            "type": "input",
+                            "className": "!hidden"
+                          },
+                          {
+                            "key": "severity_label",
+                            "type": "input",
+                            "className": "!hidden"
+                          },
+                          {
+                            "key": "allergy_type",
+                            "type": "select-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_ALLERGY_TYPE",
+                              "required": true,
+                              "labelProp": "name",
+                              "valueProp": "id",
+                              "addFieldToModel": "allergy_type_label",
+                              "optionsDataSource": {
+                                "collectionName": "allergy_type"
+                              }
+                            }
+                          },
+                          {
+                            "key": "allergy_code",
+                            "type": "select-input",
+                            "parentKey": "allergy_type",
+                            "hideExpression": "!model?.allergy_type",
+                            "props": {
+                              "label": "PATIENT.FIELD_ALLERGY_NAME",
+                              "placeholder": "Select Allergy",
+                              "required": true,
+                              "labelProp": "name",
+                              "valueProp": "id",
+                              "addFieldToModel": "allergy_name_label",
+                              "multifiltertype": "Simple",
+                              "optionsDataSource": {
+                                "collectionName": "allergy"
+                              },
+                              "multifilter_condition": {
+                                "clause": "AND",
+                                "conditions": [
+                                  {
+                                    "column": "allergy_type_code",
+                                    "operator": "EQUALS",
+                                    "type": "string"
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "key": "severity_code",
+                            "type": "select-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_REACTION_SEVERITY",
+                              "required": true,
+                              "labelProp": "name",
+                              "valueProp": "id",
+                              "addFieldToModel": "severity_label",
+                              "renderAs": "stacked-chips",
+                              "chipIconMap": {
+                                "Life Threatening": {
+                                  "icon": "warning",
+                                  "color": "#7f1d1d",
+                                  "bgColor": "rgba(127, 29, 29, 0.12)"
+                                },
+                                "Severe": {
+                                  "icon": "monitor_heart",
+                                  "color": "#ef4444",
+                                  "bgColor": "rgba(239, 68, 68, 0.12)"
+                                },
+                                "Moderate": {
+                                  "icon": "balance",
+                                  "color": "#f97316",
+                                  "bgColor": "rgba(249, 115, 22, 0.12)"
+                                },
+                                "Mild": {
+                                  "icon": "eco",
+                                  "color": "#eab308",
+                                  "bgColor": "rgba(234, 179, 8, 0.12)"
+                                },
+                                "Unknown": {
+                                  "icon": "help_outline",
+                                  "color": "#3b82f6",
+                                  "bgColor": "rgba(59, 130, 246, 0.12)"
+                                }
+                              },
+                              "optionsDataSource": {
+                                "collectionName": "allergy_reaction_severity"
+                              }
+                            }
+                          },
+                          {
+                            "key": "reaction_code",
+                            "type": "select-input",
+                            "parentKey": "severity_code",
+                            "hideExpression": "!model?.severity_code",
+                            "props": {
+                              "label": "PATIENT.FIELD_REACTION",
+                              "placeholder": "Select Reaction",
+                              "required": true,
+                              "labelProp": "name",
+                              "valueProp": "id",
+                              "addFieldToModel": "reaction_label",
+                              "multifiltertype": "Simple",
+                              "optionsDataSource": {
+                                "collectionName": "allergy_reaction"
+                              },
+                              "multifilter_condition": {
+                                "clause": "AND",
+                                "conditions": [
+                                  {
+                                    "column": "severity_code",
+                                    "operator": "EQUALS",
+                                    "type": "string"
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "key": "notes",
+                            "type": "mat-text-input",
+                           "hideExpression": "model?.severity_code !== 'UNKNOWN'",
+                            "props": {
+                              "label": "Notes",
+                              "placeholder": "Enter notes here...",
+                              "required": false
+                            },
+                            "expression": {
+                              "pros.value": "model?.reaction_code"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "title": "Surgical History",
+              "description": "Past surgical procedures undergone by the patient.",
+              "key": "surgical_history_group",
+              "required": true,
+              "actIndividual": false,
+              "childKey": "surgical_history",
+              "collectionName": "patient_surgical_history",
+              "payloadArrayKey": "surgical_history",
+              "getDataEndpoint": "/entities/api/patients/{id}",
+              "updateEndpoint": "/entities/api/patients/surgical-history/bulk",
+              "icon": "fa-user-doctor",
+              "hideExpression": "!model.has_surgery",
+              "previewFields": [
+                {
+                  "key": "surgery_name",
+                  "label": "PATIENT.FIELD_SURGERY_NAME"
+                },
+                {
+                  "key": "surgery_year",
+                  "label": "PATIENT.FIELD_SURGERY_YEAR"
+                }
+              ],
+              "fields": [
+                {
+                  "type": "repeat",
+                  "key": "surgical_history",
+                  "props": {
+                    "required": true,
+                    "label": "PATIENT.FIELD_SURGICAL_HISTORY",
+                    "repeatClassName": "surgical-history-repeat",
+                    "collectionName": "patient_surgical_history",
+                    "parentField": "patient_id"
+                  },
+                  "fieldArray": {
+                    "fieldGroup": [
+                      {
+                        "fieldGroupClassName": "",
+                        "fieldGroup": [
+                          {
+                            "key": "surgery_name",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_SURGERY_NAME_LONG",
+                              "placeholder": "e.g. Appendectomy",
+                              "required": true,
+                              "maxLength": 100,
+                              "pattern": ".*[a-zA-Z].*",
+                              "patternErrorMessage": "Surgery name must contain letters",
+                              "firstletter": true
+                            }
+                          },
+                          {
+                            "key": "surgery_year",
+                            "type": "year-picker",
+                            "props": {
+                              "label": "PATIENT.FIELD_SURGERY_YEAR_LONG",
+                              "placeholder": "e.g. 2020",
+                              "required": true,
+                              "hidefutureyear": true,
+                              "pastYears": 100,
+                              "outputFormat": "string"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "title": "Insurance",
+              "description": "Health insurance policy details.",
+              "key": "insurance",
+              "required": true,
+              "actIndividual": false,
+              "childKey": "insurances",
+              "collectionName": "patient_insurances",
+              "payloadArrayKey": "insurances",
+              "getDataEndpoint": "/entities/api/patients/{id}",
+              "updateEndpoint": "/entities/api/patients/insurances/bulk",
+              "icon": "fa-shield-alt",
+              "hideExpression": "!model.has_insurance",
+              "previewFields": [
+                {
+                  "key": "insurance_provider",
+                  "label": "PATIENT.FIELD_INSURANCE_PROVIDER"
+                },
+                {
+                  "key": "policy_number",
+                  "label": "PATIENT.FIELD_POLICY_NUMBER"
+                },
+                {
+                  "key": "policy_holder_name",
+                  "label": "PATIENT.FIELD_POLICY_HOLDER"
+                },
+                {
+                  "key": "valid_from",
+                  "label": "PATIENT.FIELD_VALID_FROM"
+                },
+                {
+                  "key": "valid_until",
+                  "label": "PATIENT.FIELD_VALID_UNTIL"
+                },
+                {
+                  "key": "coverage_amount",
+                  "label": "PATIENT.FIELD_COVERAGE_AMOUNT"
+                }
+              ],
+              "fields": [
+                {
+                  "type": "repeat",
+                  "key": "insurances",
+                  "props": {
+                    "required": true,
+                    "label": "PATIENT.FIELD_INSURANCE",
+                    "repeatClassName": "insurance-repeat",
+                    "collectionName": "patient_insurances",
+                    "parentField": "patient_id"
+                  },
+                  "fieldArray": {
+                    "fieldGroup": [
+                      {
+                        "fieldGroupClassName": "form-row-3",
+                        "fieldGroup": [
+                          {
+                            "key": "insurance_provider",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_INSURANCE_PROVIDER_LONG",
+                              "placeholder": "e.g. Star Health",
+                              "required": true,
+                              "maxLength": 40,
+                              "pattern": ".*[a-zA-Z].*",
+                              "patternErrorMessage": "Enter at least 3 letters",
+                              "firstletter": true
+                            }
+                          },
+                          {
+                            "key": "policy_number",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_POLICY_NUMBER",
+                              "required": true,
+                              "maxLength": 30,
+                              "pattern": "^[A-Za-z0-9-]+$"
+                            }
+                          },
+                          {
+                            "key": "policy_holder_name",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_POLICY_HOLDER_NAME",
+                              "required": true,
+                              "maxLength": 40,
+                              "pattern": "^[A-Za-z ]+$",
+                              "patternErrorMessage": "Only letters are allowed",
+                              "firstletter": true
+                            }
+                          },
+                          {
+                            "key": "valid_from",
+                            "type": "date-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_VALID_FROM",
+                              "required": true
+                            }
+                          },
+                          {
+                            "key": "valid_until",
+                            "type": "date-input",
+                            "parentKey": "valid_from",
+                            "props": {
+                              "label": "PATIENT.FIELD_VALID_UNTIL",
+                              "required": true
+                            }
+                          },
+                          {
+                            "key": "coverage_type",
+                            "type": "select-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_COVERAGE_TYPE",
+                              "labelProp": "name",
+                              "valueProp": "id",
+                              "options": [
+                                {
+                                  "name": "Individual",
+                                  "id": "individual"
+                                },
+                                {
+                                  "name": "Family",
+                                  "id": "family"
+                                },
+                                {
+                                  "name": "Group",
+                                  "id": "group"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "key": "coverage_amount",
+                            "type": "numeric-input",
+                            "props": {
+                              "label": "PATIENT.FIELD_COVERAGE_AMOUNT",
+                              "placeholder": "500000",
+                              "required": true,
+                              "min": 1000,
+                              "max": 100000000,
+                              "commaSeparation": true,
+                              "locale": "en-IN",
+                              "minErrorMessage": "Amount must be greater than 1000",
+                              "maxErrorMessage": "Amount cannot exceed 100,000,000"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "title": "Summary",
+              "description": "Verify your details and confirm.",
+              "key": "review",
+              "icon": "fa-clipboard-check",
+              "fields": []
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,639 @@
+// ── core-grid ─────────────────────────────────────────────────────────────────
+
+// ── Refresh spinning animation ────────────────────────────────────────────────
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+
+// ── Outer mat-card wrapper ────────────────────────────────────────────────────
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  width: 100%;
+  height: calc(100vh - 84px);
+
+  overflow: hidden;
+}
+
+// The mat-card shell — dark glassmorphic surface, never white
+.core-grid-card {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 0;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: var(--bg-card, rgba(18, 22, 31, 0.75)) !important;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: var(--card-radius, 16px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: none;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  // Override Material's --mat-card-background-color token
+  --mat-card-background-color: transparent;
+}
+
+.core-grid-card.table-view-card {
+  width: 100%;
+  margin-inline: -12px;
+
+  // &:hover {
+  //   border-color: rgba(26, 115, 232, 0.22);
+  //   box-shadow: 0 16px 34px rgba(15, 23, 42, 0.16);
+  // }
+}
+
+.core-grid-div {
+  width: 100%;
+  display: flex;
+  height: calc(100% - 60px);
+  justify-content: center;
+}
+
+.core-grid-card.card-view-card {
+  box-shadow: none;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+
+.page-title-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px;
+  // align-items: center;
+
+  .page-title-text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .page-title {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 750;
+    line-height: 1.2;
+    color: var(--text-main, #f1f3f9);
+    overflow-wrap: anywhere;
+  }
+
+  .page-subtitle {
+    margin: 6px 0 0;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--text-muted, #8b9bb4);
+    overflow-wrap: anywhere;
+  }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 8px;
+  padding-top: 2px;
+
+  button[mat-icon-button] {
+    color: var(--text-muted, #8b9bb4);
+    transition: color 0.15s, background 0.15s;
+
+    &:hover {
+      color: var(--text-main, #f1f3f9);
+      background: rgba(255, 255, 255, 0.07);
+    }
+  }
+
+  .active-view {
+    color: var(--primary-color, #1a73e8) !important;
+    background: rgba(26, 115, 232, 0.14) !important;
+    border-radius: 50%;
+  }
+
+  .buttonclass {
+    box-shadow: none;
+  }
+}
+
+.grid-filter-toolbar {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  background: rgba(255, 255, 255, 0.02);
+  overflow: visible;
+
+  app-dynamic-filter {
+    display: block;
+    width: 100%;
+  }
+
+  ::ng-deep app-dynamic-filter .container {
+    display: flex;
+    flex-direction: row;
+    float: none;
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  ::ng-deep app-dynamic-filter .container>div {
+    width: auto !important;
+    flex: 0 1 220px !important;
+    min-width: 180px;
+    max-width: 260px;
+  }
+
+  ::ng-deep app-dynamic-filter mat-form-field {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  ::ng-deep app-dynamic-filter .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  ::ng-deep app-dynamic-filter .mat-mdc-text-field-wrapper {
+    height: 44px;
+  }
+
+  ::ng-deep app-dynamic-filter .mat-mdc-form-field-infix {
+    min-height: 44px;
+    padding-top: 10px;
+    padding-bottom: 8px;
+  }
+}
+
+// ── AG Grid container ─────────────────────────────────────────────────────────
+
+.grid_con_res {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.grid_con_res ag-grid-angular {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 360px;
+  border-radius: 0 0 var(--card-radius, 16px) var(--card-radius, 16px);
+  overflow: hidden;
+}
+
+// ── Card viewport ─────────────────────────────────────────────────────────────
+
+.card-scroll-viewport {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: clip;
+  overflow-y: auto;
+  // Match the page background — no white bleed
+  background: transparent;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// ── Responsive card grid ──────────────────────────────────────────────────────
+.titple_container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+  align-items: stretch;
+  box-sizing: border-box;
+  max-width: 100%;
+  gap: 12px;
+}
+
+.card-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100px;
+  padding: 3px;
+
+  core-card {
+    display: block;
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+
+.card-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 16px;
+  color: var(--text-muted);
+  gap: 10px;
+  background-color: var(--bg-dark);
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    opacity: 0.3;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+// ── Responsive: force card view on very small screens ─────────────────────────
+
+@media (max-width: 480px) {
+  .page-title-container {
+    padding: 0 0 10px 0;
+    gap: 8px;
+    align-items: center !important;
+
+    .page-title {
+      font-size: 1.2rem;
+    }
+
+    .page-subtitle {
+      font-size: 0.88rem;
+    }
+  }
+
+  .header-actions {
+    width: auto;
+  }
+
+  .grid_con_res {
+    display: none;
+  }
+}
+
+// Drawer inner layout — decorative styles are in src/styles.scss
+.user-group-drawer-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.drawer-header-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.drawer-body-area {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.drawer-body.no-padding {
+  padding: 0 !important;
+}
+
+// ── Card paginator — matches AG Grid paging panel style ───────────────────────
+
+.card-paginator {
+  flex: 0 0 auto;
+  background-color: rgba(26, 115, 232, 0.09) !important;
+  border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+
+  ::ng-deep .mat-mdc-paginator-container {
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    min-height: 52px;
+    background: transparent;
+    font-family: var(--primary-font) !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    color: var(--text-main, #f1f3f9) !important;
+  }
+
+  ::ng-deep .mat-mdc-paginator-page-size-label {
+    color: var(--text-main, #f1f3f9) !important;
+    border-radius: 6px !important;
+    border-color: rgba(241, 243, 249, 0.35) !important;
+    font-family: var(--primary-font) !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+  }
+
+  ::ng-deep .mat-mdc-select-value-text,
+  ::ng-deep .mat-mdc-select-arrow {
+    color: var(--text-main, #f1f3f9) !important;
+  }
+
+  ::ng-deep .mat-mdc-icon-button {
+    width: 35px !important;
+    height: 30px !important;
+    padding: 8px !important;
+    border-radius: 8px !important;
+    color: var(--text-main, #f1f3f9) !important;
+    transition: background-color 0.2s ease !important;
+
+    &:hover:not([disabled]) {
+      background-color: var(--grid-paging-btn-hover-bg, rgba(25, 95, 74, 0.1)) !important;
+    }
+
+    &[disabled] {
+      opacity: 0.5 !important;
+    }
+
+    .mat-icon {
+      font-size: 15px !important;
+      width: 26px !important;
+      height: 26px !important;
+      line-height: 26px !important;
+    }
+  }
+
+  ::ng-deep .mat-mdc-paginator-page-size-select {
+    width: 70px;
+
+    .mat-mdc-form-field-infix {
+      padding-top: 6px !important;
+      padding-bottom: 6px !important;
+      min-height: unset !important;
+    }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgba(241, 243, 249, 0.25) !important;
+    }
+  }
+}
+
+
+@media (max-width: 768px) {
+  .card-paginator {
+
+    ::ng-deep .mat-mdc-paginator-container {
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      padding: 8px 12px;
+    }
+
+    /* Hide "1–10 of 12" */
+    ::ng-deep .mat-mdc-paginator-range-label {
+      display: none !important;
+    }
+
+    /* Remove extra spacing left by range label */
+    ::ng-deep .mat-mdc-paginator-range-actions {
+      margin-left: 0 !important;
+      gap: 0;
+    }
+
+    /* Keep only page-size section */
+    ::ng-deep .mat-mdc-paginator-page-size {
+      width: 100%;
+      margin-right: 0 !important;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Hide First & Last buttons */
+    ::ng-deep .mat-mdc-paginator-navigation-first,
+    ::ng-deep .mat-mdc-paginator-navigation-last {
+      display: none !important;
+    }
+  }
+}
+
+// ── Morning (light) theme override ───────────────────────────────────────────
+
+[data-theme="morning"] {
+  .card-paginator {
+
+    ::ng-deep .mat-mdc-paginator-container,
+    ::ng-deep .mat-mdc-paginator-range-label,
+    ::ng-deep .mat-mdc-paginator-page-size-label {
+      color: #1a1a2e !important;
+    }
+
+    ::ng-deep .mat-mdc-select-value-text,
+    ::ng-deep .mat-mdc-select-arrow {
+      color: #1a1a2e !important;
+    }
+
+    ::ng-deep .mat-mdc-icon-button {
+      color: #1a1a2e !important;
+
+      &[disabled] {
+        color: rgba(26, 26, 46, 0.35) !important;
+      }
+
+      .mat-icon {
+        color: #1a1a2e !important;
+        font-size: 22px !important;
+        width: 22px !important;
+        height: 22px !important;
+        line-height: 22px !important;
+      }
+    }
+
+    ::ng-deep .mat-mdc-paginator-page-size-select {
+
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: rgba(26, 26, 46, 0.25) !important;
+      }
+    }
+  }
+}
+
+// Mobile Filter Dialog Panel Overrides
+::ng-deep .mobile-filter-dialog-panel {
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-color: transparent !important;
+    padding: 0 !important;
+  }
+
+  .mdc-dialog__surface {
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+}
+
+// Mobile Filter Dialog Styles
+::ng-deep .mobile-filter-dialog-container {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-dialog, var(--bg-card, rgba(18, 22, 31, 0.96))) !important;
+  color: var(--text-main, #f1f3f9);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  border-radius: var(--dialog-radius, 16px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  overflow: hidden;
+  padding: 16px;
+
+  .dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+
+    .dialog-title {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-main, #f1f3f9);
+    }
+
+    .dialog-close-btn {
+      color: var(--text-muted, #8b9bb4);
+
+      &:hover {
+        color: var(--text-main, #f1f3f9);
+        background: rgba(255, 255, 255, 0.05);
+      }
+    }
+  }
+
+  .dialog-body {
+    max-height: 75vh;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 18px;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+
+
+    ::ng-deep app-dynamic-filter .container {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 0px !important;
+      width: 100% !important;
+    }
+
+    ::ng-deep app-dynamic-filter .container>div {
+      width: 100% !important;
+      max-width: 100% !important;
+      flex: 1 1 auto !important;
+    }
+  }
+
+  .dialog-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+
+    .reset-btn {
+      color: var(--text-muted, #8b9bb4) !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-radius: 8px !important;
+      padding: 0 16px !important;
+      height: 40px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-weight: 600 !important;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: var(--text-main, #f1f3f9) !important;
+      }
+    }
+
+    .apply-btn {
+      background: var(--primary-color, #3b929b) !important;
+      color: #fff !important;
+      border-radius: 8px !important;
+      padding: 0 20px !important;
+      height: 40px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-weight: 600 !important;
+      box-shadow: 0 4px 12px rgba(59, 146, 155, 0.3) !important;
+
+      &:hover {
+        background: var(--primary-hover-color, #2d737a) !important;
+        box-shadow: 0 6px 16px rgba(59, 146, 155, 0.4) !important;
+      }
+    }
+  }
+}

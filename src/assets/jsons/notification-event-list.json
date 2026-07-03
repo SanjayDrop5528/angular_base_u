@@ -1,0 +1,147 @@
+{
+  "pageHeading": "NOTIFICATION_MODULE.EVENTS.TITLE",
+  "pageDescription": "NOTIFICATION_MODULE.EVENTS.DESCRIPTION",
+  "screenId": "notification-event",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "screenWidth": "500px",
+  "showbutton": true,
+  "rowModelType": "clientSide",
+  "filterOptions": [
+    {
+      "type": "input",
+      "label": "NOTIFICATION_MODULE.FIELDS.EVENT_NAME",
+      "columnName": "name",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "select",
+      "label": "NOTIFICATION_MODULE.FIELDS.STATUS",
+      "columnName": "status",
+      "operator": "EQUALS",
+      "valueProp": "value",
+      "labelProp": "label",
+      "options": [
+        {
+          "value": "active",
+          "label": "NOTIFICATION_MODULE.STATUS.ACTIVE"
+        },
+        {
+          "value": "inactive",
+          "label": "NOTIFICATION_MODULE.STATUS.INACTIVE"
+        }
+      ]
+    }
+  ],
+  "defaultViewMode": "grid",
+  "cardItemSize": 220,
+  "cardSchema": {
+    "titleKey": "name",
+    "subtitleKey": "entity_id",
+    "fields": [
+      {
+        "key": "id",
+        "label": "NOTIFICATION_MODULE.FIELDS.EVENT_ID",
+        "type": "text"
+      },
+      {
+        "key": "entity_id",
+        "label": "NOTIFICATION_MODULE.FIELDS.ENTITY_ID",
+        "type": "text"
+      },
+      {
+        "key": "status",
+        "label": "NOTIFICATION_MODULE.FIELDS.STATUS",
+        "type": "badge",
+        "badgeColor": "success"
+      },
+      {
+        "key": "created_on",
+        "label": "NOTIFICATION_MODULE.FIELDS.CREATED_ON",
+        "type": "date"
+      }
+    ],
+    "actions": [
+      {
+        "label": "FORM.COMMON.EDIT",
+        "icon": "edit",
+        "action": "edit",
+        "color": "primary"
+      },
+      {
+        "label": "FORM.COMMON.DELETE",
+        "icon": "delete",
+        "action": "delete",
+        "color": "warn"
+      }
+    ],
+    "virtualScroll": {
+      "enabled": true,
+      "itemSize": 220
+    }
+  },
+  "actions": [
+    {
+      "label": "FORM.COMMON.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "FORM.COMMON.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.EVENT_ID",
+      "field": "id",
+      "filter": "agTextColumnFilter",
+      "flex": 1
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.ENTITY_ID",
+      "field": "entity_id",
+      "filter": "agTextColumnFilter",
+      "flex": 1
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.EVENT_NAME",
+      "field": "name",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.STATUS",
+      "field": "status",
+      "filter": "agTextColumnFilter",
+      "maxWidth": 120,
+      "cellRenderer": "function(params) { return `<span class='badge ${params.value === 'active' ? 'badge-active' : 'badge-suspended'}'>${params.value || 'inactive'}</span>`; }"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.CREATED_ON",
+      "field": "created_on",
+      "type": "date",
+      "filter": "agDateColumnFilter",
+      "flex": 1,
+      "valueFormatter": "function(params) { return params.value ? new Date(params.value).toLocaleDateString() : ''; }"
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.CREATED_BY",
+      "field": "created_by",
+      "filter": "agTextColumnFilter",
+      "flex": 1
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "NOTIFICATION_MODULE.FIELDS.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 85,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

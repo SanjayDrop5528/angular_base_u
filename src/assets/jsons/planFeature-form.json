@@ -1,0 +1,93 @@
+{
+    "pageHeading": "PLAN.FEATURE.FORM.PAGE_HEADING",
+    "formType": "simple",
+    "editMode": "drawer",
+    "screenEditMode": "drawer",
+    "diffMehthod": true,
+    "saveEndPoint": "entities/api/subscriptions/services",
+    "updateEndPoint": "entities/api/subscriptions/services/{{model.id}}",
+    "getendpoint": "entities/api/subscriptions/services/{{id}}",
+    "keyField": "id",
+    "saveMessage": "Feature created successfully",
+    "updateMessage": "Feature updated successfully",
+    "form": {
+        "collectionName": "service",
+        "fields": [
+            {
+                "key": "name",
+                "type": "mat-text-input",
+                "className": "col-6",
+                "props": {
+                    "label": "PLAN.FEATURE.FORM.FEATURE_NAME",
+                    "required": true,
+                    "placeholder": "PLAN.FEATURE.FORM.FEATURE_NAME_PLACEHOLDER"
+                }
+            },
+            {
+                "fieldGroupClassName": "gd-2",
+                "fieldGroup": [
+                    {
+                        "key": "category_id",
+                        "type": "select-input",
+                        "props": {
+                            "label": "PLAN.FEATURE.FORM.CATEGORY",
+                            "required": true,
+                            "labelProp": "name",
+                            "valueProp": "id",
+                            "needSearch": true,
+                            "optionsDataSource": {
+                                "collectionName": "service_categories"
+                            }
+                        }
+                    },
+                    {
+                        "key": "plan_id",
+                        "type": "select-input",
+                        "props": {
+                            "label": "PLAN.FEATURE.FORM.PLANS",
+                            "multiple": true,
+                            "labelProp": "name",
+                            "valueProp": "id",
+                            "needSearch": true,
+                            "optionsDataSource": {
+                                "collectionName": "subscription_plans"
+                            }
+                        }
+                    },
+                    {
+                        "key": "status",
+                        "type": "select-input",
+                        "className": "col-6",
+                        "hideExpression": "!model.id",
+                        "props": {
+                            "label": "PLAN.FEATURE.FORM.STATUS",
+                            "required": true,
+                            "valueProp": "value",
+                            "labelProp": "label",
+                            "options": [
+                                {
+                                    "label": "PLAN.FEATURE.FORM.ACTIVE",
+                                    "value": "active"
+                                },
+                                {
+                                    "label": "PLAN.FEATURE.FORM.INACTIVE",
+                                    "value": "inactive"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "key": "shortdescription",
+                "type": "mat-textarea-input",
+                "className": "col-12",
+                "props": {
+                    "label": "PLAN.FEATURE.FORM.SHORT_DESCRIPTION",
+                    "rows": 4,
+                    "placeholder": "PLAN.FEATURE.FORM.DESC_PLACEHOLDER"
+                }
+            }
+        ]
+    }
+}

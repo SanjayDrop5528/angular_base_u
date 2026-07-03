@@ -1,0 +1,109 @@
+{
+  "pageHeading": "CALENDAR_MODULE.BOOKING_LIST.TITLE",
+  "pageDescription": "CALENDAR_MODULE.BOOKING_LIST.DESCRIPTION",
+  "screenId": "registration",
+  "editMode": "page",
+  "screenEditMode": "page",
+  "showbutton": true,
+  "rowModelType": "serverSide",
+  "defaultViewMode": "grid",
+  "keyField": "id",
+  "collectionName": "bookings",
+  "apiEndpoint": "roaster/api/bookings",
+  "addRoute": "/add/registration",
+  "editRoute": "/add/registration",
+  "viewRoute": "/add/registration",
+  "deleteEndpoint": "roaster/api/bookings",
+  "actions": [
+    {
+      "label": "CALENDAR_MODULE.BOOKING_LIST.VIEW",
+      "icon": "visibility",
+      "formAction": "view"
+    },
+    {
+      "label": "CALENDAR_MODULE.BOOKING_LIST.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "CALENDAR_MODULE.BOOKING_LIST.CANCEL",
+      "icon": "cancel",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.BOOKING_ID",
+      "field": "booking_id",
+      "filter": "agTextColumnFilter",
+      "flex": 1,
+      "sort": "desc"
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.PATIENT_NAME",
+      "field": "patient_name",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.DOCTOR_NAME",
+      "field": "doctor_name",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.APPOINTMENT_DATE",
+      "field": "appointment_date",
+      "type": "date",
+      "filter": "agDateColumnFilter",
+      "flex": 1.2,
+      "valueFormatter": "function(params) { return params.value ? new Date(params.value).toLocaleDateString('en-US', {year: 'numeric', month: 'short', day: 'numeric'}) : ''; }"
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.APPOINTMENT_TIME",
+      "field": "appointment_time",
+      "filter": "agTextColumnFilter",
+      "flex": 1
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.STATUS",
+      "field": "status",
+      "filter": "agSetColumnFilter",
+      "flex": 1,
+      "cellStyle": "function(params) { const colors = { 'confirmed': '#10b981', 'pending': '#f59e0b', 'cancelled': '#ef4444', 'completed': '#3b82f6' }; return { color: colors[params.value?.toLowerCase()] || '#6b7280', fontWeight: '500' }; }"
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.PHONE",
+      "field": "phone",
+      "filter": "agTextColumnFilter",
+      "flex": 1.2
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.EMAIL",
+      "field": "email",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5
+    },
+    {
+      "headerName": "CALENDAR_MODULE.FIELDS.CREATED_AT",
+      "field": "created_at",
+      "type": "date",
+      "filter": "agDateColumnFilter",
+      "flex": 1.2,
+      "valueFormatter": "function(params) { return params.value ? new Date(params.value).toLocaleDateString() : ''; }"
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "FORM.COMMON.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "minWidth": 100,
+      "width": 120,
+      "maxWidth": 150,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "pageHeading": "NOTIFICATION_MODULE.FORMS.TEMPLATE_TITLE",
+  "formType": "simple",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "screenWidth": "960px",
+  "form": {
+    "collectionName": "notification-template",
+    "defaultValues": [
+      {
+        "colName": "status",
+        "value": "active",
+        "type": "string"
+      }
+    ],
+    "fields": [
+      {
+        "key": "name",
+        "type": "mat-text-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.TEMPLATE_NAME",
+          "placeholder": "NOTIFICATION_MODULE.PLACEHOLDERS.TEMPLATE_NAME",
+          "required": true
+        }
+      },
+      {
+        "key": "event_id",
+        "type": "select-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.EVENT_ID",
+          "required": true,
+          "options": [],
+          "optionsDataSource": {
+            "collectionName": "notification-event"
+          },
+          "valueProp": "id",
+          "labelProp": "label",
+          "labelPropTemplate": "{{name}} ({{id}})",
+          "needSearch": true
+        }
+      },
+      {
+        "key": "channel_id",
+        "type": "select-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.CHANNEL_ID",
+          "required": true,
+          "options": [],
+          "optionsDataSource": {
+            "collectionName": "notification-channel"
+          },
+          "valueProp": "name",
+          "labelProp": "name",
+          "needSearch": true
+        }
+      },
+      {
+        "key": "subject",
+        "type": "mat-text-input",
+        "hideExpression": "!model.channel_id || model.channel_id.toLowerCase() !== 'email'",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.SUBJECT",
+          "placeholder": "NOTIFICATION_MODULE.PLACEHOLDERS.SUBJECT",
+          "detectTemplateVariables": true
+        }
+      },
+      {
+        "key": "body",
+        "type": "mat-textarea-input",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.BODY_CONTENT",
+          "placeholder": "NOTIFICATION_MODULE.PLACEHOLDERS.BODY_CONTENT",
+          "rows": 24,
+          "jsonEditor": true,
+          "detectTemplateVariables": true,
+          "required": true
+        }
+      },
+      {
+        "key": "status",
+        "type": "select-input",
+        "hideExpression": "!model.isEdit",
+        "props": {
+          "label": "NOTIFICATION_MODULE.FIELDS.STATUS",
+          "required": true,
+          "options": [
+            {
+              "value": "active",
+              "label": "NOTIFICATION_MODULE.STATUS.ACTIVE"
+            },
+            {
+              "value": "inactive",
+              "label": "NOTIFICATION_MODULE.STATUS.INACTIVE"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label"
+        }
+      }
+    ]
+  }
+}

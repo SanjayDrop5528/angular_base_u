@@ -1,0 +1,53 @@
+{
+  "pageHeading": "ROLES.TITLE",
+  "editPageHeading": "ROLES.TAB_EDIT_ROLE",
+  "subHeading": "ROLES.SUBTITLE",
+  "formType": "simple",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "form": {
+    "collectionName": "groups",
+    "fields": [
+      {
+        "key": "name",
+        "type": "mat-text-input",
+        "props": {
+          "label": "ROLES.GROUP_NAME",
+          "placeholder": "ROLES.PLACEHOLDER_NAME",
+          "required": true,
+          "pattern": "^[A-Za-z0-9]+([\\s.][A-Za-z0-9]+)*$"
+        }
+      },
+      {
+        "key": "status",
+        "type": "select-input",
+        "hideExpression": "!model.isEdit",
+        "props": {
+          "label": "ROLES.STATUS",
+          "required": true,
+          "options": [
+            {
+              "value": "active",
+              "label": "ROLES.ACTIVE"
+            },
+            {
+              "value": "inactive",
+              "label": "ROLES.INACTIVE"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label"
+        }
+      },
+      {
+        "key": "description",
+        "type": "mat-textarea-input",
+        "props": {
+          "label": "ROLES.DESCRIPTION",
+          "placeholder": "ROLES.PLACEHOLDER_DESC",
+          "rows": 2
+        }
+      }
+    ]
+  }
+}

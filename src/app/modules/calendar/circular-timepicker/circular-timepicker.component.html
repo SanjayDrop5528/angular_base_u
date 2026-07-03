@@ -1,0 +1,47 @@
+<div class="timepicker-container">
+  <!-- Time display header -->
+  <div class="timepicker-header">
+    <div class="time-parts">
+      <span class="time-part" [class.active]="mode === 'hours'" (click)="setMode('hours')">
+        {{ getDisplayHours() }}
+      </span>
+      <span class="separator">:</span>
+      <span class="time-part" [class.active]="mode === 'minutes'" (click)="setMode('minutes')">
+        {{ getDisplayMinutes() }}
+      </span>
+    </div>
+    <div class="ampm-toggle" (click)="toggleAmPm()">
+      {{ isAm ? 'AM' : 'PM' }}
+    </div>
+  </div>
+
+  <!-- Dial face wrapper -->
+  <div class="dial-container">
+    <div class="dial-face">
+      <!-- Center dot -->
+      <div class="center-dot"></div>
+      
+      <!-- Hand pointing to selection -->
+      <div class="clock-hand" [style.transform]="getHandRotation()">
+        <div class="hand-line"></div>
+        <div class="hand-pointer"></div>
+      </div>
+      
+      <!-- Numbers positioned in circle -->
+      <div *ngFor="let num of getDialNumbers(); let idx = index" 
+           class="dial-number"
+           [class.selected]="isNumberSelected(num)"
+           [style.left.px]="getNumberPosition(idx).x"
+           [style.top.px]="getNumberPosition(idx).y"
+           (click)="selectNumber(num)">
+        {{ mode === 'hours' ? num : (num.toString().padStart(2, '0')) }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="action-buttons">
+    <button mat-button class="mode-btn" (click)="prevMode()" [disabled]="mode === 'hours'">Back</button>
+    <button mat-button class="mode-btn" (click)="nextMode()">{{ mode === 'minutes' ? 'Done' : 'Next' }}</button>
+  </div>
+</div>

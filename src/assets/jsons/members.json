@@ -1,0 +1,155 @@
+{
+  "pageHeading": "MEMBERS.PAGE_HEADING",
+  "formType": "simple",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "diffMehthod": true,
+  "saveEndPoint": "user/api/users/create",
+  "updateEndPoint": "user/api/users/update/{{id}}",
+  "keyField": "id",
+  "addFormData": [
+    {
+      "from_key": "form.value.language",
+      "to_key": "preferred_language"
+    }
+  ],
+  "form": {
+    "collectionName": "users",
+    "fields": [
+      {
+        "key": "name",
+        "type": "mat-text-input",
+        "props": {
+          "label": "MEMBER.FORM.NAME",
+          "placeholder": "MEMBER.FORM.PLACEHOLDER_NAME",
+          "required": true
+        }
+      },
+      {
+        "key": "email",
+        "type": "mat-text-input",
+        "props": {
+          "label": "MEMBER.FORM.EMAIL_ADDRESS",
+          "placeholder": "MEMBER.FORM.ENTER_EMAIL_ADDRESS",
+          "required": true
+        },
+        "expressions": {
+          "hide": "model.isEdit"
+        }
+      },
+      {
+        "key": "phone",
+        "type": "mat-text-input",
+        "props": {
+          "label": "MEMBER.FORM.PHONE",
+          "placeholder": "MEMBER.FORM.PLACEHOLDER_PHONE"
+        }
+      },
+      {
+        "key": "language",
+        "type": "select-input",
+        "props": {
+          "label": "MEMBER.FORM.LANGUAGE",
+          "required": true,
+          "options": [
+            {
+              "value": "en",
+              "label": "MEMBERS.LANG_ENGLISH"
+            },
+            {
+              "value": "hi",
+              "label": "MEMBERS.LANG_HINDI"
+            },
+            {
+              "value": "ta",
+              "label": "MEMBERS.LANG_TAMIL"
+            },
+            {
+              "value": "mr",
+              "label": "MEMBERS.LANG_MARATHI"
+            },
+            {
+              "value": "ne",
+              "label": "MEMBERS.LANG_NEPALI"
+            },
+            {
+              "value": "ms",
+              "label": "MEMBERS.LANG_MALAY"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label",
+          "defaultValue": "en"
+        }
+      },
+      {
+        "key": "role_id",
+        "type": "select-input",
+        "props": {
+          "label": "MEMBER.FORM.ROLE",
+          "required": true,
+          "options": [],
+          "methodType": "get",
+          "endPoint": "user/api/roles",
+          "valueProp": "id",
+          "labelProp": "name"
+        }
+      },
+      {
+        "key": "region",
+        "type": "mat-text-input",
+        "props": {
+          "label": "MEMBER.FORM.REGION",
+          "placeholder": "MEMBER.FORM.PLACEHOLDER_REGION",
+          "required": true,
+          "defaultValue": "US"
+        },
+        "expressions": {
+          "hide": "!model.isEdit"
+        }
+      },
+      {
+        "key": "age",
+        "type": "numeric-input",
+        "props": {
+          "label": "MEMBER.FORM.AGE",
+          "placeholder": "MEMBER.FORM.PLACEHOLDER_AGE",
+          "required": true,
+          "min": 0,
+          "defaultValue": 30
+        },
+        "expressions": {
+          "hide": "!model.isEdit"
+        }
+      },
+      {
+        "key": "status",
+        "type": "select-input",
+        "props": {
+          "label": "MEMBER.FORM.STATUS",
+          "required": true,
+          "options": [
+            {
+              "value": "active",
+              "label": "MEMBER.FORM.STATUS_ACTIVE"
+            },
+            {
+              "value": "invited",
+              "label": "MEMBER.FORM.STATUS_INVITED"
+            },
+            {
+              "value": "suspended",
+              "label": "MEMBER.FORM.STATUS_SUSPENDED"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label",
+          "defaultValue": "active"
+        },
+        "expressions": {
+          "hide": "!model.isEdit"
+        }
+      }
+    ]
+  }
+}

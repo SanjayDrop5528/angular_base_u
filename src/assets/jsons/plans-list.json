@@ -1,0 +1,186 @@
+{
+  "pageHeading": "SUBSCRIPTIONS.PAGE_HEADING",
+  "formHeading": "SUBSCRIPTIONS.FORM_TITLE",
+  "pageDescription": "Configure subscription plan tiers with custom billing cycles and pricing.",
+  "collectionName": "plans",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "screenWidth": "600px",
+  "showbutton": true,
+  "cardSchema": {
+    "type": "container",
+    "className": "column",
+    "customStyles": {
+      "border-radius": "14px",
+      "overflow": "hidden",
+      "border": "1px solid var(--border-color)",
+      "padding": "0"
+    },
+    "children": [
+      {
+        "type": "container",
+        "className": "row justify-between align-center",
+        "customStyles": {
+          "padding": "14px 16px 8px"
+        },
+        "children": [
+          {
+            "type": "title",
+            "key": "name",
+            "fontSize": 18,
+            "fontWeight": 700
+          },
+          {
+            "type": "button",
+            "menu": true,
+            "customStyles": {
+              "bottom": "12px",
+              "left": "20px"
+            },
+            "menuItems": [
+              {
+                "label": "SHARED.EDIT",
+                "icon": "edit",
+                "action": "edit"
+              },
+              {
+                "label": "SHARED.DELETE",
+                "icon": "delete",
+                "action": "delete"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "className": "row align-end",
+        "customStyles": {
+          "padding": "0 16px",
+          "gap": "4px"
+        },
+        "children": [
+          {
+            "type": "text",
+            "key": "currency",
+            "fontSize": 18,
+            "fontWeight": 700
+          },
+          {
+            "type": "stat",
+            "key": "price",
+            "fontSize": 32,
+            "fontWeight": 800,
+            "textColor": "var(--primary-color)"
+          },
+          {
+            "type": "text",
+            "value": "/plan",
+            "fontSize": 13,
+            "textColor": "var(--text-muted)"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "key": "description",
+        "customStyles": {
+          "padding": "10px 16px 14px"
+        },
+        "fontSize": 13,
+        "textColor": "var(--text-muted)"
+      },
+      {
+        "type": "container",
+        "className": "row justify-between",
+        "customStyles": {
+          "padding": "0 16px 14px",
+          "gap": "8px",
+          "flex-wrap": "wrap"
+        },
+        "children": [
+          {
+            "type": "badge",
+            "key": "tag",
+            "badgeColor": "accent"
+          },
+          {
+            "type": "status",
+            "key": "status"
+          }
+        ]
+      }
+    ]
+  },
+  "filterOptions": [
+    {
+      "type": "input",
+      "label": "SUBSCRIPTIONS.FIELD_PLAN_NAME",
+      "columnName": "name",
+      "operator": "CONTAINS"
+    },
+    {
+      "type": "select",
+      "label": "SHARED.STATUS",
+      "columnName": "status",
+      "multiSelection": false,
+      "labelProp": "label",
+      "valueProp": "value",
+      "options": [
+        {
+          "label": "SHARED.STATUS_ACTIVE",
+          "value": "active"
+        },
+        {
+          "label": "SHARED.STATUS_INACTIVE",
+          "value": "inactive"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "label": "SHARED.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "SHARED.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "field": "name",
+      "maxWidth": 200,
+      "headerName": "SUBSCRIPTIONS.FIELD_PLAN_NAME"
+    },
+    {
+      "field": "description",
+      "headerName": "SHARED.DESCRIPTION",
+      "type": "description"
+    },
+    {
+      "field": "is_default",
+      "headerName": "SUBSCRIPTIONS.COL_DEFAULT",
+      "maxWidth": 120,
+      "type": "boolean"
+    },
+    {
+      "field": "status",
+      "headerName": "SHARED.STATUS",
+      "maxWidth": 120
+    },
+    {
+      "headerName": "",
+      "field": "Action",
+      "cellRenderer": "buttonRenderer",
+      "lockPosition": "right",
+      "pinned": "right",
+      "lockPinned": true,
+      "maxWidth": 130,
+      "menuTabs": []
+    }
+  ]
+}

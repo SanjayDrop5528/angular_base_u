@@ -1,0 +1,77 @@
+<div class="calendar-component-layout"
+     [class.is-reservation-mode]="isReservationMode"
+     [class.has-filter-sidebar]="!isReservationMode && (activeRole === 'owner' || activeRole === 'admin') && isWeekOrDayView() && users && users.length > 0 && (activeRole === 'owner' || activeRole === 'admin' || !currentUserId || currentUserId === 'all')">
+  <!-- Main Calendar Section -->
+  <section class="calendar-section">
+    <h2 class="calendar-heading">{{ 'CALENDAR_MODULE.MY_CALENDAR' | translate }}</h2>
+    <!-- Top loading indicator bar -->
+    <div class="loader-container">
+      <mat-progress-bar mode="indeterminate" *ngIf="loading" class="calendar-loader"></mat-progress-bar>
+    </div>
+
+    <!-- Error display -->
+    <div class="error-banner" *ngIf="error">
+      <div class="error-content">
+        <mat-icon class="error-icon">warning_amber</mat-icon>
+        <div class="error-text">
+          <h3>{{ 'CALENDAR_MODULE.CONNECTION_ISSUE' | translate }}</h3>
+          <p>{{ error }}</p>
+        </div>
+      </div>
+      <button (click)="refresh()" class="retry-btn">
+        <mat-icon>refresh</mat-icon>
+        {{ 'CALENDAR_MODULE.RETRY' | translate }}
+      </button>
+    </div>
+
+    <!-- Calendar Container -->
+    <div class="calendar-container" [class.is-loading]="loading && calendars.length === 0">
+      <full-calendar
+        #calendarComponent
+        *ngIf="!error"
+        [options]="calendarOptions"
+      ></full-calendar>
+    </div>
+  </section>
+
+  <!-- Right Side Filter Sidebar -->
+  <aside class="calendar-filter-sidebar" *ngIf="!isReservationMode && (activeRole === 'owner' || activeRole === 'admin') && isWeekOrDayView() && users && users.length > 0 && (activeRole === 'owner' || activeRole === 'admin' || !currentUserId || currentUserId === 'all')">
+    <h3 class="sidebar-title" style="margin: 0 0 12px 0; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">{{ peopleListLabel }}</h3>
+    
+    <div #draggableContainer class="matching-users-container" style="border-top: none; padding-top: 0; margin-top: 0;">
+
+      <div *ngFor="let user of users" 
+           class="active-user-pill" 
+           [attr.data-user-id]="user.id"
+           [attr.data-user-name]="user.name"
+           [attr.data-user-color]="user.color || '#3b82f6'"
+           [class.selected]="user.id === activeCurrentUserId"
+           (click)="selectActiveUser(user.id)">
+        <div class="avatar-container">
+          <div class="avatar-circle" [style.background-color]="user.color || '#94a3b8'">
+            {{ getInitials(user.name) }}
+          </div>
+        </div>
+        <span class="user-name-text">{{ user.name }}</span>
+      </div>
+    </div>
+
+    <!-- Reset Mock Data Button -->
+    <!-- <div class="mock-reset-container" *ngIf="isMockMode" style="margin-top: 8px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+      <button mat-stroked-button color="warn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;" (click)="resetMockData()">
+        <mat-icon style="margin: 0;">restart_alt</mat-icon>
+        <span>Reset Calendar Data</span>
+      </button>
+    </div> -->
+  </aside>
+</div>
+
+<!-- Bottom Trash Zone -->
+<div id="calendar-trash-zone" 
+     *ngIf="isDraggingEvent" 
+     class="calendar-trash-zone">
+  <div class="trash-content">
+    <mat-icon class="trash-icon">delete_outline</mat-icon>
+    <span>{{ 'CALENDAR_MODULE.TRASH_ZONE' | translate }}</span>
+  </div>
+</div>

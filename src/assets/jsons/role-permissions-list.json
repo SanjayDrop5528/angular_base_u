@@ -1,0 +1,74 @@
+{
+  "pageHeading": "PERMISSIONS.TITLE",
+  "pageDescription": "PERMISSIONS.SUBTITLE",
+  "screenId": "role-permissions",
+  "collectionName": "role_wise_screen_permissions",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "screenWidth": "720px",
+  "showbutton": true,
+  "defaultViewMode": "grid",
+  "cardSchema": {
+    "titleKey": "role_name",
+    "subtitleKey": "",
+    "fields": [
+      {
+        "key": "created_on",
+        "label": "PERMISSIONS.COL_CREATED",
+        "type": "date"
+      }
+    ],
+    "actions": [
+      {
+        "label": "Edit",
+        "icon": "edit",
+        "action": "edit",
+        "color": "primary"
+      },
+      {
+        "label": "Delete",
+        "icon": "delete",
+        "action": "delete",
+        "color": "warn"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "label": "FORM.COMMON.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "FORM.COMMON.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "PERMISSIONS.COL_ROLE",
+      "field": "role_name",
+      "filter": "agTextColumnFilter",
+      "flex": 1
+    },
+
+    {
+      "headerName": "PERMISSIONS.COL_CREATED",
+      "field": "created_on",
+      "filter": "agDateColumnFilter",
+      "flex": 0.8
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "FORM.COMMON.ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 85,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+@if (showHeader()) {
+<div [ngClass]="config?.['upload'] ? 'page-title-container ml-13' : 'page-title-container'">
+  <div class="page-title-text">
+    <div class="titple_container">
+      @if (config?.['prefixicon']) {
+      <i class="fa-solid" [class]="config?.['prefixicon']" [style.color]="config?.['iconcolor']">
+      </i>
+      }
+      <h2 class="page-title">
+        @if (pageHeading) {
+        {{ pageHeading | translate }}
+        }
+      </h2>
+    </div>
+    @if (pageDescription) {
+    <p class="page-subtitle">
+      {{ pageDescription | translate }}
+    </p>
+    }
+  </div>
+
+  <span class="header-actions">
+    <ng-content select="[headerActions]"></ng-content>
+    @if (!isMobile) {
+    @if (config?.['showRefreshButton'] !== false) {
+    <button mat-icon-button class="refresh-grid-button" matTooltip="Refresh" (click)="onRefreshClick()"
+      [disabled]="refreshing">
+      <mat-icon [class.spinning]="refreshing">refresh</mat-icon>
+    </button>
+    }
+    @if (viewMode !== 'grid') {
+    <button mat-icon-button [class.active-view]="activeViewMode === 'grid'" matTooltip="Table View"
+      (click)="toggleView('grid')">
+      <mat-icon>table_rows</mat-icon>
+    </button>
+    <button mat-icon-button [class.active-view]="activeViewMode === 'card'" matTooltip="Card View"
+      (click)="toggleView('card')">
+      <mat-icon>grid_view</mat-icon>
+    </button>
+    }
+
+    @if (showbutton) {
+    <button class="icon buttonclass" mat-mini-fab matTooltip="{{ 'FORM.COMMON.ADD' | translate }}"
+      (click)="onAddButonClick($event)">
+      <mat-icon>add</mat-icon>
+    </button>
+    }
+
+    @if (config?.['print'] && _permissionService.isvisible(config?.['printACL'])) {
+    <button class="icon buttonclass" mat-mini-fab matTooltip="{{ 'FORM.COMMON.PRINT' | translate }}" (click)="export()">
+      <mat-icon>print</mat-icon>
+    </button>
+    }
+
+    @if (config?.['export'] !== false) {
+    <button class="icon buttonclass bg-primary text-white" mat-mini-fab matTooltip="Export"
+      [matMenuTriggerFor]="exportMenu" aria-label="Export data">
+      <mat-icon>download</mat-icon>
+    </button>
+    <mat-menu #exportMenu="matMenu">
+      <button mat-menu-item (click)="exportGridData('csv')">
+        <mat-icon>description</mat-icon>
+        <span>Export all data into CSV</span>
+      </button>
+      <button mat-menu-item (click)="exportGridData('xlsx')">
+        <mat-icon>table_view</mat-icon>
+        <span>Export all data into Excel</span>
+      </button>
+    </mat-menu>
+    }
+    } @else {
+    <!-- Mobile Overflow Menu -->
+
+    <button mat-icon-button [matMenuTriggerFor]="mobileMenu" aria-label="More options" class="mobile-more-button">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #mobileMenu="matMenu" class="mobile-grid-menu">
+      @if (showbutton) {
+      <button mat-menu-item (click)="onAddButonClick($event)">
+        <mat-icon>add</mat-icon>
+        <span>{{ 'FORM.COMMON.ADD' | translate }}</span>
+      </button>
+      }
+      @if (filterOptions?.length && showMobileMenuAndPaginator && !shouldHideFilters) {
+      <button mat-menu-item (click)="openMobileFilter()">
+        <mat-icon>filter_list</mat-icon>
+        <span>{{ 'Filter' | translate }}</span>
+      </button>
+      }
+      @if (config?.['showRefreshButton'] !== false) {
+      <button mat-menu-item (click)="onRefreshClick()" [disabled]="refreshing">
+        <mat-icon [class.spinning]="refreshing">refresh</mat-icon>
+        <span>{{ 'Refresh' | translate }}</span>
+      </button>
+      }
+      <!-- @if (viewMode !== 'grid') {
+      @if (activeViewMode === 'card') {
+      <button mat-menu-item (click)="toggleView('grid')">
+        <mat-icon>table_rows</mat-icon>
+        <span>{{ 'Table View' | translate }}</span>
+      </button>
+      } @else {
+      <button mat-menu-item (click)="toggleView('card')">
+        <mat-icon>grid_view</mat-icon>
+        <span>{{ 'Card View' | translate }}</span>
+      </button>
+      }
+      } -->
+
+      @if (config?.['print'] && _permissionService.isvisible(config?.['printACL'])) {
+      <button mat-menu-item (click)="export()">
+        <mat-icon>print</mat-icon>
+        <span>{{ 'FORM.COMMON.PRINT' | translate }}</span>
+      </button>
+      }
+      @if (config?.['export'] !== false) {
+      <button mat-menu-item (click)="exportGridData('csv')">
+        <mat-icon>description</mat-icon>
+        <span>Export CSV</span>
+      </button>
+      <button mat-menu-item (click)="exportGridData('xlsx')">
+        <mat-icon>table_view</mat-icon>
+        <span>Export Excel</span>
+      </button>
+      }
+    </mat-menu>
+
+    }
+  </span>
+</div>
+}
+<div class="core-grid-div">
+  <mat-card class="core-grid-card" [class.table-view-card]="activeViewMode === 'grid'"
+    [class.card-view-card]="activeViewMode === 'card'">
+    @if (filterOptions?.length && !isMobile && !shouldHideFilters) {
+    <div class="grid-filter-toolbar">
+      <app-dynamic-filter [filterOptions]="filterOptions" [showdefaultFilter]="showdefaultFilter" [config]="config"
+        (filterValue)="onFilterValue($event)">
+      </app-dynamic-filter>
+    </div>
+    }
+
+    @if (activeViewMode === 'grid' && isConfigLoaded) {
+    <div class="grid_con_res">
+      @if (gridRowModelType() === 'clientSide') {
+      <ag-grid-angular #agGrid style="width: 100%; flex: 1 1 auto" [ngStyle]="{
+          height: (filterOptions?.length && !isMobile) ? 'calc(100dvh - 268px)' : 'calc(100dvh - 210px)'
+        }" class="ag-theme-quartz" [defaultColDef]="defaultColDef" [columnDefs]="columnDefs"
+        [rowSelection]="rowSelection()" [pagination]="true" [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+        [getRowId]="getRowId" [rowData]="filteredRows ?? listData()" [getContextMenuItems]="getContextMenuItems"
+        [gridOptions]="gridOptions" [context]="context" [components]="components" (gridReady)="onGridReady($event)"
+        (firstDataRendered)="onFirstDataRendered($event)" (cellClicked)="onCellClicked($event)"
+        (rowDoubleClicked)="onRowDoubleClicked($event)">
+      </ag-grid-angular>
+      } @else {
+      <ag-grid-angular #agGrid style="width: 100%; flex: 1 1 auto" [ngStyle]="{
+          height: (filterOptions?.length && !isMobile) ? 'calc(100dvh - 268px)' : 'calc(100dvh - 210px)'
+        }" class="ag-theme-quartz" [defaultColDef]="defaultColDef" [columnDefs]="columnDefs"
+        [rowSelection]="rowSelection()" [pagination]="true" [overlayNoRowsTemplate]="overlayNoRowsTemplate"
+        [getRowId]="getRowId" [getContextMenuItems]="getContextMenuItems" [gridOptions]="gridOptions"
+        [context]="context" [components]="components" (gridReady)="onGridReady($event)"
+        (firstDataRendered)="onFirstDataRendered($event)" (cellClicked)="onCellClicked($event)"
+        (rowDoubleClicked)="onRowDoubleClicked($event)">
+      </ag-grid-angular>
+      }
+    </div>
+    }
+
+    @if (activeViewMode === 'card') {
+    <ng-content></ng-content>
+
+    @if (cardSchema || cardComponent ) {
+    @if(virtualScrollRows.length){
+    <div class="card-scroll-viewport" [ngStyle]="{
+    height: (filterOptions?.length && !isMobile) ? 'calc(100vh - 330px)' : 'calc(100vh - 270px)'
+  }">
+      <div class="card-grid">
+        @for (row of pagedCardRows; track row._id ?? row.id ?? $index) {
+        <div class="card-item">
+          <core-card [data]="row" [cardSchema]="cardSchema" [fieldTemplateMap]="fieldTemplateMap"
+            [actionCallback]="onCardAction.bind(this)">
+          </core-card>
+        </div>
+        }
+      </div>
+    </div>
+
+    @if (showCardPaginator) {
+    <mat-paginator class="card-paginator" [length]="cardTotalRows" [pageIndex]="cardPage"
+      [pageSizeOptions]="[10, 20, 25, 50, 100]" [hidePageSize]="false" [showFirstLastButtons]="!isMobile"
+      (page)="onCardPageChange($event)">
+    </mat-paginator>
+    }
+    }
+    <!-- @if (cardComponent) {
+          <div class="card-item">
+            <ng-container #dynamicCardAnchor></ng-container>
+          </div>
+          } @else {
+          <div class="card-item">
+            <core-card [data]="row" [cardSchema]="cardSchema" [fieldTemplateMap]="fieldTemplateMap"
+              [actionCallback]="onCardAction.bind(this)">
+            </core-card>
+          </div>
+          } -->
+    }
+
+    @if (!virtualScrollRows.length) {
+    <div class="card-empty">
+      <mat-icon>inbox</mat-icon>
+      <p>No data found</p>
+    </div>
+    }
+    }
+  </mat-card>
+</div>
+
+
+<ng-template #Popup let-data>
+  @if (formAction === 'view') {
+  <div style="text-align-last: end">
+    <mat-icon (click)="_dialogService.closeModal()" style="cursor:pointer">close</mat-icon>
+  </div>
+  }
+  <div class="page">
+    @if (formAction !== 'view') {
+    <div class="page-content">
+      <app-dynamic-form [formName]="formName()" [model]="data" [mode]="'popup'"
+        (onClose)="close($event)"></app-dynamic-form>
+    </div>
+    }
+  </div>
+</ng-template>
+
+<ng-template #DrawerDialog let-data>
+  <div class="drawer-wrapper">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        @if(config?.formHeading){
+        <h2>{{config?.formHeading | translate}}</h2>
+        }@else{
+        <h2>
+          {{
+          formAction === 'add'
+          ? (config?.pageHeading | translate)
+          : (config?.editPageHeading
+          ? (config?.editPageHeading | translate)
+          : (config?.pageHeading ? (config?.pageHeading | translate) : 'Edit Details'))
+          }}
+        </h2>
+        }
+        <p>{{ formAction === 'add' ? ('DRAWER.SUBTITLE_CREATE' | translate) : ('DRAWER.SUBTITLE_EDIT' | translate) }}
+        </p>
+      </div>
+      <button type="button" class="drawer-close-btn" (click)="closeDrawer()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="drawer-body" [class.no-padding]="removeDrawerPadding">
+      <app-dynamic-form [formName]="formName()" [model]="selectedModel" [mode]="'drawer'"
+        (onClose)="close($event)"></app-dynamic-form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mobileFilterDialog>
+  <div class="mobile-filter-dialog-container">
+    <div class="dialog-header">
+      <h3 class="dialog-title">{{ 'Filter Options' | translate }}</h3>
+      <button mat-icon-button class="dialog-close-btn" (click)="closeMobileFilter()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="dialog-body">
+      <app-dynamic-filter #mobileFilterComp [filterOptions]="filterOptions" [showdefaultFilter]="showdefaultFilter"
+        [config]="config" (filterValue)="onMobileFilterChanged($event)">
+      </app-dynamic-filter>
+    </div>
+    <div class="dialog-actions">
+      <button mat-button class="reset-btn" (click)="resetMobileFilters(mobileFilterComp)">
+        <mat-icon>restart_alt</mat-icon> {{ 'Reset' | translate }}
+      </button>
+      <button mat-raised-button color="primary" class="apply-btn" (click)="applyMobileFilters(mobileFilterComp)">
+        <mat-icon>filter_alt</mat-icon> {{ 'Filter' | translate }}
+      </button>
+    </div>
+  </div>
+</ng-template>

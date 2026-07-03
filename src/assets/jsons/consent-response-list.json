@@ -1,0 +1,62 @@
+{
+  "pageHeading": "CONSENT_MGMT.RESPONSES_PAGE_HEADING",
+  "pageDescription": "CONSENT_MGMT.RESPONSES_PAGE_DESC",
+  "collectionName": "consent-response",
+  "noForm": true,
+  "showbutton": false,
+  "export": true,
+  "keyField": "id",
+  "rowModelType": "serverSide",
+  "columnDefs": [
+    {
+      "field": "consent_key",
+      "headerName": "CONSENT_MGMT.COL_CONSENT_KEY",
+      "flex": 1.2
+    },
+    {
+      "field": "version",
+      "headerName": "CONSENT_MGMT.COL_VERSION",
+      "flex": 0.7
+    },
+    {
+      "field": "accepted",
+      "headerName": "CONSENT_MGMT.COL_ACCEPTED",
+      "flex": 0.7
+    },
+    {
+      "field": "ip_address",
+      "headerName": "CONSENT_MGMT.COL_IP_ADDRESS",
+      "flex": 1
+    },
+    {
+      "field": "device",
+      "headerName": "CONSENT_MGMT.COL_DEVICE_MODE",
+      "flex": 1
+    },
+    {
+      "field": "browser",
+      "headerName": "CONSENT_MGMT.COL_BROWSER",
+      "flex": 1
+    },
+    {
+      "field": "timezone",
+      "headerName": "CONSENT_MGMT.COL_TIMEZONE",
+      "flex": 1
+    },
+    {
+      "field": "country",
+      "headerName": "CONSENT_MGMT.COL_COUNTRY",
+      "flex": 0.8
+    },
+    {
+      "field": "region",
+      "headerName": "CONSENT_MGMT.COL_REGION",
+      "flex": 0.8
+    },
+    {
+      "field": "response_date",
+      "headerName": "CONSENT_MGMT.COL_DATE_TIME",
+      "flex": 1.3
+    }
+  ]
+}

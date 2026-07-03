@@ -1,0 +1,217 @@
+.example-sidenav {
+  width: 50%;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex: 1;
+}
+
+.icon {
+  background-color: transparent;
+}
+
+.add-container {
+  width: 100px;
+  float: right;
+}
+
+.positive {
+  color: green;
+} 
+
+.negative {
+  color: red;
+}
+
+.my-center-text {
+  text-align: center;
+  width: 100%;
+}
+
+.custom-toggle-group .mat-button-toggle-checked {
+  background-color: #ac9f9f;
+  color: white;
+}
+
+:host ::ng-deep .p-cell-editing {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.p-datatable .p-datatable-thead>tr>th {
+  text-align: left;
+  padding: 1rem 1rem;
+  border: 1px solid #e9ecef;
+  border-width: 0 0 1px 0;
+  font-weight: 600;
+  color: #495057;
+  background: #f8f9fa;
+  transition: box-shadow 0.2s;
+}
+
+:host ::ng-deep .ui-sortable-column-icon.pi.pi-fw.pi-sort .p-sortable-column-icon {
+  visibility: hidden;
+}
+
+.ui-datatable .ui-sortable-column-icon {
+  display: none !important;
+}
+
+.ag-body-horizontal-scroll-viewport {
+  overflow-x: hidden !important;
+}
+
+.btn-container {
+  width: 300px;
+}
+
+.filter {
+  margin-bottom: 5px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* toggle section */
+
+.toggle-container {
+  display: flex;
+  margin-right: 40px;
+  /* padding: 11px; */
+  align-content: space-around;
+}
+
+.toggle-button {
+  padding: 6px 12px 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: #060606;
+}
+
+.toggle-button .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.mat-drawer-content {
+     overflow: hidden !important;
+   }
+
+
+.toggle-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.toggle-button.active {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* card */
+/* .card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content:flex-start;
+  margin-top: 10px;
+} */
+
+.card-container {
+  /* display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: left;
+  margin-top: 10px;
+  margin-left: 27px; */
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(5,1fr);
+  justify-content: left;
+  margin-top: 12px;
+  /* margin-left: 8px; */
+}
+
+.course-card-container{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: left;
+}
+
+@media (max-width:1596px) {
+  .card-container {
+  grid-template-columns: repeat(4,1fr);
+
+  }
+}
+@media (max-width:1303px) {
+  .card-container {
+  grid-template-columns: repeat(3,1fr);
+
+  }
+}
+@media (max-width:1044px) {
+  .card-container {
+  grid-template-columns: repeat(2,1fr);
+
+  }
+}
+@media (max-width:524px) {
+  .card-container {
+  grid-template-columns: repeat(1,1fr);
+
+  }
+}
+@media (max-width:550px) {
+  .grid_con_res{
+    width: 93% !important;
+    margin-left: 12px !important;
+  }
+  .res_card{
+    width: 95% !important;
+  }
+  .course-card-container{
+    justify-content: center;
+  }
+  .res_cardts{
+    display: flex;
+    justify-content: center;
+  }
+  .card-container{
+    width: 95%;
+    margin-left: 12px;
+  }
+  .ag-theme-alpine{
+    height: calc(-195px + 100vh) !important;
+  }
+}
+.select_field_res{
+  width: 130px !important;
+  scale: 0.8;
+}
+ ::ng-deep .select_field_res .mat-mdc-form-field-subscript-wrapper{
+  display: none !important;
+ }
+ .select_btn_con{
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  width: 100%;
+ }
+
+ @media(min-width:350px) and (max-width:450px) {
+   .toggle-container {
+     display: flex;
+     margin-right: 2%;
+   }
+ }

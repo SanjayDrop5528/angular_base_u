@@ -1,0 +1,30 @@
+{
+  "pageHeading": "PATIENT.PAGE_BACKOFFICE",
+  "pageDescription": "PATIENT.PAGE_BACKOFFICE_DESC",
+  "collectionName": "users",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "showbutton": false,
+  "columnDefs": [
+    {
+      "headerName": "PATIENT.LIST.NAME",
+      "field": "name",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "PATIENT.COL_MASKED_EMAIL",
+      "field": "maskedEmail",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "PATIENT.COL_MASKED_PHONE",
+      "field": "maskedPhone",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "CONSENT_MGMT.COL_REGION",
+      "field": "region",
+      "filter": "agTextColumnFilter"
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+<div [class.dynamic-form-panel]="config?.editMode !== 'popup'">
+  @if (config?.editMode == 'popup') {
+    <div style="text-align-last: end">
+      <mat-icon (click)="cancel()">close</mat-icon>
+    </div>
+  }
+  @if (!showPaymentPanel) {
+    @if(config?.['hideheder'] != true){
+      <div class="page-title-container mb-15 ml-18">
+        <h2 class="page-title">{{ pageHeading|translate }}
+          @if(config?.["formTitle"]){
+            - {{ `FORM.COMMON.${this.config?.formTitle}`|uppercase|translate }}
+          }
+         
+        </h2>
+      </div>
+    }
+
+    <div class="dynamic-form-content">
+      @if (config) {
+        <div style="overflow-y: auto; scrollbar-width: none;">
+          <form [formGroup]="form">
+            <formly-form [model]="model" [fields]="fields" [form]="form" [options]="options"></formly-form>
+          </form>
+        </div>
+      }
+    </div>
+
+    @if (config && !config['actionHide']) {
+      <div class="dynamic-form-actions">
+        <div style="text-align-last: end; width: 100%;" class="res_for_mobile">
+          @if (config?.['onCancelRoute'] || config?.['locationgoback']) {
+            <button class="cancel-button-color" style="margin: 5px;" mat-button (click)="cancel()" [disabled]="butonflag">{{'FORM.COMMON.CANCEL'|translate}}</button>
+          }
+          @if (shouldShowEmailPreview()) {
+            <button class="preview-button-color" style="margin: 5px;" mat-button type="button" (click)="openEmailPreview()" [disabled]="butonflag">Preview</button>
+          }
+          @if (!this.id) {
+            <button class="reset-button-color" style="margin: 5px;" mat-button (click)="resetBtn('reset')" [disabled]="butonflag">{{'FORM.COMMON.RESET'|translate}}</button>
+          }
+          <button mat-raised-button style="margin: 5px;margin-right: 9px;" [disabled]="butonflag" (click)="butonflag=true;frmSubmit($event)">
+            {{ `FORM.COMMON.${butText}`|uppercase|translate }}
+          </button>
+        </div>
+      </div>
+    }
+  } @else {
+    <!-- Sleek and premium Glassmorphism Payment Panel -->
+    <div class="payment-panel animate-fade-in" style="padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.75rem; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border-radius: 16px;">
+      
+      <!-- Icon with glow -->
+      <div class="payment-icon-glow" style="background: rgba(99, 102, 241, 0.1); border: 2px solid #6366f1; color: #6366f1; width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.25rem; box-shadow: 0 0 20px rgba(99, 102, 241, 0.25); animation: pulse 2s infinite;">
+        💳
+      </div>
+
+      <div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #111827; margin: 0; letter-spacing: -0.5px;">Case Payment Pending</h2>
+        <p style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem; font-weight: 500;">
+          Case Reference: <span style="font-family: monospace; color: #374151; font-weight: 700; background: rgba(0,0,0,0.05); padding: 2px 6px; border-radius: 4px;">{{ paymentCaseNo }}</span>
+        </p>
+      </div>
+
+      <!-- Amount Display Box -->
+      <div style="background: linear-gradient(135deg, rgba(249, 250, 251, 0.8), rgba(243, 244, 246, 0.8)); border: 1px solid rgba(229, 231, 235, 0.7); border-radius: 14px; padding: 1.75rem; width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);">
+        <span style="font-size: 0.875rem; color: #4b5563; font-weight: 600;">Total Amount to Pay</span>
+        <span style="font-size: 2.5rem; font-weight: 900; color: #1f2937; letter-spacing: -1.5px; line-height: 1;">
+          {{ getCurrencySymbol(paymentCurrency) }}{{ paymentAmount | number:'1.2-2' }}
+        </span>
+        <span style="font-size: 0.75rem; color: #9ca3af; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Currency: {{ paymentCurrency }}</span>
+      </div>
+
+      <!-- Gateway Selector -->
+      <div style="width: 100%; max-width: 320px; display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+        <label style="font-size: 0.875rem; font-weight: 600; color: #374151;">Select Payment Gateway</label>
+        <select [(ngModel)]="selectedGateway" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #d1d5db; background-color: white; color: #111827; font-size: 0.875rem; font-weight: 600; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); cursor: pointer; transition: border-color 0.2s;">
+          <option value="cashfree">Cashfree Payments</option>
+          <option value="stripe">Stripe Checkout</option>
+        </select>
+      </div>
+
+      <!-- Actions -->
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 320px; margin-top: 0.5rem;">
+        <button (click)="payNow()" [disabled]="paying" class="btn-pay-now" style="width: 100%; padding: 0.875rem; border-radius: 8px; border: none; background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35); transition: all 0.2s ease;">
+          {{ paying ? 'Connecting to Gateway...' : 'Pay Now' }}
+        </button>
+        <button (click)="payLater()" [disabled]="paying" style="width: 100%; padding: 0.875rem; border-radius: 8px; border: 1px solid #d1d5db; background: transparent; color: #4b5563; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease;">
+          Cancel & Pay Later
+        </button>
+      </div>
+    </div>
+  }
+</div>
+@if (isDataError) {
+  <div>
+    <mat-icon color="warn">error</mat-icon>
+    <span>Given ID is not valid</span>
+  </div>
+}
+
+<ng-template #emailTemplatePreview>
+  <div class="email-preview-dialog">
+    <div class="email-preview-dialog__header">
+      <div>
+        <h2>Email Preview</h2>
+        <p>Rendered HTML and CSS from the current template body</p>
+      </div>
+      <button type="button" mat-icon-button (click)="closeEmailPreview()" aria-label="Close preview">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="email-preview-dialog__body">
+      <section class="email-preview-dialog__pane">
+        <iframe class="email-preview-dialog__frame" sandbox [src]="previewUrl"></iframe>
+      </section>
+    </div>
+  </div>
+</ng-template>

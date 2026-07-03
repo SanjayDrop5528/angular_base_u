@@ -1,0 +1,174 @@
+{
+  "pageHeading": "REVIEW_FORMS.PAGE_HEADING",
+  "editPageHeading": "REVIEW_FORMS.PAGE_HEADING",
+  "pageDescription": "REVIEW_FORMS.PAGE_DESCRIPTION",
+  "collectionName": "review_forms",
+  "showbutton": true,
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "screenWidth": "750px",
+  "defaultViewMode": "grid",
+   "cardSchema": {
+    "type": "container",
+    "className": "column",
+    "children": [
+     
+      {
+        "type":"container",
+        "customStyles": {
+          "padding": "10px 0 10px 20px",
+          "display": "flex",
+          "align-items": "center",
+          "gap": "10px"
+        },
+       "children": [
+          {
+            "type": "text",
+            "key": "event_name",
+            "customStyles": {
+              "font-size": "13px"
+            }
+          },
+           {
+            "type": "text",
+            "key": "event_id",
+            "customStyles": {
+              "font-size": "13px"
+            }
+          },
+           {
+            "type": "text",
+            "key": "form_config",
+            "customStyles": {
+              "font-size": "13px"
+            }
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "customStyles": {
+          "border-bottom": "1px solid #e0e0e0",
+          "padding-bottom": "10px",
+          "margin-bottom": "10px"
+        },
+        "className": "row",
+        "children": [
+          {
+            "type": "container",
+            "className": "col column align-center",
+            "children": [
+              {
+                "type": "text",
+                "variant": "subtitle",
+                "label": "SPECIALIST.CARD.EXPERIENCE",
+                "textColor": "#0582f7"
+              },
+              {
+                "type": "date",
+                "key": "working_since",
+                "elapsed": true,
+                "fontWeight": 700
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "className": "col column align-center",
+            "children": [
+              {
+                "type": "text",
+                "variant": "subtitle",
+                "label": "SPECIALIST.CARD.RATING",
+                "textColor": "#0582f7"
+              },
+              {
+                "type": "text",
+                "variant": "stat",
+                "key": "ratings",
+                "fontWeight": 700
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "className": "col column align-center",
+            "children": [
+              {
+                "type": "text",
+                "variant": "subtitle",
+                "label": "SPECIALIST.CARD.PATIENTS",
+                "textColor": "#0582f7"
+              },
+              {
+                "type": "number",
+                "key": "patient_count",
+                "compact": true,
+                "fontWeight": 700
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "actions": [
+    {
+      "label": "REVIEW_FORMS.ACTION_VIEW",
+      "icon": "visibility",
+      "formAction": "view"
+    },
+    {
+      "label": "REVIEW_FORMS.ACTION_EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "REVIEW_FORMS.ACTION_DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "REVIEW_FORMS.COL_ID",
+      "field": "id",
+      "filter": "agTextColumnFilter",
+      "flex": 1.2,
+      "minWidth": 150
+    },
+    {
+      "headerName": "REVIEW_FORMS.COL_REVIEW_NAME",
+      "field": "event_name",
+      "filter": "agTextColumnFilter",
+      "flex": 1.5,
+      "minWidth": 150
+    },
+    {
+      "headerName": "REVIEW_FORMS.COL_REVIEW_ID",
+      "field": "event_id",
+      "filter": "agTextColumnFilter",
+      "flex": 1.2,
+      "minWidth": 150
+    },
+    {
+      "headerName": "REVIEW_FORMS.FORM_CONFIG",
+      "field": "form_config",
+      "type": "text",
+      "maxWidth": 300,
+      "filter": "agDateColumnFilter"
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "",
+      "field": "Action",
+      "width": 100,
+      "minWidth": 80,
+      "maxWidth": 120,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

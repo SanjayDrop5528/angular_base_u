@@ -1,0 +1,52 @@
+{
+  "pageHeading": "SUBSCRIPTIONS.PAGE_CORE_SERVICES",
+  "collectionName": "services",
+  "noForm": true,
+  "showbutton": false,
+  "keyField": "id",
+  "rowModelType": "clientSide",
+  "actions": [
+    {
+      "label": "SHARED.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "SHARED.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "field": "name",
+      "headerName": "SHARED.NAME",
+      "flex": 1.5
+    },
+    {
+      "field": "category_name",
+      "headerName": "SHARED.CATEGORY",
+      "flex": 1.2
+    },
+    {
+      "field": "plan_name",
+      "headerName": "SUBSCRIPTIONS.COL_APPLICABLE_PLANS",
+      "flex": 1.2
+    },
+    {
+      "field": "status",
+      "headerName": "SHARED.STATUS",
+      "maxWidth": 120
+    },
+    {
+      "headerName": "",
+      "field": "Action",
+      "cellRenderer": "buttonRenderer",
+      "lockPosition": "right",
+      "pinned": "right",
+      "lockPinned": true,
+      "maxWidth": 50,
+      "menuTabs": []
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+}
+
+@media (max-width:600px) {
+  :host {
+    overflow: hidden !important;
+  }
+}
+
+.dynamic-form-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  box-shadow: var(--glass-shadow);
+  padding: 25px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dynamic-form-content {
+  flex: 1;
+  overflow: visible;
+  /* Allow labels to float above */
+}
+
+/* Ensure the scrollable wrapper doesn't clip floating labels */
+:host ::ng-deep .dynamic-form-content>div {
+  overflow: visible !important;
+  padding-top: 10px;
+}
+
+:host ::ng-deep .dynamic-form-content .mat-mdc-form-field {
+  width: 100%;
+}
+
+.dynamic-form-actions {
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 16px;
+}
+
+.page-title {
+  color: var(--text-main);
+  font-family: var(--font-family);
+  position: relative;
+  z-index: 1;
+}
+
+.page-title-container {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 20px !important;
+  /* More space between heading and form */
+  padding-bottom: 10px;
+  /* Extra buffer */
+}
+
+/* Fix floating label z-index to ensure it appears above other elements */
+:host ::ng-deep .mat-mdc-form-field {
+  position: relative;
+  z-index: 10 !important;
+  overflow: visible !important;
+}
+
+:host ::ng-deep .mat-mdc-form-field .mat-mdc-floating-label,
+:host ::ng-deep .mat-mdc-form-field .mdc-floating-label {
+  z-index: 100 !important;
+  position: relative;
+}
+
+/* Ensure form field wrapper allows overflow */
+:host ::ng-deep .mat-mdc-text-field-wrapper {
+  overflow: visible !important;
+}
+
+/* Ensure formly fields don't clip */
+:host ::ng-deep formly-field,
+:host ::ng-deep formly-group {
+  overflow: visible !important;
+}
+
+mat-icon {
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+button[disabled] {
+  background: rgba(255, 255, 255, 0.08);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.preview-button-color {
+  color: var(--primary-color);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 38%, transparent);
+}
+
+.email-preview-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--bg-card);
+  color: var(--text-main);
+}
+
+.email-preview-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex: 0 0 auto;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.email-preview-dialog__header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.email-preview-dialog__header p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.email-preview-dialog__body {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: 18px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.email-preview-dialog__pane {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.email-preview-dialog__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--snackbar-bg);
+}
+
+@media (max-width: 500px) {
+  .dynamic-form-panel {
+    padding: 12px;
+  }
+
+  .page-title-container {
+    margin-left: 0 !important;
+  }
+}

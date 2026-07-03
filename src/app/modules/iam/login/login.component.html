@@ -1,0 +1,358 @@
+<div class="login-container layout-split">
+
+  <!-- Left: Healthcare Image Panel -->
+  <div class="image-panel">
+    <div class="image-overlay"></div>
+    <div class="image-panel-content">
+      <div class="brand-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+        <span>{{ 'LOGIN.HEALTHCARE_PLATFORM' | translate }}</span>
+      </div>
+      <h1 class="brand-title">
+        <span class="brand-synapsed">Synapsed</span>
+        <span class="brand-md">SynapseMD</span>
+      </h1>
+      <p class="brand-desc">{{ 'LOGIN.BRAND_DESCRIPTION' | translate }}</p>
+      <div class="feature-pills">
+        <div class="pill">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {{ 'LOGIN.FEATURES.ROLE_ACCESS' | translate }}
+        </div>
+        <div class="pill">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          {{ 'LOGIN.FEATURES.SMART_SCHEDULING' | translate }}
+        </div>
+        <div class="pill">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          {{ 'LOGIN.FEATURES.CASE_ANALYTICS' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Form Panel -->
+  <div class="form-panel">
+    <div class="glass-panel form-panel-content animate-fade-in">
+      <div class="brand-header">
+        <div class="logo-mark">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+        </div>
+        <h2 *ngIf="!isForgetPasswordMode">{{ 'LOGIN.WELCOME_TITLE' | translate }}</h2>
+        <h2 *ngIf="isForgetPasswordMode">{{ 'LOGIN.FORGOT_PASSWORD_TITLE' | translate }}</h2>
+        <p *ngIf="!isForgetPasswordMode">{{ 'LOGIN.WELCOME_SUBTITLE' | translate }}</p>
+        <p *ngIf="isForgetPasswordMode && !forgetPasswordSent">{{ 'LOGIN.FORGOT_PASSWORD_SUBTITLE' | translate }}</p>
+        <p *ngIf="isForgetPasswordMode && forgetPasswordSent">{{ 'LOGIN.RESET_LINK_SENT_DESC' | translate }}</p>
+      </div>
+
+      <!-- Google SSO -->
+      <button type="button" (click)="loginWithFirebaseSSO()" class="btn-google-sso" *ngIf="!isForgetPasswordMode">
+        <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+          <g transform="matrix(1, 0, 0, 1, 0, 0)">
+            <path
+              d="M21.35,11.1H12v2.7h5.38C16.88,16.07,14.7,17.4,12,17.4c-3.15,0-5.8-2.13-6.75-5c-0.24-0.72-0.38-1.5-0.38-2.3s0.14-1.58,0.38-2.3c0.95-2.87,3.6-5,6.75-5c1.7,0,3.23,0.58,4.43,1.73l2.03-2.03C17.03,1.37,14.7,0.6,12,0.6c-4.97,0-9,4.03-9,9s4.03,9,9,9c5.18,0,8.65-3.64,8.65-8.8C20.65,11.83,21.35,11.1,21.35,11.1z"
+              fill="#4285F4" />
+          </g>
+        </svg>
+        <span>{{ 'LOGIN.GOOGLE_LOGIN' | translate }}</span>
+      </button>
+
+      <div class="divider" *ngIf="!isRegisterMode && !isForgetPasswordMode">{{ 'LOGIN.OR_SIGNIN' | translate }}</div>
+      <div class="divider" *ngIf="isRegisterMode && !isForgetPasswordMode">{{ 'LOGIN.NEW_REGISTRATION' | translate }}
+      </div>
+
+      <div class="error-alert" *ngIf="errorMessage">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <form *ngIf="!isRegisterMode && !isForgetPasswordMode" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+          <label class="form-label">{{ 'LOGIN.EMAIL_LABEL' | translate }}</label>
+          <input type="email" formControlName="email" class="form-input"
+            [placeholder]="'LOGIN.EMAIL_PLACEHOLDER' | translate">
+        </div>
+
+        <div class="form-group" *ngIf="!isSSO">
+          <label class="form-label" for="password">{{ 'LOGIN.PASSWORD_LABEL' | translate }}</label>
+          <div class="password-input-wrapper">
+            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+              class="form-input" placeholder="••••••••" autocomplete="current-password">
+            <button type="button" class="password-toggle-btn" (click)="togglePasswordVisibility()" tabindex="-1">
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24">
+                </path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" [disabled]="loginForm.invalid || loading">
+          <span *ngIf="!loading">{{ 'LOGIN.SIGNIN_BUTTON' | translate }}</span>
+          <span *ngIf="loading">{{ 'LOGIN.AUTHENTICATING' | translate }}</span>
+        </button>
+
+        <div class="auth-switch">
+          <button type="button" class="register-link" (click)="toggleForgetPassword()">
+            {{ 'LOGIN.FORGOT_PASSWORD_LINK' | translate }}
+          </button>
+        </div>
+
+        <div class="auth-switch">
+          <span>{{ 'LOGIN.NO_ACCOUNT' | translate }}</span>
+          <button type="button" class="register-link" (click)="toggleRegister()">
+            {{ 'LOGIN.REGISTER' | translate }}
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Forgot Password Form -->
+      <form *ngIf="!isRegisterMode && isForgetPasswordMode && !forgetPasswordSent" [formGroup]="forgetPasswordForm"
+        (ngSubmit)="submitForgetPassword()">
+        <div class="form-group">
+          <label class="form-label">{{ 'LOGIN.EMAIL_LABEL' | translate }}</label>
+          <input type="email" formControlName="email" class="form-input"
+            [placeholder]="'LOGIN.EMAIL_PLACEHOLDER' | translate">
+        </div>
+
+        <button type="submit" class="btn-primary" [disabled]="forgetPasswordForm.invalid || forgetPasswordLoading">
+          <span *ngIf="!forgetPasswordLoading">{{ 'LOGIN.SEND_RESET_LINK' | translate }}</span>
+          <span *ngIf="forgetPasswordLoading">{{ 'LOGIN.AUTHENTICATING' | translate }}</span>
+        </button>
+
+        <div class="auth-switch">
+          <button type="button" class="register-link" (click)="toggleForgetPassword()">
+            ← {{ 'LOGIN.BACK_TO_LOGIN' | translate }}
+          </button>
+        </div>
+      </form>
+
+      <!-- Success Reset Password Panel -->
+      <div class="forgot-password-success-panel animate-fade-in"
+        *ngIf="!isRegisterMode && isForgetPasswordMode && forgetPasswordSent">
+        <div class="success-checkmark-wrapper">
+          <div class="success-checkmark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+        <button type="button" class="btn-primary" (click)="toggleForgetPassword()">
+          {{ 'LOGIN.BACK_TO_LOGIN' | translate }}
+        </button>
+      </div>
+
+      <form *ngIf="isRegisterMode" [formGroup]="registerForm">
+
+        <div class="form-group">
+          <label class="form-label">{{ 'LOGIN.FULL_NAME' | translate }}</label>
+          <input type="text" formControlName="name" class="form-input" placeholder="Dr. John Smith">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">{{ 'LOGIN.MOBILE_LABEL' | translate }}</label>
+
+          <div class="input-action-wrapper">
+            <!--
+              app-phone-input acts as a full ControlValueAccessor.
+              It emits: { countryCode: string, number: string }
+
+              - collectionName  → your DataService collection (no hardcoded list)
+              - valueProp       → field used as the dial code value (e.g. 'dial_code')
+              - labelProp       → handlebar template for the country name label
+              - [readonly]      → locks the whole control after verification
+            -->
+            <app-phone-input formControlName="mobile" [collectionName]="phoneCollection" [valueProp]="phoneValueProp"
+              [labelProp]="phoneLabelProp" numberPlaceholder="9876543210" [readonly]="mobileVerified"
+              class="form-input"></app-phone-input>
+
+            <span *ngIf="!mobileOtpSent && !mobileVerified && !mobileOtpLoading" class="input-action"
+              (click)="sendMobileOtp()">
+              {{ 'LOGIN.SEND_OTP' | translate }}
+            </span>
+
+            <span *ngIf="mobileOtpLoading" class="input-action pending">Sending…</span>
+            <span *ngIf="mobileVerified" class="input-action verified">
+              ✓ {{ 'LOGIN.VERIFIED' | translate }}
+            </span>
+          </div>
+          <div class="input-action-wrapper otp-box" *ngIf="mobileOtpSent && !mobileVerified">
+            <input type="text" formControlName="mobileOtp" class="form-input otp-input-with-timer"
+              placeholder="Enter OTP" maxlength="6">
+
+            <span class="otp-timer-badge" *ngIf="mobileTimer > 0">{{ mobileTimer }}s</span>
+
+            <span *ngIf="mobileTimer === 0" class="input-action resend" (click)="resendMobileOtp()">Resend</span>
+
+            <span class="input-action verify" (click)="verifyMobileOtp()">
+              {{ mobileOtpVerifying ? 'Verifying…' : ('LOGIN.VERIFY' | translate) }}
+            </span>
+          </div>
+
+          <!-- OTP expired hint -->
+          <p class="otp-expired-hint"
+            *ngIf="mobileOtpEverSent && !mobileOtpSent && !mobileVerified && mobileTimer === 0 && !mobileOtpLoading">
+            OTP expired.
+            <span class="resend-inline" (click)="sendMobileOtp()">Send again</span>
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">{{ 'LOGIN.EMAIL_LABEL' | translate }}</label>
+
+          <div class="input-action-wrapper">
+            <input type="email" formControlName="email" class="form-input" placeholder="John@gmail.com"
+              [readonly]="emailVerified">
+
+            <span *ngIf="!emailOtpSent && !emailVerified && !emailOtpLoading" class="input-action"
+              (click)="sendEmailOtp()">
+              {{ 'LOGIN.SEND_OTP' | translate }}
+            </span>
+
+            <span *ngIf="emailOtpLoading" class="input-action pending">Sending…</span>
+
+            <span *ngIf="emailVerified" class="input-action verified">
+              ✓ {{ 'LOGIN.VERIFIED' | translate }}
+            </span>
+          </div>
+
+          <div class="input-action-wrapper otp-box" *ngIf="emailOtpSent && !emailVerified">
+            <input type="text" formControlName="emailOtp" class="form-input otp-input-with-timer"
+              placeholder="Enter OTP" maxlength="6">
+
+            <span class="otp-timer-badge" *ngIf="emailTimer > 0">{{ emailTimer }}s</span>
+
+            <span *ngIf="emailTimer === 0" class="input-action resend" (click)="resendEmailOtp()">Resend</span>
+
+            <span class="input-action verify" (click)="verifyEmailOtp()">
+              {{ emailOtpVerifying ? 'Verifying…' : ('LOGIN.VERIFY' | translate) }}
+            </span>
+          </div>
+
+          <p class="otp-expired-hint"
+            *ngIf="emailOtpEverSent && !emailOtpSent && !emailVerified && emailTimer === 0 && !emailOtpLoading">
+            OTP expired.
+            <span class="resend-inline" (click)="sendEmailOtp()">Send again</span>
+          </p>
+        </div>
+        <button type="button" class="btn-primary" (click)="continueRegistration()"
+          [disabled]="registerForm.invalid || !mobileVerified || !emailVerified || (showTermsCheckbox && !isTermsChecked)">
+          {{ 'LOGIN.CREATE_ACCOUNT' | translate }}
+        </button>
+
+        <div class="auth-switch">
+          <span>{{ 'LOGIN.HAVE_ACCOUNT' | translate }}</span>
+          <button type="button" class="register-link" (click)="toggleRegister()">
+            {{ 'LOGIN.SIGNIN' | translate }}
+          </button>
+        </div>
+
+      </form>
+
+      <div class="form-footer">
+        <span class="footer-text">
+          {{ 'LOGIN.POWERED_BY' | translate }} <strong>Synapsed</strong> &mdash;
+          {{ 'LOGIN.PLATFORM_NAME' | translate }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Account Chooser Modal -->
+  <div class="google-chooser-overlay" *ngIf="showGoogleChooser">
+    <div class="google-chooser-modal">
+      <div class="google-header">
+        <div class="google-logo">
+          <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+            <g transform="matrix(1, 0, 0, 1, 0, 0)">
+              <path
+                d="M21.35,11.1H12v2.7h5.38C16.88,16.07,14.7,17.4,12,17.4c-3.15,0-5.8-2.13-6.75-5c-0.24-0.72-0.38-1.5-0.38-2.3s0.14-1.58,0.38-2.3c0.95-2.87,3.6-5,6.75-5c1.7,0,3.23,0.58,4.43,1.73l2.03-2.03C17.03,1.37,14.7,0.6,12,0.6c-4.97,0-9,4.03-9,9s4.03,9,9,9c5.18,0,8.65-3.64,8.65-8.8C20.65,11.83,21.35,11.1,21.35,11.1z"
+                fill="#4285F4" />
+            </g>
+          </svg>
+        </div>
+        <h2 class="google-title">Choose an account</h2>
+        <p class="google-subtitle">to continue to <span class="google-app-name">SynapseMD</span></p>
+      </div>
+
+      <div class="google-accounts-list">
+        <div class="google-account-item" (click)="selectGoogleAccount('superadmin@system.com', 'Super Admin')">
+          <div class="google-avatar" style="background-color: #6366f1;">SA</div>
+          <div class="google-account-info">
+            <span class="google-account-name">Super Admin</span>
+            <span class="google-account-email">superadmin@system.com</span>
+          </div>
+        </div>
+        <div class="google-account-item" (click)="selectGoogleAccount('doctor.smith@example.com', 'Dr. John Smith')">
+          <div class="google-avatar" style="background-color: #10b981;">JS</div>
+          <div class="google-account-info">
+            <span class="google-account-name">Dr. John Smith</span>
+            <span class="google-account-email">doctor.smith@example.com</span>
+          </div>
+        </div>
+        <div class="google-account-item" (click)="selectGoogleAccount('jane.doe@example.com', 'Jane Doe')">
+          <div class="google-avatar" style="background-color: #f59e0b;">JD</div>
+          <div class="google-account-info">
+            <span class="google-account-name">Jane Doe</span>
+            <span class="google-account-email">jane.doe@example.com</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="google-custom-account">
+        <div class="google-custom-title">Use another account (mock)</div>
+        <div class="google-custom-inputs">
+          <input type="text" [(ngModel)]="customGoogleName" placeholder="Name" class="google-custom-input">
+          <input type="email" [(ngModel)]="customGoogleEmail" placeholder="Email" class="google-custom-input">
+          <button type="button" class="google-custom-btn" (click)="submitCustomGoogleAccount()"
+            [disabled]="!customGoogleName || !customGoogleEmail">
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div class="google-footer">
+        <span (click)="closeGoogleChooser()" style="cursor: pointer; color: #1a73e8; font-weight: 500;">Cancel</span>
+        <div class="google-footer-links">
+          <a href="#" target="_blank">Privacy</a>
+          <a href="#" target="_blank">Terms</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

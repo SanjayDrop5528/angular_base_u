@@ -1,0 +1,678 @@
+<!-- ═══════════════════════════════════════════════════════════
+     Layout Demo — Control panel + live preview
+     ═══════════════════════════════════════════════════════════ -->
+
+<!-- ── Control Panel (fixed overlay) ──────────────────────── -->
+<div class="demo-controls">
+  <div class="demo-controls-header">
+    <mat-icon class="demo-header-icon">tune</mat-icon>
+    <span>Layout Playground</span>
+    <button class="close-btn" (click)="controlsOpen = !controlsOpen"
+      [matTooltip]="controlsOpen ? 'Hide controls' : 'Show controls'" [class.closed]="!controlsOpen">
+      <mat-icon>{{ controlsOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Mode selector -->
+  <div class="control-group">
+    <label class="control-label">Layout Mode</label>
+    <div class="mode-grid">
+      <button *ngFor="let m of modeOptions" class="mode-btn" [class.selected]="selectedMode === m.value"
+        (click)="onModeChange(m.value)">
+        <mat-icon>{{ m.icon }}</mat-icon>
+        <span>{{ m.label }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu type (only relevant for header modes) -->
+  <div class="control-group" *ngIf="selectedMode !== 'sidenav-only'">
+    <label class="control-label">Header Menu Type</label>
+    <div class="mode-grid">
+      <button *ngFor="let mt of menuTypeOptions" class="mode-btn" [class.selected]="selectedMenuType === mt.value"
+        (click)="onMenuTypeChange(mt.value)">
+        <mat-icon>{{ mt.icon }}</mat-icon>
+        <span>{{ mt.label }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Accent colour presets -->
+  <!-- <div class="control-group">
+    <label class="control-label">Accent Color</label>
+    <div class="theme-swatches">
+      <button
+        *ngFor="let t of themes; let i = index"
+        class="swatch-btn"
+        [class.selected]="selectedTheme === i"
+        [style.--swatch-primary]="t.primary"
+        [style.--swatch-secondary]="t.secondary"
+        (click)="applyTheme(i)"
+        [matTooltip]="t.name">
+        <span class="swatch-dot"></span>
+      </button>
+    </div>
+  </div> -->
+
+  <!-- Surface colour presets -->
+  <div class="control-group">
+    <label class="control-label">Surface Style</label>
+    <div class="surface-grid">
+      <button *ngFor="let s of surfacePresets; let i = index" class="surface-btn"
+        [class.selected]="selectedSurface === i" [style.background]="s.colors['header-bg-color']"
+        (click)="applySurface(i)" [matTooltip]="s.name">
+        <span class="surface-label">{{ s.name }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Permission system demo (only visible in sidenav modes) -->
+  <div class="control-group" *ngIf="selectedMode !== 'header-only'">
+    <label class="control-label">Permission Demo</label>
+    <div class="permission-section">
+      <div class="permission-row">
+        <mat-icon>shield</mat-icon>
+        <span>Active Permissions</span>
+        <span class="perm-badge">{{ userPermissions.length }}</span>
+      </div>
+      <div class="permission-list">
+        <mat-chip *ngFor="let p of userPermissions.slice(0, 5)" class="perm-chip">
+          {{ p }}
+        </mat-chip>
+        <span *ngIf="userPermissions.length > 5" class="perm-more">
+          +{{ userPermissions.length - 5 }} more
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Active state readout -->
+  <div class="state-readout" *ngIf="activeNavId || activeSectionId">
+    <div class="state-row" *ngIf="activeSectionId">
+      <span class="state-key">Section</span>
+      <span class="state-val">{{ activeSectionLabel }}</span>
+    </div>
+    <div class="state-row" *ngIf="activeNavId">
+      <span class="state-key">Active Nav</span>
+      <span class="state-val">{{ activeNavLabel }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Live Layout Preview ──────────────────────────────────── -->
+<div class="demo-preview-frame">
+  <app-layout [config]="config" [user]="user" [org]="org" (navItemClick)="onNavItemClick($event)"
+    (sectionClick)="onSectionClick($event)" (profileClick)="lastNavLabel = 'Profile clicked'">
+    <!-- Slot: page content -->
+    <div class="demo-page-content">
+
+      <!-- Breadcrumb -->
+      <div class="demo-breadcrumb" *ngIf="activeNavId">
+        <mat-icon class="bc-icon">home</mat-icon>
+        <span class="bc-sep">/</span>
+        <span *ngIf="activeSectionId">{{ activeSectionLabel }}</span>
+        <span *ngIf="activeSectionId" class="bc-sep">/</span>
+        <span class="bc-active">{{ activeNavLabel }}</span>
+      </div>
+
+      <!-- Hero card -->
+      <div class="demo-hero glass-panel">
+        <div class="demo-hero-left">
+          <h1 class="demo-hero-title gradient-text-accent">Layout Module</h1>
+          <p class="demo-hero-sub">
+            Three configurable layout modes — header-only, sidenav-only,
+            and header+sidenav. Use the controls panel to switch modes,
+            menu types, accent colors, and surface styles in real-time.
+          </p>
+          <div class="demo-hero-tags">
+            <span class="demo-tag">Angular 22</span>
+            <span class="demo-tag">Angular Material</span>
+            <span class="demo-tag">Glassmorphic</span>
+            <span class="demo-tag">Standalone</span>
+          </div>
+        </div>
+        <div class="demo-hero-right">
+          <div class="mode-display-badge">
+            <mat-icon>{{ selectedMode === 'header-only' ? 'web_asset' : selectedMode === 'sidenav-only' ? 'view_sidebar'
+              : 'dashboard' }}</mat-icon>
+            <span>{{ selectedMode }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Permission system demo section -->
+      <div class="ref-section permission-demo">
+        <div class="ref-header">
+          <mat-icon class="ref-header-icon">shield</mat-icon>
+          <div>
+            <h2 class="ref-title">Permission System</h2>
+            <p class="ref-subtitle">
+              Role-based access control examples using directives and services.
+            </p>
+          </div>
+        </div>
+
+        <div class="ref-description glass-panel">
+          <h3><mat-icon>shield</mat-icon> Permission Service & Directives</h3>
+          <p>
+            The permission system uses <code>PermissionService</code> to check
+            if users have specific permissions. Three directives are available:
+          </p>
+          <ul>
+            <li><code>[hasPermission]="permission"</code> — Show/hide element based on permission</li>
+            <li><code>*hasAnyPermission="[p1, p2]"</code> — Show if user has ANY of the permissions</li>
+            <li><code>*hasAllPermissions="[p1, p2]"</code> — Show only if user has ALL permissions</li>
+          </ul>
+          <div class="ref-badges">
+            <span class="ref-badge">Service-based checks</span>
+            <span class="ref-badge">Template directives</span>
+            <span class="ref-badge">Dynamic permission loading</span>
+          </div>
+        </div>
+
+        <div class="ref-code glass-panel">
+          <div class="ref-code-header"><mat-icon>code</mat-icon> Permission Usage Examples</div>
+          <pre class="ref-code-block">{{ snippet_permissions }}</pre>
+        </div>
+
+        <!-- Live permission examples -->
+        <div class="ref-live">
+          <div class="ref-live-label"><mat-icon>play_circle</mat-icon> Live Permission Examples</div>
+
+          <!-- Example 1: hasPermission directive -->
+          <div class="permission-example">
+            <h4><mat-icon>lock</mat-icon> *appHasPermission="['module', 'submodule', 'action']"</h4>
+            <div class="example-content" *appHasPermission="['user-management-module', 'all-users', 'edit']">
+              <p class="granted">✅ This section is visible because you have the 'admin:user:edit' permission.</p>
+            </div>
+            <div class="example-content" *appHasPermission="['user-management-module', 'all-users', 'delete']">
+              <p class="denied">❌ This section is hidden because you do NOT have the 'admin:user:delete' permission.</p>
+            </div>
+          </div>
+
+          <!-- Example 2: hasAnyPermission directive -->
+          <div class="permission-example">
+            <h4><mat-icon>account_balance</mat-icon> *appHasAnyPermission="['permission', 'permission']"</h4>
+            <div class="example-content"
+              *appHasAnyPermission="[['user-management-module', 'all-users', 'read'], ['user-management-module', 'all-users', 'admin']]">
+              <p class="granted">✅ This section is visible because you have admin OR superadmin permission.</p>
+            </div>
+          </div>
+
+          <!-- Example 3: Conditional menu items -->
+          <div class="permission-example">
+            <h4><mat-icon>menu</mat-icon> Conditional Menu Items</h4>
+            <mat-nav-list>
+              <a mat-list-item href="#" *appHasPermission="['user-management-module', 'all-users', 'read']">
+                <mat-icon>people</mat-icon>
+                <span>All Users</span>
+              </a>
+              <a mat-list-item href="#" *appHasPermission="['user-management-module', 'user-roles', 'read']">
+                <mat-icon>shield</mat-icon>
+                <span>Roles & Permissions</span>
+              </a>
+              <a mat-list-item href="#" *appHasPermission="['user-management-module', 'user-sessions', 'list']">
+                <mat-icon>history</mat-icon>
+                <span>Audit Log</span>
+              </a>
+            </mat-nav-list>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           Sidenav Demo: Parent + Children
+           ═══════════════════════════════════════════════════ -->
+      <div class="ref-section sidenav-demo">
+
+        <!-- ── Section header ──────────────────────────────── -->
+        <div class="ref-header">
+          <mat-icon class="ref-header-icon">folder_open</mat-icon>
+          <div>
+            <h2 class="ref-title">Sidenav Parent + Children</h2>
+            <p class="ref-subtitle">
+              Demonstrates sidenav configuration with parent sections
+              and expanded children in header-sidenav mode.
+            </p>
+          </div>
+        </div>
+
+        <!-- Code snippet -->
+        <div class="ref-code glass-panel">
+          <div class="ref-code-header">
+            <mat-icon>code</mat-icon> TypeScript + Template
+          </div>
+          <pre class="ref-code-block">{{ snippet_sidenav_children }}</pre>
+        </div>
+
+        <!-- Live preview -->
+        <div class="ref-live">
+          <div class="ref-live-label">
+            <mat-icon>play_circle</mat-icon> Live Preview (header-sidenav mode required)
+          </div>
+          <div class="sidenav-preview">
+            <app-layout [config]="sidenavDemoConfig" [user]="user" [org]="org" style="height:400px;">
+            </app-layout>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           COMPONENT REFERENCE: core-card & core-grid
+           ═══════════════════════════════════════════════════ -->
+      <div class="ref-section">
+
+        <!-- ── Section header ──────────────────────────────── -->
+        <div class="ref-header">
+          <mat-icon class="ref-header-icon">widgets</mat-icon>
+          <div>
+            <h2 class="ref-title">Component Reference</h2>
+            <p class="ref-subtitle">
+              Live examples for <code>core-card</code> and <code>core-grid</code>.
+              Three usage modes + card view in the grid.
+            </p>
+          </div>
+        </div>
+
+        <!-- ── Mode tabs ─────────────────────────────────────── -->
+        <div class="ref-tabs">
+          <button class="ref-tab" [class.active]="demoTab==='mode1'" (click)="demoTab='mode1'">
+            <mat-icon>data_object</mat-icon> Mode 1 — JSON Schema
+          </button>
+          <button class="ref-tab" [class.active]="demoTab==='mode2'" (click)="demoTab='mode2'">
+            <mat-icon>html</mat-icon> Mode 2 — ng-content
+          </button>
+          <button class="ref-tab" [class.active]="demoTab==='mode3'" (click)="demoTab='mode3'">
+            <mat-icon>dynamic_form</mat-icon> Mode 3 — Component Input
+          </button>
+          <button class="ref-tab" [class.active]="demoTab==='grid'" (click)="demoTab='grid'">
+            <mat-icon>grid_view</mat-icon> core-grid Card View
+          </button>
+        </div>
+
+        <!-- ── Last action feedback ──────────────────────────── -->
+        <div class="ref-action-feedback" *ngIf="lastCardAction">
+          <mat-icon>info</mat-icon>
+          <span>{{ lastCardAction }}</span>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+             MODE 1 — JSON-driven (no templates needed)
+             ════════════════════════════════════════════════ -->
+        <div *ngIf="demoTab === 'mode1'" class="ref-panel">
+          <div class="ref-description glass-panel">
+            <h3><mat-icon>data_object</mat-icon> Mode 1 — JSON Schema</h3>
+            <p>
+              The simplest usage. Define a <code>CardSchema</code> object with
+              <code>titleKey</code>, <code>subtitleKey</code>, <code>fields[]</code>,
+              and <code>actions[]</code>. Pass it and a data row — the card renders itself.
+            </p>
+            <div class="ref-badges">
+              <span class="ref-badge">No templates</span>
+              <span class="ref-badge">Fully declarative</span>
+              <span class="ref-badge">Supports text, badge, date, currency, icon types</span>
+            </div>
+          </div>
+
+          <!-- Code snippet -->
+          <div class="ref-code glass-panel">
+            <div class="ref-code-header">
+              <mat-icon>code</mat-icon> TypeScript + Template
+            </div>
+            <pre class="ref-code-block">{{ snippet_mode1 }}</pre>
+          </div>
+
+          <!-- Live cards -->
+          <div class="ref-live">
+            <div class="ref-live-label">
+              <mat-icon>play_circle</mat-icon> Live Output
+            </div>
+            <div class="ref-card-grid">
+              <core-card *ngFor="let u of demoUsers" [data]="u" [cardSchema]="mode1Schema"
+                [actionCallback]="onDemoCardAction.bind(this)">
+              </core-card>
+            </div>
+          </div>
+
+          <!-- Input reference table -->
+          <div class="ref-api glass-panel">
+            <h4>CardSchema fields</h4>
+            <table class="ref-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>titleKey</td>
+                  <td>string</td>
+                  <td>Data key used as the card heading</td>
+                </tr>
+                <tr>
+                  <td>subtitleKey</td>
+                  <td>string?</td>
+                  <td>Data key used as the card sub-heading</td>
+                </tr>
+                <tr>
+                  <td>avatarKey</td>
+                  <td>string?</td>
+                  <td>Data key for an avatar image URL</td>
+                </tr>
+                <tr>
+                  <td>fields[]</td>
+                  <td>CardField[]</td>
+                  <td>List of body fields to render</td>
+                </tr>
+                <tr>
+                  <td>actions[]</td>
+                  <td>CardAction[]?</td>
+                  <td>Footer action buttons</td>
+                </tr>
+              </tbody>
+            </table>
+            <h4 style="margin-top:1rem">CardField options</h4>
+            <table class="ref-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Values</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>key</td>
+                  <td>string</td>
+                  <td>Dot-notation data path (e.g. <code>role.name</code>)</td>
+                </tr>
+                <tr>
+                  <td>label</td>
+                  <td>string</td>
+                  <td>Display label shown above the value</td>
+                </tr>
+                <tr>
+                  <td>type</td>
+                  <td>text | badge | date | currency | icon</td>
+                  <td>Render style</td>
+                </tr>
+                <tr>
+                  <td>span</td>
+                  <td>1 | 2</td>
+                  <td>Column span inside the card body grid</td>
+                </tr>
+                <tr>
+                  <td>badgeColor</td>
+                  <td>primary | accent | warn | success | info</td>
+                  <td>Badge chip color</td>
+                </tr>
+                <tr>
+                  <td>dateFormat</td>
+                  <td>string</td>
+                  <td>Angular date pipe format (e.g. <code>dd MMM yyyy</code>)</td>
+                </tr>
+                <tr>
+                  <td>currency</td>
+                  <td>string</td>
+                  <td>ISO currency code for type=currency</td>
+                </tr>
+                <tr>
+                  <td>templateId</td>
+                  <td>string</td>
+                  <td>Matches a key in <code>[fieldTemplateMap]</code> for custom rendering</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+             MODE 2 — ng-content projection
+             ════════════════════════════════════════════════ -->
+        <div *ngIf="demoTab === 'mode2'" class="ref-panel">
+          <div class="ref-description glass-panel">
+            <h3><mat-icon>html</mat-icon> Mode 2 — ng-content Projection</h3>
+            <p>
+              The card header (title / subtitle / avatar) and footer actions still
+              come from <code>cardSchema</code>. The <strong>entire body</strong> is
+              replaced by whatever you put inside the <code>&lt;core-card&gt;</code> tags.
+              Perfect for completely custom layouts — stat blocks, progress bars, nested lists.
+            </p>
+            <div class="ref-badges">
+              <span class="ref-badge">Full body control</span>
+              <span class="ref-badge">Schema drives header + footer only</span>
+              <span class="ref-badge">Works with any Angular template</span>
+            </div>
+          </div>
+
+          <!-- Code snippet -->
+          <div class="ref-code glass-panel">
+            <div class="ref-code-header"><mat-icon>code</mat-icon> Template</div>
+            <pre class="ref-code-block">{{ snippet_mode2 }}</pre>
+          </div>
+
+          <!-- Live cards with projected content -->
+          <div class="ref-live">
+            <div class="ref-live-label"><mat-icon>play_circle</mat-icon> Live Output</div>
+            <div class="ref-card-grid">
+              <core-card *ngFor="let u of demoUsers.slice(0, 3)" [data]="u" [cardSchema]="mode2Schema"
+                [actionCallback]="onDemoCardAction.bind(this)">
+                <!-- Custom projected body -->
+                <div class="demo-projected-body">
+                  <div class="projected-row">
+                    <div class="projected-avatar">{{ u.name[0] }}</div>
+                    <div>
+                      <div class="projected-role">{{ u.role }}</div>
+                      <div class="projected-region">
+                        <mat-icon style="font-size:13px;width:13px;height:13px">place</mat-icon>
+                        {{ u.region }}
+                      </div>
+                    </div>
+                    <mat-chip
+                      [class]="'badge-' + (u.status === 'active' ? 'success' : u.status === 'invited' ? 'info' : 'warn')"
+                      style="margin-left:auto">
+                      {{ u.status }}
+                    </mat-chip>
+                  </div>
+                  <div class="projected-divider"></div>
+                  <div class="projected-meta">
+                    <mat-icon
+                      style="font-size:13px;width:13px;height:13px;color:var(--mat-secondary-text-color,#888)">calendar_today</mat-icon>
+                    Joined {{ u.joined | date:'dd MMM yyyy' }}
+                    &nbsp;·&nbsp;
+                    <mat-icon
+                      style="font-size:13px;width:13px;height:13px;color:var(--mat-secondary-text-color,#888)">{{ u.mfa
+                      ? 'verified_user' : 'no_encryption' }}</mat-icon>
+                    MFA {{ u.mfa ? 'On' : 'Off' }}
+                  </div>
+                </div>
+              </core-card>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+             MODE 3 — Component as Input
+             ════════════════════════════════════════════════ -->
+        <div *ngIf="demoTab === 'mode3'" class="ref-panel">
+          <div class="ref-description glass-panel">
+            <h3><mat-icon>dynamic_form</mat-icon> Mode 3 — Component as Input</h3>
+            <p>
+              Pass any Angular component class to <code>[cardComponent]</code> on
+              <code>core-grid</code>. The grid creates one instance per data row via
+              <code>ViewContainerRef</code>, injects <code>data</code> and <code>cardSchema</code>
+              into each instance, and appends it to the DOM. Your component just needs to
+              implement the <code>CoreCardHost</code> interface.
+            </p>
+            <div class="ref-badges">
+              <span class="ref-badge">Full component encapsulation</span>
+              <span class="ref-badge">Dynamic creation via ViewContainerRef</span>
+              <span class="ref-badge">Implement CoreCardHost interface</span>
+            </div>
+          </div>
+
+          <!-- Code snippet -->
+          <div class="ref-code glass-panel">
+            <div class="ref-code-header"><mat-icon>code</mat-icon> TypeScript + Template</div>
+            <pre class="ref-code-block">{{ snippet_mode3 }}</pre>
+          </div>
+
+          <!-- Interface reference -->
+          <div class="ref-api glass-panel">
+            <h4>CoreCardHost interface</h4>
+            <pre class="ref-code-block" style="margin:0">export interface CoreCardHost &#123;
+  data: any;
+  cardSchema?: CardSchema;
+  actionCallback?: (event: &#123; action: string; data: any &#125;) => void;
+&#125;
+
+// In your component:
+export class MyUserCardComponent implements CoreCardHost &#123;
+  &#64;Input() data: any;
+  &#64;Input() cardSchema?: CardSchema;
+  &#64;Input() actionCallback?: (e: any) => void;
+&#125;</pre>
+            <p style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-muted,#888)">
+              core-grid sets these inputs automatically after creating each instance.
+              You can add any additional <code>&#64;Input()</code> fields and populate them
+              via a custom <code>componentInputMap</code> if needed.
+            </p>
+          </div>
+
+          <!-- Simulated output using core-card (same visual result) -->
+          <div class="ref-live">
+            <div class="ref-live-label"><mat-icon>play_circle</mat-icon> Live Output (simulated)</div>
+            <div class="ref-card-grid">
+              <core-card *ngFor="let u of demoUsers" [data]="u" [cardSchema]="mode3Schema"
+                [actionCallback]="onDemoCardAction.bind(this)">
+              </core-card>
+            </div>
+          </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+             core-grid CARD VIEW
+             ════════════════════════════════════════════════ -->
+        <div *ngIf="demoTab === 'grid'" class="ref-panel">
+          <div class="ref-description glass-panel">
+            <h3><mat-icon>grid_view</mat-icon> core-grid — Adaptive Table + Card View</h3>
+            <p>
+              <code>core-grid</code> wraps AG Grid and automatically switches to card layout
+              on mobile screens (&lt; 768 px) via <code>BreakpointObserver</code>. The header
+              provides manual toggle buttons (table / grid icons). You can force a specific
+              mode with <code>[viewMode]="'card'"</code>.
+            </p>
+            <div class="ref-badges">
+              <span class="ref-badge">Auto breakpoint switching</span>
+              <span class="ref-badge">Manual toggle in header</span>
+              <span class="ref-badge">CDK Virtual Scroll</span>
+              <span class="ref-badge">Same AG Grid data pipeline</span>
+            </div>
+          </div>
+
+          <!-- Code snippet -->
+          <div class="ref-code glass-panel">
+            <div class="ref-code-header"><mat-icon>code</mat-icon> Template</div>
+            <pre class="ref-code-block">{{ snippet_grid }}</pre>
+          </div>
+
+          <!-- Live core-grid in forced card mode -->
+          <div class="ref-live">
+            <div class="ref-live-label">
+              <mat-icon>play_circle</mat-icon> Live Output — core-grid forced to card view
+            </div>
+            <core-grid [listData]="demoUsers" [gridRowModelType]="'clientSide'" [viewMode]="'card'"
+              [cardSchema]="gridCardSchema" [cardActionCallback]="onDemoCardAction.bind(this)" [showHeader]="true"
+              style="display:block">
+            </core-grid>
+          </div>
+
+          <!-- Input reference table -->
+          <div class="ref-api glass-panel">
+            <h4>core-grid Inputs</h4>
+            <table class="ref-table">
+              <thead>
+                <tr>
+                  <th>Input</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>[listName]</td>
+                  <td>string</td>
+                  <td>Loads JSON config from assets (column defs, sorting etc.)</td>
+                </tr>
+                <tr>
+                  <td>[listData]</td>
+                  <td>any[]</td>
+                  <td>Client-side row data</td>
+                </tr>
+                <tr>
+                  <td>[apiObservable]</td>
+                  <td>fn</td>
+                  <td>Server-side data fetch function</td>
+                </tr>
+                <tr>
+                  <td>[gridRowModelType]</td>
+                  <td>'clientSide' | 'serverSide'</td>
+                  <td>AG Grid row model</td>
+                </tr>
+                <tr>
+                  <td>[viewMode]</td>
+                  <td>'grid' | 'card' | undefined</td>
+                  <td>Force a view; omit for auto-switch</td>
+                </tr>
+                <tr>
+                  <td>[cardSchema]</td>
+                  <td>CardSchema</td>
+                  <td>JSON schema for card layout (Mode 1)</td>
+                </tr>
+                <tr>
+                  <td>[cardComponent]</td>
+                  <td>Type&lt;CoreCardHost&gt;</td>
+                  <td>Component class for Mode 3</td>
+                </tr>
+                <tr>
+                  <td>[fieldTemplateMap]</td>
+                  <td>Record&lt;string, TemplateRef&gt;</td>
+                  <td>Custom TemplateRefs per field ID</td>
+                </tr>
+                <tr>
+                  <td>[cardActionCallback]</td>
+                  <td>fn</td>
+                  <td>Called when a card action button is clicked</td>
+                </tr>
+                <tr>
+                  <td>[cardItemSize]</td>
+                  <td>number</td>
+                  <td>Item height in px for CDK virtual scroll (default 180)</td>
+                </tr>
+                <tr>
+                  <td>[showHeader]</td>
+                  <td>boolean</td>
+                  <td>Show/hide the grid header with toggle buttons and add button</td>
+                </tr>
+                <tr>
+                  <td>(actionClicked)</td>
+                  <td>EventEmitter</td>
+                  <td>Emits AG Grid action button events</td>
+                </tr>
+                <tr>
+                  <td>(rowClicked)</td>
+                  <td>EventEmitter</td>
+                  <td>Emits the clicked row data</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /ref-section -->
+
+    </div>
+  </app-layout>
+</div>

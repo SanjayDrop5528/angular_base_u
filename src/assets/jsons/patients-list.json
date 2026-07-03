@@ -1,0 +1,468 @@
+{
+  "pageHeading": "PATIENT.PAGE_PATIENTS",
+  "pageDescription": "PATIENT.PAGE_PATIENTS_DESC",
+  "collectionName": "patients",
+  "editMode": "page",
+  "screenEditMode": "page",
+  "screenWidth": "900px",
+  "drawerWidth": "900px",
+  "showbutton": false,
+  "filterOptions": [
+    {
+      "columnName": "search",
+      "label": "PATIENT.SEARCH_NAME_MOBILE",
+      "type": "multiSearch",
+      "operator": "CONTAINS",
+      "columns": ["patient_name", "phone"]
+    },
+  
+    {
+      "type": "select",
+      "label": "PATIENT.CARD.STATUS",
+      "columnName": "status",
+      "multiSelection": false,
+      "labelProp": "label",
+      "valueProp": "value",
+      "selectedValue": "",
+      "options": [
+     
+        {
+          "label": "Active",
+          "value": "active"
+        },
+        {
+          "label": "Inactive",
+          "value": "inactive"
+        }
+      ]
+    }
+  ],
+  "cardSchema": {
+    "type": "container",
+    "className": "column",
+    "children": [
+      {
+        "type": "container",
+        "className": "row",
+        "customStyles": {
+          "padding": "12px 20px"
+        },
+        "children": [
+          {
+            "type": "avatar",
+            "key": "profile_image",
+            "nameKey": "patient_name",
+            "avatarFolder": "patient_profiles"
+          },
+          {
+            "type": "container",
+            "className": "col column",
+            "customStyles": {
+              "gap": "5px"
+            },
+            "children": [
+              {
+                "type": "text",
+                "variant": "title",
+                "textLength": 30,
+                "key": "patient_name"
+              },
+              {
+                "type": "container",
+                "className": "row no-gap",
+                "customStyles": {
+                  "flex-wrap": "nowrap"
+                },
+                "children": [
+                  {
+                    "type": "icon",
+                    "icon": "email",
+                    "color": "primary"
+                  },
+                  {
+                    "type": "contact",
+                    "textLength": 35,
+                    "subType": "email",
+                    "key": "email",
+                    "customStyles": {
+                      "font-size": "13px"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "className": "row",
+                "customStyles": {
+                  "flex-wrap": "nowrap",
+                  "gap": "5px"
+                },
+                "children": [
+                  {
+                    "type": "icon",
+                    "icon": "phone",
+                    "color": "primary"
+                  },
+                  {
+                    "type": "contact",
+                    "subType": "phone",
+                    "key": "phone",
+                    "customStyles": {
+                      "font-size": "13px"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "button",
+            "menu": true,
+            "customStyles": {
+              "bottom": "20px",
+              "left": "17px"
+            },
+            "menuItems": [
+              {
+                "label": "Edit",
+                "icon": "edit",
+                "action": "edit"
+              },
+              {
+                "label": "Delete",
+                "icon": "delete",
+                "action": "delete"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "className": "row",
+        "customStyles": {
+          "flex-wrap": "nowrap",
+          "width": "auto !important",
+          "flex": "0 0 auto",
+          "display": "flex",
+          "padding": "0 10px"
+        },
+        "children": [
+          {
+            "type": "badge",
+            "className": "row",
+            "badgeColor": "primary",
+            "children": [
+              {
+                "type": "container",
+                "className": "row",
+                "customStyles": {
+                  "flex-wrap": "nowrap",
+                  "gap": "5px"
+                },
+                "children": [
+                  {
+                    "type": "icon",
+                    "customStyles": {
+                      "font-size": "18px",
+                      "color": "#FF0000"
+                    },
+                    "icon": "water_drop"
+                  },
+                  {
+                    "type": "text",
+                    "key": "blood_group"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "badge",
+            "className": "row",
+            "children": [
+              {
+                "type": "container",
+                "className": "row",
+                "customStyles": {
+                  "flex-wrap": "nowrap",
+                  "gap": "5px"
+                },
+                "children": [
+                  {
+                    "type": "icon",
+                    "customStyles": {
+                      "font-size": "25px"
+                    },
+                    "key": "gender",
+                    "iconMap": {
+                      "male": "boy",
+                      "female": "girl",
+                      "other": "person"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "key": "gender"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "badge",
+            "className": "row",
+            "children": [
+              {
+                "type": "container",
+                "className": "row",
+                "customStyles": {
+                  "flex-wrap": "nowrap",
+                  "gap": "5px"
+                },
+                "children": [
+                  {
+                    "type": "date",
+                    "key": "date_of_birth",
+                    "elapsed": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "10px 16px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "icon": "warning_amber",
+            "customStyles": {
+              "color": "#EF4444"
+            }
+          },
+          {
+            "type": "text",
+            "variant": "subtitle",
+            "label": "PATIENT.CARD.ALLERGIC",
+            "className": "col",
+            "customStyles": {
+              "margin-left": "10px",
+              "font-size": "11px"
+            }
+          },
+          {
+            "type": "boolean",
+            "key": "is_allergic"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "10px 16px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "icon": "medication",
+            "customStyles": {
+              "color": "#6366F1"
+            }
+          },
+          {
+            "type": "text",
+            "variant": "subtitle",
+            "label": "PATIENT.CARD.MEDICATION",
+            "className": "col",
+            "customStyles": {
+              "margin-left": "10px",
+              "font-size": "11px"
+            }
+          },
+          {
+            "type": "boolean",
+            "key": "under_medication"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "10px 16px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "icon": "local_hospital",
+            "customStyles": {
+              "color": "#F59E0B"
+            }
+          },
+          {
+            "type": "text",
+            "variant": "subtitle",
+            "label": "PATIENT.CARD.SURGERY",
+            "className": "col",
+            "customStyles": {
+              "margin-left": "10px",
+              "font-size": "11px"
+            }
+          },
+          {
+            "type": "boolean",
+            "key": "had_surgery"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "className": "row align-center",
+        "customStyles": {
+          "padding": "10px 16px"
+        },
+        "children": [
+          {
+            "type": "icon",
+            "icon": "verified_user",
+            "customStyles": {
+              "color": "#10B981"
+            }
+          },
+          {
+            "type": "text",
+            "variant": "subtitle",
+            "label": "PATIENT.CARD.STATUS",
+            "className": "col",
+            "customStyles": {
+              "margin-left": "10px",
+              "font-size": "11px"
+            }
+          },
+          {
+            "type": "status",
+            "key": "status"
+          }
+        ]
+      }
+    ]
+  },
+  "statusActions": [
+    {
+      "sourceField": "status",
+      "expectedValue": "active",
+      "bypass_confirmation": true,
+      "formAction": "update",
+      "tooltip": {
+        "activate": "Deactivate this patient",
+        "deactivate": "Activate this patient"
+      },
+      "setValue": {
+        "activate": "active",
+        "deactivate": "inactive"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "label": "Edit",
+      "icon": "edit",
+      "action": "edit"
+    },
+    {
+      "label": "Delete",
+      "icon": "delete",
+      "action": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "PATIENT.LIST.NAME",
+      "field": "patient_name",
+      "type": "userProfile",
+      "showHoverCard": true,
+      "profileImageField": "profile_image",
+      "folder": "patient_profiles",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "PATIENT.LIST.EMAIL",
+      "field": "email",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "PATIENT.LIST.PHONE",
+      "field": "phone",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "PATIENT.LIST.ALLERGY",
+      "field": "is_allergic",
+      "type": "boolean",
+      "maxWidth": 340,
+      "minWidth": 150
+    },
+    {
+      "headerName": "PATIENT.LIST.MEDICATION",
+      "field": "under_medication",
+      "type": "boolean",
+      "maxWidth": 340,
+      "minWidth": 150
+    },
+    {
+      "headerName": "PATIENT.LIST.SURGERY",
+      "field": "had_surgery",
+      "type": "boolean",
+      "maxWidth": 340,
+      "minWidth": 150
+    },
+    {
+      "headerName": "Status",
+      "field": "status",
+      "lockPosition": "right",
+      "width": 100,
+      "maxWidth": 120,
+      "lockPinned": true,
+      "pinned": "right",
+      "filter": "agSetColumnFilter",
+      "filterParams": {
+        "values": [
+          "active",
+          "inactive",
+          "invited",
+          "suspended"
+        ]
+      },
+      "cellRenderer": "buttonRenderer",
+      "cellRendererParams": {
+        "label": "status",
+        "actionKey": "context.componentParent.config.statusActions"
+      }
+    },
+    {
+      "headerName": "NOTIFICATION_MODULE.FIELDS.ONBOARDED_ON",
+      "field": "created_on",
+      "type": "datetime",
+      "format": "DD MMM YYYY hh:mm A",
+      "filter": "agDateColumnFilter"
+    },
+    {
+      "headerName": "Actions",
+      "field": "Action",
+      "lockPosition": "right",
+      "width": 100,
+      "maxWidth": 100,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

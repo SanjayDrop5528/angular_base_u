@@ -1,0 +1,84 @@
+{
+  "pageHeading": "USER_MGMT.GROUPS.PAGE_HEADING",
+  "pageDescription": "USER_MGMT.GROUPS.PAGE_DESCRIPTION",
+  "collectionName": "groups",
+  "showbutton": true,
+  "noForm": true,
+  "cardSchema": {
+    "titleKey": "name",
+    "subtitleKey": "description",
+    "fields": [
+      {
+        "key": "status",
+        "label": "USER_MGMT.GROUPS.COL_STATUS",
+        "type": "badge",
+        "badgeColor": "primary"
+      }
+    ],
+    "actions": [
+      {
+        "label": "Edit",
+        "icon": "edit",
+        "action": "edit",
+        "color": "primary"
+      },
+      {
+        "label": "Delete",
+        "icon": "delete",
+        "action": "delete",
+        "color": "warn"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "label": "USER_MGMT.GROUPS.ACTIONS.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "USER_MGMT.GROUPS.ACTIONS.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "USER_MGMT.GROUPS.COL_NAME",
+      "maxWidth": 200,
+      "field": "name",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "USER_MGMT.GROUPS.COL_DESCRIPTION",
+      "field": "description",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "USER_MGMT.GROUPS.COL_STATUS",
+      "field": "status",
+      "lockPosition": "right",
+      "maxWidth": 120,
+      "lockPinned": true,
+      "pinned": "right",
+      "filter": "agSetColumnFilter",
+      "filterParams": {
+        "values": [
+          "active",
+          "inactive"
+        ]
+      }
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "USER_MGMT.GROUPS.COL_ACTIONS",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 50,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

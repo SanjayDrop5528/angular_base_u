@@ -1,0 +1,60 @@
+{
+  "screenId": "notifications",
+  "columnDefs": [
+    {
+      "field": "status",
+      "headerName": "NOTIFICATION_MODULE.FIELDS.STATUS",
+      "width": 100,
+      "cellRenderer": "function(params) { return `<span class='badge ${params.value === 'success' ? 'badge-active' : 'badge-suspended'}'>${params.value}</span>`; }"
+    },
+    {
+      "field": "sent_at",
+      "headerName": "NOTIFICATION_MODULE.FIELDS.SENT_AT",
+      "width": 150,
+      "valueFormatter": "function(params) { return new Date(params.value).toLocaleString(); }"
+    },
+    {
+      "field": "channel",
+      "headerName": "NOTIFICATION_MODULE.FIELDS.CHANNEL",
+      "width": 100,
+      "cellRenderer": "function(params) { return `<span class='badge badge-invited'>${params.value?.toUpperCase() || '—'}</span>`; }"
+    },
+    {
+      "field": "recipient",
+      "headerName": "NOTIFICATION_MODULE.FIELDS.RECIPIENT",
+      "width": 150
+    },
+    {
+      "field": "subject",
+      "headerName": "NOTIFICATION_MODULE.FIELDS.SUBJECT",
+      "width": 200,
+      "tooltip": "function(params) { return params.value || '—'; }"
+    },
+    {
+      "field": "message",
+      "headerName": "NOTIFICATION_MODULE.FIELDS.MESSAGE",
+      "width": 250,
+      "tooltip": "function(params) { return params.value || '—'; }"
+    },
+    {
+      "field": "severity",
+      "headerName": "NOTIFICATION_MODULE.FIELDS.SEVERITY",
+      "width": 100
+    }
+  ],
+  "rowModelType": "clientSide",
+  "actions": [
+    {
+      "id": "mark_read",
+      "label": "NOTIFICATION_MODULE.ACTIONS.MARK_AS_READ",
+      "icon": "done",
+      "condition": "!row.is_read"
+    },
+    {
+      "id": "view_details",
+      "label": "NOTIFICATION_MODULE.ACTIONS.VIEW_DETAILS",
+      "icon": "info",
+      "condition": "true"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "pageHeading": "USER_MGMT.MEMBERS.PAGE_HEADING",
+  "pageDescription": "USER_MGMT.MEMBERS.PAGE_DESCRIPTION",
+  "collectionName": "users",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "screenWidth": "600px",
+  "showbutton": true,
+  "cardSchema": {
+    "type": "container",
+    "className": "column",
+    "customStyles": {
+      "padding": "16px",
+      "border-radius": "16px",
+      "border": "1px solid var(--border-color)",
+      "background": "var(--bg-card)",
+      "gap": "14px"
+    },
+    "children": [
+      {
+        "type": "container",
+        "className": "row justify-between align-center",
+        "children": [
+          {
+            "type": "container",
+            "className": "col column no-gap",
+            "children": [
+              {
+                "type": "icon",
+                "key": "group_names_str"
+              },
+              {
+                "type": "title",
+                "key": "name",
+                "fontSize": 17,
+                "fontWeight": 700
+              },
+              {
+                "type": "text",
+                "key": "email",
+                "fontSize": 13,
+                "textColor": "var(--text-muted)"
+              }
+            ]
+          },
+          {
+            "type": "button",
+            "menu": true,
+            "menuItems": [
+              {
+                "label": "Edit",
+                "icon": "edit",
+                "action": "edit"
+              },
+              {
+                "label": "Delete",
+                "icon": "delete",
+                "action": "delete"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "container",
+        "className": "row justify-between align-center",
+        "children": [
+          {
+            "type": "badge",
+            "key": "group_names_str",
+            "badgeColor": "primary",
+            "iconMap": {
+              "Patient": "person",
+              "Doctor": "medical_services",
+              "Buddy": "groups",
+              "Back Office": "business_center",
+              "Super Admin": "admin_panel_settings"
+            }
+          },
+          {
+            "type": "status",
+            "key": "status"
+          }
+        ]
+      }
+    ]
+  },
+  "actions": [
+    {
+      "label": "USER_MGMT.MEMBERS.ACTIONS.EDIT",
+      "icon": "edit",
+      "formAction": "edit"
+    },
+    {
+      "label": "USER_MGMT.MEMBERS.ACTIONS.CUSTOM_PERMISSION",
+      "icon": "gpp_maybe",
+      "formAction": "custom_permission"
+    },
+    {
+      "label": "USER_MGMT.MEMBERS.ACTIONS.RESEND_INVITE",
+      "icon": "mail",
+      "formAction": "resend_invite"
+    },
+    {
+      "label": "USER_MGMT.MEMBERS.ACTIONS.RESET_PASSWORD",
+      "icon": "lock_reset",
+      "formAction": "reset_password"
+    },
+    {
+      "label": "USER_MGMT.MEMBERS.ACTIONS.RESET_MFA",
+      "icon": "security",
+      "formAction": "reset_mfa"
+    },
+    {
+      "label": "USER_MGMT.MEMBERS.ACTIONS.TOGGLE_STATUS",
+      "icon": "toggle_on",
+      "formAction": "toggle_status"
+    },
+    {
+      "label": "USER_MGMT.MEMBERS.ACTIONS.DELETE",
+      "icon": "delete",
+      "formAction": "delete"
+    }
+  ],
+  "columnDefs": [
+    {
+      "headerName": "USER_MGMT.MEMBERS.COL_NAME",
+      "field": "name",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "USER_MGMT.MEMBERS.COL_EMAIL",
+      "field": "email",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "USER_MGMT.MEMBERS.COL_STATUS",
+      "field": "status",
+      "lockPosition": "right",
+      "maxWidth": 120,
+      "lockPinned": true,
+      "pinned": "right",
+      "filter": "agSetColumnFilter",
+      "filterParams": {
+        "values": [
+          "active",
+          "invited",
+          "suspended"
+        ]
+      }
+    },
+    {
+      "headerName": "USER_MGMT.MEMBERS.COL_ROLE",
+      "field": "group_names_str",
+      "filter": "agTextColumnFilter"
+    },
+    {
+      "headerName": "USER_MGMT.MEMBERS.COL_CREATED",
+      "field": "created_at",
+      "type": "date",
+      "filter": "agDateColumnFilter"
+    },
+    {
+      "type": "rightAligned",
+      "headerName": "",
+      "field": "Action",
+      "lockPosition": "right",
+      "maxWidth": 40,
+      "menuTabs": [],
+      "lockPinned": true,
+      "pinned": "right",
+      "cellRenderer": "buttonRenderer"
+    }
+  ]
+}

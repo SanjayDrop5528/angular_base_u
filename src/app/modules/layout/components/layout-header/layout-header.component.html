@@ -1,0 +1,301 @@
+<header class="layout-header" [class.layout-header-simple]="config.mode === 'simple-header'">
+
+  <!-- ── Left: Hamburger + Logo ─────────────────────────────── -->
+  <div class="header-left">
+    <button type="button" class="icon-btn hamburger" (click)="onHamburgerClick()" aria-label="Toggle menu"
+      *ngIf="config.mode !== 'simple-header'">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <button type="button" class="logo-btn" (click)="logoClick.emit()"
+      *ngIf="config.showLogo !== false && config.mode !== 'simple-header'">
+      <img *ngIf="org?.logoUrl || config.logoUrl" [src]="org?.logoUrl || config.logoUrl"
+        [alt]="config.appName || org?.name || 'Logo'" class="header-logo-img" />
+      <span *ngIf="!(org?.logoUrl || config.logoUrl)" class="logo-fallback">
+        {{ (config.appName || org?.name || 'App') | slice:0:1 }}
+      </span>
+      <span class="app-name">{{ config.appName || org?.name }}</span>
+    </button>
+
+    <div class="logo-btn" *ngIf="config.mode === 'simple-header'" style="cursor: default;">
+      <span class="app-name">{{ config.appName || org?.name }}</span>
+    </div>
+  </div>
+
+  <!-- ── Center Nav ─────────────────────────────────────────── -->
+  <nav class="header-nav" role="navigation" *ngIf="config.mode !== 'simple-header'">
+
+    <!-- ── header-sidenav: section tabs ───────────────────── -->
+    <ng-container *ngIf="config.mode === 'header-sidenav'">
+      <button type="button" *ngFor="let section of headerSections" class="nav-section-btn"
+        [class.active]="isActiveSection(section.id)" (click)="onSectionClick(section)">
+        <mat-icon *ngIf="section.icon" class="nav-icon">{{ section.icon }}</mat-icon>
+        <span>{{ section.label | translate }}</span>
+      </button>
+    </ng-container>
+
+    <!-- ── header-only: MEGA MENU (pure CSS hover + open-by-default support) ── -->
+    <ng-container *ngIf="config.mode === 'header-only' && isMegaMenu">
+      <div *ngFor="let item of visibleHeaderItems" class="mega-trigger" [class.relative]="!isHierarchical(item)"
+        (mouseenter)="onMouseEnterTrigger(item)" (mouseleave)="resetMegaMenu()">
+
+        <!-- Trigger label (always visible) -->
+        <button type="button" class="nav-btn"
+          [class.active]="isActiveNav(item.id) || openMegaMenuId === item.id || hasActiveDescendant(item)"
+          (click)="onNavBtnClick(item)">
+          <mat-icon *ngIf="item.icon" class="nav-icon">{{ item.icon }}</mat-icon>
+          <span>{{ item.label | translate }}</span>
+          <mat-icon *ngIf="hasChildren(item)" class="chevron">
+            {{ openMegaMenuId === item.id ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </button>
+
+        <!-- Dropdown panel — open-by-default class + grid or list layout -->
+        <div class="mega-panel" *ngIf="hasChildren(item)" [class.open]="openMegaMenuId === item.id"
+          [class.menu-closed]="isMenuClicked" (click)="$event.stopPropagation()">
+
+          <!-- Case A: Hierarchical grid layout ("new wise") -->
+          <div class="mega-container" *ngIf="isHierarchical(item)">
+            <div class="mega-grid">
+
+              <!-- 1. Flat items grouped in a single column if they exist -->
+              <div class="mega-column flat-column" *ngIf="hasFlatChildren(item)">
+                <div class="mega-column-links">
+                  <ng-container *ngFor="let child of item.children">
+                    <button type="button" *ngIf="!hasChildren(child)" class="mega-item"
+                      [class.active]="isActiveNav(child.id)" (click)="onNavItemClick(child)">
+                      <mat-icon *ngIf="child.icon" class="item-icon">{{ child.icon }}</mat-icon>
+                      <span class="item-label">{{ child.label | translate }}</span>
+                    </button>
+                  </ng-container>
+                </div>
+              </div>
+
+              <!-- 2. Grouped child sections rendered as distinct columns -->
+              <ng-container *ngFor="let child of item.children">
+                <div class="mega-column" *ngIf="hasChildren(child)">
+                  <div class="mega-group-title" [class.has-active-child]="hasActiveDescendant(child)">
+                    <mat-icon *ngIf="child.icon" class="group-icon">{{ child.icon }}</mat-icon>
+                    <span>{{ child.label | translate }}</span>
+                  </div>
+                  <div class="mega-column-links">
+                    <button type="button" *ngFor="let sub of child.children" class="mega-item"
+                      [class.active]="isActiveNav(sub.id)" (click)="onNavItemClick(sub)">
+                      <mat-icon *ngIf="sub.icon" class="item-icon">{{ sub.icon }}</mat-icon>
+                      <span class="item-label">{{ sub.label | translate }}</span>
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+
+            </div>
+          </div>
+
+          <!-- Case B: Simple vertical list ("like old" dropdown) -->
+          <div class="mega-vertical-list" *ngIf="!isHierarchical(item)">
+            <button type="button" *ngFor="let child of item.children" class="mega-item"
+              [class.active]="isActiveNav(child.id)" (click)="onNavItemClick(child)">
+              <mat-icon *ngIf="child.icon" class="item-icon">{{ child.icon }}</mat-icon>
+              <span class="item-label">{{ child.label | translate }}</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </ng-container>
+
+    <!-- ── header-only: NORMAL MENU (mat-menu) ────────────── -->
+    <ng-container *ngIf="config.mode === 'header-only' && !isMegaMenu">
+      <ng-container *ngFor="let item of visibleHeaderItems">
+
+        <!-- Leaf item — no children -->
+        <button type="button" *ngIf="!hasChildren(item)" class="nav-btn" [class.active]="isActiveNav(item.id)"
+          (click)="onNavItemClick(item)">
+          <mat-icon *ngIf="item.icon" class="nav-icon">{{ item.icon }}</mat-icon>
+          <span>{{ item.label | translate }}</span>
+        </button>
+
+        <!--
+          Item with children — delegated to NavDropdownItemComponent.
+          Each component instance has its own Angular template scope,
+          so each #dropMenu is independent. This is the only reliable
+          Angular pattern for mat-menu inside *ngFor.
+        -->
+        <app-nav-dropdown-item *ngIf="hasChildren(item)" [item]="item" [activeNavId]="activeNavId"
+          [isActive]="isActiveNav(item.id) || hasActiveDescendant(item)" (itemClick)="onNavItemClick($event)">
+        </app-nav-dropdown-item>
+
+      </ng-container>
+    </ng-container>
+
+  </nav>
+
+  <!-- ── Right: projected actions + profile ─────────────── -->
+  <div class="header-right">
+    <ng-content select="[header-actions]"></ng-content>
+    <button class="icon-btn notification-btn" [matMenuTriggerFor]="notificationMenu" matTooltip="Notifications"
+      aria-label="Open notifications" *ngIf="config.mode !== 'simple-header'">
+      <mat-icon>notifications</mat-icon>
+      <span class="notification-badge" *ngIf="unreadNotificationCount">{{ notificationBadgeLabel }}</span>
+    </button>
+
+    <mat-menu #notificationMenu="matMenu" class="notification-menu-panel" xPosition="before" yPosition="below"
+      [overlapTrigger]="false">
+      <div class="notification-menu" (click)="$event.stopPropagation()">
+        <div class="notification-menu-header">
+          <div>
+            <strong>Notifications</strong>
+            <span>{{ unreadNotificationCount }} unread</span>
+          </div>
+          <button type="button" class="mini-icon-btn" (click)="refreshNotifications($event)"
+            aria-label="Refresh notifications">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+
+        <div class="notification-menu-list" *ngIf="notifications.length; else emptyNotifications">
+          <button type="button" class="notification-menu-item" *ngFor="let notification of notifications"
+            [class.unread]="!notification.read"
+            (click)="markNotificationRead(notification, $event); openNotificationsScreen()">
+            <span class="notification-dot" *ngIf="!notification.read"></span>
+            <span class="notification-menu-copy">
+              <strong>{{ getNotificationTitle(notification) }}</strong>
+              <small>{{ getNotificationBody(notification) }}</small>
+              <em>{{ getNotificationTime(notification) }}</em>
+            </span>
+          </button>
+        </div>
+
+        <ng-template #emptyNotifications>
+          <div class="notification-empty">No notifications</div>
+        </ng-template>
+
+        <div class="notification-menu-actions">
+          <button type="button" (click)="markAllNotificationsRead($event)" [disabled]="!unreadNotificationCount">Mark
+            all read</button>
+          <button type="button" (click)="openNotificationsScreen()">View all</button>
+        </div>
+      </div>
+    </mat-menu>
+
+    <button class="icon-btn theme-toggle" (click)="toggleThemeMode()" matTooltip="Toggle theme mode">
+      <mat-icon>{{ currentThemeMode === 'morning' ? 'wb_sunny' : 'dark_mode' }}</mat-icon>
+    </button>
+    <button class="profile-btn" [matMenuTriggerFor]="profileMenu" aria-label="Open profile menu">
+      <div class="avatar">{{ userInitial }}</div>
+      <span class="user-label">{{ userName }}</span>
+      <mat-icon class="profile-chevron">expand_more</mat-icon>
+    </button>
+
+    <mat-menu #profileMenu="matMenu" class="profile-menu-panel" xPosition="before" yPosition="below"
+      [overlapTrigger]="false">
+      <div class="profile-menu-header" (click)="$event.stopPropagation()">
+        <div class="avatar profile-menu-avatar">{{ userInitial }}</div>
+        <div class="profile-menu-user">
+          <span class="profile-menu-name">{{ userName }}</span>
+          <span class="profile-menu-email" *ngIf="userEmail">{{ userEmail }}</span>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Account Settings section with suboptions -->
+      <button mat-menu-item disabled class="profile-menu-caption">
+        <mat-icon>manage_accounts</mat-icon>
+        <span style="font-weight: 600;">{{ 'SETTINGS.TITLE' | translate }}</span>
+      </button>
+
+      <button mat-menu-item (click)="openSettings('profile')">
+        <mat-icon>person</mat-icon>
+        <span>{{ 'SETTINGS.TAB_PROFILE' | translate }}</span>
+      </button>
+
+      <button mat-menu-item (click)="openSettings('notifications')">
+        <mat-icon>notifications_active</mat-icon>
+        <span>{{ 'SETTINGS.TAB_NOTIFICATIONS' | translate }}</span>
+      </button>
+
+      <button mat-menu-item (click)="openSettings('devices')">
+        <mat-icon>devices</mat-icon>
+        <span>{{ 'SETTINGS.TAB_DEVICES' | translate }}</span>
+      </button>
+
+      <button mat-menu-item (click)="openSettings('security')">
+        <mat-icon>security</mat-icon>
+        <span>{{ 'SETTINGS.TAB_SECURITY' | translate }}</span>
+      </button>
+
+      <mat-divider></mat-divider>
+
+      <button mat-menu-item disabled class="profile-menu-caption">
+        <mat-icon>translate</mat-icon>
+        <span>{{ 'PROFILE.LANGUAGE' | translate }}</span>
+        <span class="active-language">{{ activeLanguageLabel }}</span>
+      </button>
+
+      <button mat-menu-item *ngFor="let language of languages" (click)="changeLanguage(language)">
+        <mat-icon>{{ currentLanguage === language.code ? 'radio_button_checked' : 'radio_button_unchecked' }}</mat-icon>
+        <span>{{ language.label }}</span>
+      </button>
+
+      <mat-divider></mat-divider>
+
+      <button mat-menu-item class="logout-menu-item" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>{{ 'LOGOUT' | translate }}</span>
+      </button>
+    </mat-menu>
+  </div>
+
+</header>
+
+<!-- ── Mobile Nav Drawer (header-only) ──────────────────────── -->
+<ng-container *ngIf="config.mode === 'header-only' && mobileNavOpen">
+  <div class="mob-backdrop" (click)="closeMobileNav()"></div>
+  <nav class="mob-drawer">
+    <div class="mob-drawer-header">
+      <span class="mob-title">{{ config.appName || org?.name }}</span>
+      <button class="icon-btn" (click)="closeMobileNav()"><mat-icon>close</mat-icon></button>
+    </div>
+    <div class="mob-items">
+      <ng-template #mobNavTemplate let-item="item" let-depth="depth">
+
+        <div class="mob-node">
+
+          <button *ngIf="!hasChildren(item)" class="mob-item" [class.active]="isActiveNav(item.id)"
+            (click)="onNavItemClick(item); closeMobileNav()">
+            <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+            <span>{{ item.label | translate }}</span>
+          </button>
+
+          <ng-container *ngIf="hasChildren(item)">
+            <div class="mob-group-title clickable-group" [class.has-active-child]="hasActiveDescendant(item)"
+              [class.expanded]="isHeaderGroupExpanded(item.id)" (click)="toggleHeaderGroup(item.id)" role="button"
+              tabindex="0" (keydown.enter)="toggleHeaderGroup(item.id)"
+              (keydown.space)="$event.preventDefault(); toggleHeaderGroup(item.id)">
+              <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+              <span>{{ item.label | translate }}</span>
+              <mat-icon class="mob-expand-icon">
+                {{ isHeaderGroupExpanded(item.id) ? 'expand_less' : 'expand_more' }}
+              </mat-icon>
+            </div>
+
+            <div class="mob-group-children" *ngIf="isHeaderGroupExpanded(item.id)">
+              <ng-container *ngFor="let child of item.children">
+                <ng-container
+                  *ngTemplateOutlet="mobNavTemplate; context: { item: child, depth: depth + 1 }"></ng-container>
+              </ng-container>
+            </div>
+          </ng-container>
+
+        </div>
+
+      </ng-template>
+
+      <ng-container *ngFor="let item of headerItems">
+        <ng-container *ngTemplateOutlet="mobNavTemplate; context: { item: item, depth: 0 }"></ng-container>
+      </ng-container>
+    </div>
+  </nav>
+</ng-container>

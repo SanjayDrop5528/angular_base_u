@@ -1,0 +1,199 @@
+<div class="review-card-container animate-in">
+
+  <!-- ==================== VIEW MODE ==================== -->
+  <div class="view-mode-container" *ngIf="viewMode">
+    <!-- View Header with Close Button -->
+    <div class="review-header">
+      <div class="review-header-top">
+        <div class="review-header-title">
+          <mat-icon class="title-icon">reviews</mat-icon>
+          <h2>Specialist Reviews</h2>
+        </div>
+        <button type="button" class="btn-close-header" (click)="cancel()" aria-label="Close" *ngIf="needclose">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter/Sort Sub-header -->
+    <div class="view-subheader" *ngIf="!loadingReviews && reviewsList.length && !hidefilter">
+      <span class="reviews-count">Showing {{ reviewsList.length }} {{ reviewsList.length === 1 ? 'review' : 'reviews' }}</span>
+      <div class="sort-selector-container">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="sort-form-field">
+          <mat-label>Sort by</mat-label>
+          <mat-select [(value)]="sortBy">
+            <mat-option value="newest">Newest First</mat-option>
+            <mat-option value="oldest">Oldest First</mat-option>
+            <mat-option value="highest">Highest Rating</mat-option>
+            <mat-option value="lowest">Lowest Rating</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="reviews-loading" *ngIf="loadingReviews">
+      <span class="btn-spinner"></span>
+      <p>Loading reviews...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="reviews-empty" *ngIf="!loadingReviews && !reviewsList.length">
+      <mat-icon class="empty-icon">rate_review</mat-icon>
+      <h3>No reviews yet</h3>
+      <p>Be the first to share your experience with this specialist!</p>
+    </div>
+
+    <!-- Reviews List -->
+    <div class="reviews-list-container" *ngIf="!loadingReviews && reviewsList.length">
+      <div class="review-item-card" *ngFor="let review of sortedReviews"  [ngClass]="{ 'prevent_class': hidefilter }">
+        
+        <!-- User Info Line -->
+        <div class="review-item-header">
+          <div class="user-avatar-initials">
+            {{ getInitials(review.reviewer_name) }}
+          </div>
+          
+          <div class="user-meta-details">
+            <div class="user-name-line">
+              <span class="user-name">{{ review.reviewer_name || 'Anonymous Patient' }}</span>
+            </div>
+            <div class="review-date-line">
+              {{ review.created_at | date:'longDate' }}
+            </div>
+          </div>
+
+          <!-- Stars -->
+          <div class="stars-container-right">
+            <mat-icon class="star-icon" *ngFor="let isFilled of getStars(review.ratings)" 
+                      [ngClass]="{'filled': isFilled === 1, 'empty': isFilled === 0}">
+              star
+            </mat-icon>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="review-item-content">
+          <h4 class="review-item-title">{{ getReviewTitle(review) }}</h4>
+          <p [id]="'review-text-' + review.id" class="review-item-text" [ngClass]="{'line-clamp-3': !expandedReviews.has(review.id)}">{{ getReviewText(review) }}</p>
+          <button type="button" class="btn-toggle-expand" *ngIf="review.hasOverflow" (click)="toggleExpandReview(review.id)">
+            {{ expandedReviews.has(review.id) ? 'Show Less' : 'Show More' }}
+          </button>
+
+          <!-- Dynamic fields from form config -->
+          <div class="review-dynamic-fields-section" *ngIf="getReviewFields(review).length">
+            <div class="review-dynamic-field" *ngFor="let item of getReviewFields(review)">
+              <span class="field-label">{{ item.label }}</span>
+              
+              <!-- Case 1: Rating -->
+              <span class="field-value rating-stars" *ngIf="item.type === 'rating'">
+                <mat-icon class="star-icon filled" *ngFor="let isFilled of getStars(item.value)">star</mat-icon>
+              </span>
+              
+              <!-- Case 2: Slider -->
+              <span class="field-value slider-value-text" *ngIf="item.type === 'mat-slider'">
+                <span class="current-val">{{ item.value }}</span><span class="val-separator">/</span><span class="max-val">10</span>
+              </span>
+
+              <!-- Case 3: Standard text / QA Field / list -->
+              <span class="field-value text-value" *ngIf="item.type !== 'rating' && item.type !== 'mat-slider'">
+                {{ item.value }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Tags -->
+        <!-- <div class="review-item-footer" *ngIf="getReviewTags(review).length">
+          <span class="review-tag-chip" *ngFor="let tag of getReviewTags(review)">
+            {{ tag }}
+          </span>
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== EDIT MODE (FORM) ==================== -->
+  <ng-container *ngIf="!viewMode">
+    <!-- Card Header -->
+    <div class="review-header">
+      <div class="review-header-top">
+        <div class="review-header-title">
+          <mat-icon class="title-icon">rate_review</mat-icon>
+          <h2>{{ pageHeading }}</h2>
+        </div>
+        <!-- Top Right Close Button -->
+        <button type="button" class="btn-close-header" (click)="cancel()" aria-label="Close" *ngIf="needclose">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <p class="review-header-subtitle">Your feedback helps others make better decisions.</p>
+    </div>
+
+    <!-- Stepper Progress Tracker -->
+    <div class="stepper-progress-container" *ngIf="layoutMode === 'stepper' && fields && fields.length">
+      <div class="stepper-progress-bar">
+        <div class="stepper-progress-fill" [style.width.%]="(activeStepIndex / (fields.length - 1)) * 100"></div>
+      </div>
+      <div class="stepper-steps-info">
+        <span class="step-badge">Step {{ activeStepIndex + 1 }} of {{ fields.length }}</span>
+        <span class="step-label-text">{{ fields[activeStepIndex]?.props?.label || '' }}</span>
+      </div>
+    </div>
+
+    <!-- Form Content -->
+    <div class="review-body">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="review-form">
+        <formly-form 
+          [model]="model" 
+          [fields]="fields" 
+          [form]="form" 
+          [options]="options">
+        </formly-form>
+      </form>
+    </div>
+
+    <!-- Action Footer -->
+    <div class="review-footer">
+      <!-- Back / Cancel -->
+      <button type="button" class="btn-cancel" *ngIf="layoutMode === 'single'" (click)="cancel()">
+        Cancel
+      </button>
+      <button type="button" class="btn-cancel" *ngIf="layoutMode === 'stepper' && activeStepIndex > 0" (click)="prevStep()">
+        Back
+      </button>
+
+      <div class="footer-spacer"></div>
+
+      <!-- Case 1: Stepper Mode, Not Final Step, saveOnNext is true -> show "Save & Next" -->
+      <button type="button" class="btn-next" *ngIf="layoutMode === 'stepper' && activeStepIndex < fields.length - 1 && saveOnNext" (click)="nextStep()">
+        Save & Next
+      </button>
+
+      <!-- Case 2: Stepper Mode, Not Final Step, saveOnNext is false -> show "Next" -->
+      <button type="button" class="btn-next" *ngIf="layoutMode === 'stepper' && activeStepIndex < fields.length - 1 && !saveOnNext" (click)="nextStep()">
+        Next
+      </button>
+
+      <!-- Case 3: Stepper Mode, Final Step, saveOnNext is true -> show "Save & Close" -->
+      <button type="button" class="btn-submit" *ngIf="layoutMode === 'stepper' && activeStepIndex === fields.length - 1 && saveOnNext" [disabled]="butonflag" (click)="submitFinalStepProgress()">
+        <span *ngIf="!butonflag">Save & Close</span>
+        <span *ngIf="butonflag" class="btn-loader-container">
+          <span class="btn-spinner"></span>
+          Saving...
+        </span>
+      </button>
+
+      <!-- Case 4: Single Page Mode OR (Stepper Mode, Final Step, saveOnNext is false) -> show overall "Submit Review" -->
+      <button type="button" class="btn-submit" *ngIf="layoutMode === 'single' || (layoutMode === 'stepper' && activeStepIndex === fields.length - 1 && !saveOnNext)" [disabled]="butonflag" (click)="onSubmit()">
+        <span *ngIf="!butonflag">{{ butText }}</span>
+        <span *ngIf="butonflag" class="btn-loader-container">
+          <span class="btn-spinner"></span>
+          Submitting...
+        </span>
+      </button>
+    </div>
+  </ng-container>
+
+</div>

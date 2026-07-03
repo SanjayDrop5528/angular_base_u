@@ -1,0 +1,313 @@
+<div class="dialog-header-banner" [class.reservation-banner]="data.isReservationMode">
+  <h2 mat-dialog-title class="dialog-title">
+    <ng-container *ngIf="data.isReservationMode; else stdHeader">
+      {{ 'CALENDAR_MODULE.DIALOG.BOOK' | translate }} {{ data.calendarName || ('CALENDAR_MODULE.DIALOG.APPOINTMENT' | translate) }}
+    </ng-container>
+    <ng-template #stdHeader>
+      {{ isEditMode ? ('CALENDAR_MODULE.DIALOG.EDIT' | translate) + ' ' + (data.calendarName || ('CALENDAR_MODULE.DIALOG.SLOT' | translate)) : ('CALENDAR_MODULE.DIALOG.CREATE' | translate) + ' ' + (data.calendarName || ('CALENDAR_MODULE.DIALOG.APPOINTMENT_ROASTER' | translate)) }}
+    </ng-template>
+  </h2>
+  <button type="button" class="close-icon-btn" (click)="onCancel()"><mat-icon>close</mat-icon></button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="calendarForm" class="dialog-form">
+
+    <!-- ═══════════ RESERVATION MODE ═══════════ -->
+    <ng-container *ngIf="data.isReservationMode">
+      <div class="reservation-summary-card">
+        <div class="res-row"><mat-icon style="color:#2563eb">person</mat-icon><span><strong>{{ data.peopleListLabel || ('CALENDAR_MODULE.DIALOG.STAFF' | translate) }}:</strong> {{ getUserName(data.calendar?.userId) }}</span></div>
+        <div class="res-row"><mat-icon style="color:#2563eb">today</mat-icon><span><strong>{{ 'CALENDAR_MODULE.DIALOG.DATE' | translate }}:</strong> {{ data.calendar?.startTime | date:'EEEE, MMMM d, y' }}</span></div>
+        <div class="res-row"><mat-icon style="color:#2563eb">schedule</mat-icon><span><strong>{{ 'CALENDAR_MODULE.DIALOG.TIME' | translate }}:</strong> {{ formatTimeDisplay(data.calendar?.startTime) }} – {{ formatTimeDisplay(data.calendar?.endTime) }}</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
+        <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+          <mat-label>{{ 'CALENDAR_MODULE.DIALOG.YOUR_NAME' | translate }}</mat-label>
+          <input matInput formControlName="reservedByName" [placeholder]="'CALENDAR_MODULE.DIALOG.FULL_NAME' | translate" required>
+          <mat-error *ngIf="calendarForm.get('reservedByName')?.hasError('required')">{{ 'CALENDAR_MODULE.DIALOG.NAME_REQUIRED' | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+          <mat-label>{{ 'CALENDAR_MODULE.DIALOG.EMAIL_ADDRESS' | translate }}</mat-label>
+          <input matInput formControlName="reservedByEmail" type="email" [placeholder]="'CALENDAR_MODULE.DIALOG.EMAIL' | translate" required>
+          <mat-error *ngIf="calendarForm.get('reservedByEmail')?.hasError('required')">{{ 'CALENDAR_MODULE.DIALOG.EMAIL_REQUIRED' | translate }}</mat-error>
+          <mat-error *ngIf="calendarForm.get('reservedByEmail')?.hasError('email')">{{ 'CALENDAR_MODULE.DIALOG.VALID_EMAIL_REQUIRED' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+    </ng-container>
+
+    <!-- ═══════════ STANDARD SCHEDULER ═══════════ -->
+    <ng-container *ngIf="!data.isReservationMode">
+
+      <!-- Provider card / selector — hidden for doctor (always creates for themselves) -->
+      <div class="user-display-card" *ngIf="data.role !== 'doctor' && (data.userId || isEditMode || data.role === 'owner' || data.role === 'admin')">
+        <div class="avatar-circle" [style.background-color]="getUserColor(data.userId || calendarForm.get('userId')?.value)">
+          {{ getInitials(getUserName(data.userId || calendarForm.get('userId')?.value)) }}
+        </div>
+        <div class="user-details">
+          <span class="user-name">{{ getUserName(data.userId || calendarForm.get('userId')?.value) }}</span>
+          <span class="user-role-label">{{ data.peopleListLabel || ('CALENDAR_MODULE.DIALOG.ASSIGNEE' | translate) }}</span>
+        </div>
+      </div>
+      <mat-form-field appearance="outline" class="full-width" *ngIf="!data.userId && !isEditMode && data.role === 'owner'" subscriptSizing="dynamic">
+        <mat-label>{{ 'CALENDAR_MODULE.DIALOG.ASSIGN' | translate }} {{ data.peopleListLabel || ('CALENDAR_MODULE.DIALOG.PROVIDER' | translate) }}</mat-label>
+        <mat-select formControlName="userId" required>
+          <mat-option *ngFor="let user of data.users" [value]="user.id">
+            <span class="user-option">
+              <span class="user-color-dot" [style.background-color]="user.color || '#94a3b8'"></span>
+              {{ user.name }} ({{ user.email }})
+            </span>
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="calendarForm.get('userId')?.hasError('required')">{{ 'CALENDAR_MODULE.DIALOG.PROVIDER_REQUIRED' | translate }}</mat-error>
+      </mat-form-field>
+
+
+      <!-- Roaster Type Selector (only shown if configured as an array in route) -->
+      <mat-form-field appearance="outline" class="full-width" *ngIf="isRoasterTypeArray" subscriptSizing="dynamic" style="margin-top: 12px; margin-bottom: 12px;">
+        <mat-label>{{ 'CALENDAR_MODULE.DIALOG.SLOT_TYPE' | translate }}</mat-label>
+        <mat-select formControlName="roasterType" required>
+          <mat-option *ngFor="let option of roasterTypeOptions" [value]="option">
+            {{ capitalize(option) }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="calendarForm.get('roasterType')?.hasError('required')">{{ 'CALENDAR_MODULE.DIALOG.SLOT_TYPE_REQUIRED' | translate }}</mat-error>
+      </mat-form-field>
+
+      <!-- ════ CREATE MODE: Availability Config ════ -->
+      <ng-container *ngIf="!isEditMode">
+
+        <!-- Availability Type -->
+        <div class="section-label">{{ 'CALENDAR_MODULE.DIALOG.AVAILABILITY_TYPE' | translate }}</div>
+        <mat-radio-group formControlName="availabilityType" class="avail-type-group">
+          <mat-radio-button value="single">{{ 'CALENDAR_MODULE.DIALOG.SINGLE_DAY' | translate }}</mat-radio-button>
+          <mat-radio-button value="range">{{ 'CALENDAR_MODULE.DIALOG.DATE_RANGE' | translate }}</mat-radio-button>
+          <mat-radio-button value="recurring">{{ 'CALENDAR_MODULE.DIALOG.RECURRING' | translate }}</mat-radio-button>
+        </mat-radio-group>
+
+
+
+        <!-- ── Date Range ── -->
+        <ng-container *ngIf="availabilityTypeValue === 'range'">
+          <div style="display:flex;gap:12px;margin-top:12px">
+            <mat-form-field appearance="outline" style="flex:1" subscriptSizing="dynamic">
+              <mat-label>{{ 'CALENDAR_MODULE.DIALOG.FROM_DATE' | translate }}*</mat-label>
+              <input matInput [matDatepicker]="fromPicker" formControlName="fromDate">
+              <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromPicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="flex:1" subscriptSizing="dynamic">
+              <mat-label>{{ 'CALENDAR_MODULE.DIALOG.TO_DATE' | translate }}*</mat-label>
+              <input matInput [matDatepicker]="toPicker" formControlName="toDate" [min]="calendarForm.get('fromDate')?.value">
+              <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+              <mat-datepicker #toPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </ng-container>
+
+        <!-- ── Recurring ── -->
+        <ng-container *ngIf="availabilityTypeValue === 'recurring'">
+          <!-- Repeats + End Date -->
+          <div style="display:flex;gap:12px;margin-top:12px">
+            <mat-form-field appearance="outline" style="flex:1" subscriptSizing="dynamic">
+              <mat-label>{{ 'CALENDAR_MODULE.DIALOG.REPEATS' | translate }}</mat-label>
+              <mat-select formControlName="freq">
+                <mat-option value="daily">{{ 'CALENDAR_MODULE.DIALOG.DAILY' | translate }}</mat-option>
+                <mat-option value="weekly">{{ 'CALENDAR_MODULE.DIALOG.WEEKLY' | translate }}</mat-option>
+                <mat-option value="monthly">{{ 'CALENDAR_MODULE.DIALOG.MONTHLY' | translate }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="flex:1" subscriptSizing="dynamic">
+              <mat-label>{{ 'CALENDAR_MODULE.DIALOG.END_DATE' | translate }}</mat-label>
+              <input matInput [matDatepicker]="recurEndPicker" formControlName="end_date" [min]="calendarForm.get('start_date')?.value">
+              <mat-datepicker-toggle matIconSuffix [for]="recurEndPicker"></mat-datepicker-toggle>
+              <mat-datepicker #recurEndPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <!-- Weekly: By Days -->
+          <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic" *ngIf="freqValue === 'weekly'" style="margin-top:10px">
+            <mat-label>{{ 'CALENDAR_MODULE.DIALOG.BY_DAYS' | translate }}</mat-label>
+            <mat-select formControlName="byday" multiple>
+              <mat-option *ngFor="let d of weekDays" [value]="d.code">{{ ('CALENDAR_MODULE.DIALOG.WEEK_DAYS.' + d.code) | translate }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Monthly patterns -->
+          <ng-container *ngIf="freqValue === 'monthly'">
+            <mat-radio-group formControlName="monthlyPattern" style="display:flex;gap:24px;margin:12px 0 8px">
+              <mat-radio-button value="day_of_month">{{ 'CALENDAR_MODULE.DIALOG.DAY_OF_MONTH' | translate }}</mat-radio-button>
+              <mat-radio-button value="week_day">{{ 'CALENDAR_MODULE.DIALOG.WEEK_DAY' | translate }}</mat-radio-button>
+            </mat-radio-group>
+            <!-- Pattern A -->
+            <mat-form-field appearance="outline" style="width:160px" subscriptSizing="dynamic" *ngIf="monthlyPatternValue === 'day_of_month'">
+              <mat-label>{{ 'CALENDAR_MODULE.DIALOG.DAY_OF_MONTH' | translate }}</mat-label>
+              <input matInput type="number" formControlName="day_of_month" min="1" max="31" placeholder="15">
+            </mat-form-field>
+            <!-- Pattern B -->
+            <div style="display:flex;gap:12px" *ngIf="monthlyPatternValue === 'week_day'">
+              <mat-form-field appearance="outline" style="flex:1" subscriptSizing="dynamic">
+                <mat-label>{{ 'CALENDAR_MODULE.DIALOG.WEEK' | translate }}</mat-label>
+                <mat-select formControlName="week_number">
+                  <mat-option *ngFor="let w of weekNumbers" [value]="w.value">{{ ('CALENDAR_MODULE.DIALOG.WEEK_NUMBERS.' + w.value.toUpperCase()) | translate }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" style="flex:1" subscriptSizing="dynamic">
+                <mat-label>{{ 'CALENDAR_MODULE.DIALOG.DAY' | translate }}</mat-label>
+                <mat-select formControlName="week_day">
+                  <mat-option *ngFor="let d of weekDays" [value]="d.code">{{ ('CALENDAR_MODULE.DIALOG.WEEK_DAYS.' + d.code) | translate }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+
+        </ng-container>
+
+        <!-- Recurrence Summary -->
+        <div class="recurrence-summary" *ngIf="recurrenceSummary" style="margin-bottom:16px">
+          <mat-icon class="summary-icon">event_repeat</mat-icon>
+          <span>{{ recurrenceSummary }}</span>
+        </div>
+
+        <!-- ════ AVAILABILITY WINDOWS ════ -->
+        <div class="section-label">{{ 'CALENDAR_MODULE.DIALOG.AVAILABILITY_SLOTS' | translate }}</div>
+
+        <div formArrayName="windows">
+          <ng-container *ngFor="let win of windows.controls; let i = index">
+            <div [formGroupName]="i" class="window-card" style="display:flex; align-items:center; gap:12px; padding:8px 12px;">
+              <span class="window-badge" style="flex-shrink:0;">{{ 'CALENDAR_MODULE.DIALOG.SLOT' | translate }} {{ i + 1 }}</span>
+
+              <!-- Start / End Time -->
+              <div class="time-range-row" style="flex:1; margin-bottom:0; align-items:center; gap:8px;">
+                <div class="datepicker-wrapper">
+                  <div class="time-input-trigger"
+                       [matMenuTriggerFor]="startMenu"
+                       #startTrigger="matMenuTrigger">
+                    <span class="time-display-value">{{ formatTimeDisplay(windowStartTimes[i]) || ('CALENDAR_MODULE.DIALOG.SELECT' | translate) }}</span>
+                    <mat-icon class="clock-icon">schedule</mat-icon>
+                  </div>
+                  <mat-menu #startMenu="matMenu" class="timepicker-menu-panel" yPosition="above" [overlapTrigger]="false">
+                    <div (click)="$event.stopPropagation()">
+                      <app-circular-timepicker
+                        [time]="windowStartTimes[i]"
+                        [minHour]="minHourConstraint"
+                        [maxHour]="maxHourConstraint"
+                        (timeChange)="onWindowStartTimeChanged($event, i)"
+                        (done)="closeMenu(startTrigger)">
+                      </app-circular-timepicker>
+                    </div>
+                  </mat-menu>
+                  <div class="error-msg" *ngIf="win.get('startTime')?.touched && win.get('startTime')?.hasError('required')">{{ 'CALENDAR_MODULE.DIALOG.REQUIRED' | translate }}</div>
+                </div>
+
+                <div style="color:var(--text-muted); font-weight:600; padding:0 4px;">{{ 'CALENDAR_MODULE.DIALOG.TO' | translate }}</div>
+
+                <div class="datepicker-wrapper">
+                  <div class="time-input-trigger"
+                       [matMenuTriggerFor]="endMenu"
+                       #endTrigger="matMenuTrigger">
+                    <span class="time-display-value">{{ formatTimeDisplay(windowEndTimes[i]) || ('CALENDAR_MODULE.DIALOG.SELECT' | translate) }}</span>
+                    <mat-icon class="clock-icon">schedule</mat-icon>
+                  </div>
+                  <mat-menu #endMenu="matMenu" class="timepicker-menu-panel" yPosition="above" [overlapTrigger]="false">
+                    <div (click)="$event.stopPropagation()">
+                      <app-circular-timepicker
+                        [time]="windowEndTimes[i]"
+                        [minHour]="minHourConstraint"
+                        [maxHour]="maxHourConstraint"
+                        (timeChange)="onWindowEndTimeChanged($event, i)"
+                        (done)="closeMenu(endTrigger)">
+                      </app-circular-timepicker>
+                    </div>
+                  </mat-menu>
+                  <div class="error-msg" *ngIf="win.get('endTime')?.touched && win.get('endTime')?.hasError('required')">{{ 'CALENDAR_MODULE.DIALOG.REQUIRED' | translate }}</div>
+                </div>
+              </div>
+
+              <button type="button" mat-icon-button class="remove-window-btn"
+                      *ngIf="windows.length > 1" (click)="removeWindow(i)"
+                      [title]="'CALENDAR_MODULE.DIALOG.REMOVE_SLOT' | translate" style="flex-shrink:0;">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Add Slot button -->
+        <button type="button" mat-stroked-button color="primary" class="add-window-btn" (click)="addWindow()">
+          <mat-icon>add</mat-icon> {{ 'CALENDAR_MODULE.DIALOG.ADD_ANOTHER_SLOT' | translate }}
+        </button>
+
+
+      </ng-container>
+      <!-- END create mode -->
+
+      <!-- ════════════════════ EDIT MODE ════════════════════ -->
+      <ng-container *ngIf="isEditMode && !data.isReservationMode">
+        <div class="section-label" style="margin-top:16px;">{{ 'CALENDAR_MODULE.DIALOG.EDIT_SLOT_TIME' | translate }}</div>
+        <div class="time-range-row" style="margin-top: 12px; align-items:center; gap:12px;">
+          <div class="datepicker-wrapper">
+            <label class="datepicker-label">{{ 'CALENDAR_MODULE.DIALOG.START_TIME' | translate }}</label>
+            <div class="time-input-trigger" [matMenuTriggerFor]="startMenu" #startTrigger="matMenuTrigger">
+              <span class="time-display-value">{{ formatTimeDisplay(startTimeValue) }}</span>
+              <mat-icon class="clock-icon">schedule</mat-icon>
+            </div>
+            <mat-menu #startMenu="matMenu" class="timepicker-menu-panel" yPosition="above" [overlapTrigger]="false">
+              <div (click)="$event.stopPropagation()">
+                <app-circular-timepicker [time]="startTimeValue" (timeChange)="onStartTimeChanged($event)" (done)="closeMenu(startTrigger)"></app-circular-timepicker>
+              </div>
+            </mat-menu>
+          </div>
+
+          <div style="color:var(--text-muted); font-weight:600; padding:0 4px; margin-top:20px;">{{ 'CALENDAR_MODULE.DIALOG.TO' | translate }}</div>
+
+          <div class="datepicker-wrapper">
+            <label class="datepicker-label">{{ 'CALENDAR_MODULE.DIALOG.END_TIME' | translate }}</label>
+            <div class="time-input-trigger" [matMenuTriggerFor]="endMenu" #endTrigger="matMenuTrigger">
+              <span class="time-display-value">{{ formatTimeDisplay(endTimeValue) }}</span>
+              <mat-icon class="clock-icon">schedule</mat-icon>
+            </div>
+            <mat-menu #endMenu="matMenu" class="timepicker-menu-panel" yPosition="above" [overlapTrigger]="false">
+              <div (click)="$event.stopPropagation()">
+                <app-circular-timepicker [time]="endTimeValue" (timeChange)="onEndTimeChanged($event)" (done)="closeMenu(endTrigger)"></app-circular-timepicker>
+              </div>
+            </mat-menu>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- ── Notes ── -->
+      <div style="margin-top:16px">
+        <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
+          <mat-label>{{ 'CALENDAR_MODULE.DIALOG.NOTES' | translate }}</mat-label>
+          <textarea matInput formControlName="notes" rows="2" [placeholder]="'CALENDAR_MODULE.DIALOG.OPTIONAL_NOTES' | translate"></textarea>
+          <mat-error *ngIf="calendarForm.get('notes')?.hasError('maxlength')">{{ 'CALENDAR_MODULE.DIALOG.MAX_CHARS' | translate }}</mat-error>
+        </mat-form-field>
+      </div>
+
+    </ng-container>
+    <!-- END standard scheduler -->
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <ng-container *ngIf="data.isReservationMode; else standardActions">
+    <div class="right-actions">
+      <button type="button" class="cancel-btn" (click)="onCancel()">{{ 'CALENDAR_MODULE.DIALOG.CANCEL' | translate }}</button>
+      <button type="button" class="save-btn" [disabled]="calendarForm.invalid" (click)="onSubmit()">
+        {{ 'CALENDAR_MODULE.DIALOG.BOOK' | translate }} {{ data.calendarName || ('CALENDAR_MODULE.DIALOG.APPOINTMENT' | translate) }}
+      </button>
+    </div>
+  </ng-container>
+  <ng-template #standardActions>
+    <button type="button" class="delete-btn" *ngIf="canDelete" (click)="onDelete()">{{ 'CALENDAR_MODULE.DIALOG.DELETE' | translate }}</button>
+    <div class="right-actions">
+      <button type="button" class="cancel-btn" (click)="onCancel()">{{ 'CALENDAR_MODULE.DIALOG.CANCEL' | translate }}</button>
+      <button type="button" class="save-btn" [disabled]="!canEdit" (click)="onSubmit()">
+        {{ isEditMode ? ('CALENDAR_MODULE.DIALOG.SAVE_CHANGES' | translate) : ('CALENDAR_MODULE.DIALOG.CREATE' | translate) + ' ' + (data.calendarName || ('CALENDAR_MODULE.DIALOG.APPOINTMENT' | translate)) }}
+      </button>
+    </div>
+  </ng-template>
+</mat-dialog-actions>

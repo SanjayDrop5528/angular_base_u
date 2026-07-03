@@ -1,0 +1,44 @@
+{
+  "pageHeading": "ROLES.FORM_CREATE_TITLE",
+  "editPageHeading": "ROLES.FORM_EDIT_TITLE",
+  "formType": "simple",
+  "hideheder": true,
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "form": {
+    "collectionName": "roles",
+    "fields": [
+      {
+        "key": "name",
+        "type": "mat-text-input",
+        "props": {
+          "label": "ROLES.LABEL_ROLE_NAME",
+          "placeholder": "ROLES.PLACEHOLDER_ROLE_NAME",
+          "required": true,
+          "minLength": 2
+        }
+      },
+      {
+        "key": "group_id",
+        "type": "select-input",
+        "props": {
+          "label": "ROLES.LABEL_PERMISSION_GROUP",
+          "required": true,
+          "methodType": "get",
+          "endPoint": "user/api/groups",
+          "valueProp": "id",
+          "labelProp": "name"
+        }
+      },
+      {
+        "key": "description",
+        "type": "mat-textarea-input",
+        "props": {
+          "label": "ROLES.LABEL_DESCRIPTION",
+          "placeholder": "ROLES.PLACEHOLDER_DESCRIPTION",
+          "rows": 3
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "pageHeading": "REVIEW_FORMS.FORM_TITLE",
+  "formType": "simple",
+  "editMode": "drawer",
+  "screenEditMode": "drawer",
+  "diffMehthod": true,
+  "saveEndPoint": "entities/review_forms",
+  "updateEndPoint": "entities/review_forms/{{model.id}}",
+  "getendpoint": "entities/review_forms/{{id}}",
+  "keyField": "id",
+  "saveMessage": "REVIEW_FORMS.SAVE_SUCCESS",
+  "updateMessage": "REVIEW_FORMS.UPDATE_SUCCESS",
+  "form": {
+    "collectionName": "review_forms",
+    "fields": [
+      {
+        "key": "event_id",
+        "type": "select-input",
+        "className": "col-12",
+        "props": {
+          "label": "REVIEW_FORMS.FIELD_REVIEW_ID",
+          "placeholder": "Select review event",
+          "required": true,
+          "labelProp": "name",
+          "valueProp": "id",
+          "setchieldData": [
+            {
+              "from": "entity_id",
+              "to": "entity_id"
+            }
+          ],
+          "needSearch": true,
+          "optionsDataSource": {
+            "collectionName": "notification_events"
+          }
+        }
+      },
+      {
+        "key": "entity_id"
+      },
+      {
+        "key": "event_name",
+        "type": "mat-text-input",
+        "props": {
+          "label": "REVIEW_FORMS.FIELD_REVIEW_NAME",
+          "placeholder": "REVIEW_FORMS.FIELD_REVIEW_NAME",
+          "required": true,
+          "onlyLetters": true,
+          "pattern": "^[a-zA-ZÀ-ÿ\\s]+$",
+          "maxLength": 50
+        }
+      },
+      {
+        "key": "form_config",
+        "type": "mat-textarea-input",
+        "className": "col-12",
+        "props": {
+          "label": "REVIEW_FORMS.FIELD_FORM_CONFIG",
+          "placeholder": "Enter JSON configuration for the review form",
+          "rows": 24,
+          "jsonEditor": true,
+          "hint": "JSON format: { \"fields\": [...], \"layout\": {...} }",
+          "required": true
+        }
+      }
+    ]
+  }
+}

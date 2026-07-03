@@ -1,0 +1,95 @@
+{
+  "moduleName": "IAM",
+  "screenName": "Create / Edit Screen",
+  "pageHeading": "SCREENS.FORM_CREATE_TITLE",
+  "editPageHeading": "SCREENS.FORM_EDIT_TITLE",
+  "formType": "simple",
+  "editMode": "popup",
+  "screenEditMode": "popup",
+  "form": {
+    "collectionName": "screens",
+    "fields": [
+      {
+        "key": "name",
+        "type": "mat-text-input",
+        "props": {
+          "label": "SCREENS.LABEL_NAME",
+          "placeholder": "SCREENS.PLACEHOLDER_NAME",
+          "required": true
+        }
+      },
+      {
+        "key": "type",
+        "type": "select-input",
+        "props": {
+          "label": "SCREENS.LABEL_TYPE",
+          "required": true,
+          "options": [
+            {
+              "value": "list",
+              "label": "SCREENS.TYPE_LIST"
+            },
+            {
+              "value": "form",
+              "label": "SCREENS.TYPE_FORM"
+            },
+            {
+              "value": "dashboard",
+              "label": "SCREENS.TYPE_DASHBOARD"
+            },
+            {
+              "value": "report",
+              "label": "SCREENS.TYPE_REPORT"
+            },
+            {
+              "value": "view",
+              "label": "SCREENS.TYPE_VIEW"
+            }
+          ],
+          "valueProp": "value",
+          "labelProp": "label",
+          "defaultValue": "list"
+        }
+      },
+      {
+        "key": "module_id",
+        "type": "select-input",
+        "props": {
+          "label": "SCREENS.LABEL_PARENT_MODULES",
+          "required": true,
+          "multiple": true,
+          "methodType": "get",
+          "endPoint": "user/api/modules",
+          "valueProp": "id",
+          "labelProp": "name"
+        }
+      },
+      {
+        "key": "route",
+        "type": "mat-text-input",
+        "props": {
+          "label": "SCREENS.LABEL_ROUTE",
+          "placeholder": "SCREENS.PLACEHOLDER_ROUTE"
+        }
+      },
+      {
+        "key": "avialable_permission",
+        "type": "text-to-chips",
+        "props": {
+          "label": "SCREENS.LABEL_PERMISSIONS",
+          "placeholder": "SCREENS.PLACEHOLDER_PERMISSIONS",
+          "required": true
+        }
+      },
+      {
+        "key": "descriptions",
+        "type": "mat-textarea-input",
+        "props": {
+          "label": "SCREENS.LABEL_DESCRIPTION",
+          "placeholder": "SCREENS.PLACEHOLDER_DESCRIPTION",
+          "rows": 3
+        }
+      }
+    ]
+  }
+}

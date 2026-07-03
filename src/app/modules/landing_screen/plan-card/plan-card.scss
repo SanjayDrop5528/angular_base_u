@@ -1,0 +1,449 @@
+// ═══════════════════════════════════════════════════
+//  PLAN CARD COMPONENT — plan-card.component.scss
+//  Relies on global CSS variables from styles.css
+// ═══════════════════════════════════════════════════
+
+// ─── Section wrapper ──────────────────────────────
+:host {
+    display: block; // critical — prevents collapsed invisible host
+}
+
+.pricing-section {
+    padding: 5rem 1.5rem;
+    background: rgba(255, 255, 255, 0.01);
+
+    @media (max-width: 768px) {
+        padding: 2.75rem 1.25rem;
+    }
+
+    @media (max-width: 480px) {
+        padding: 10px 16px;
+    }
+}
+
+.section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.section-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb, 26, 115, 232), 0.1);
+    border: 1px solid rgba(var(--primary-color-rgb, 26, 115, 232), 0.25);
+    padding: 0.3rem 0.9rem;
+    border-radius: 9999px;
+    margin-bottom: 1.25rem;
+
+    @media (max-width: 480px) {
+        font-size: 0.68rem;
+        padding: 0.25rem 0.75rem;
+    }
+}
+
+.section-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 3rem;
+    color: var(--text-main);
+
+    @media (max-width: 768px) {
+        margin-bottom: 2rem;
+    }
+
+    @media (max-width: 480px) {
+        margin-bottom: 1.5rem;
+    }
+}
+
+.loading-state {
+    padding: 2rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+// ─── Pricing grid ─────────────────────────────────
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    align-items: stretch;
+    margin-bottom: 2.5rem;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+        max-width: 460px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 2.5rem;
+        gap: 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+        max-width: 100%;
+        gap: 1.25rem;
+        margin-bottom: 1.75rem;
+    }
+}
+
+// ─── Individual card ──────────────────────────────
+.pricing-card {
+    position: relative;
+    padding: 2.2rem 2rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    transition: var(--transition-smooth);
+    border-radius: 30px;
+    height: 100%;
+    box-sizing: border-box;
+
+    // The 30px radius (tuned for a wide desktop card) looks oversized
+    // and clipped against the smaller padding/width on phones —
+    // scale both down together so corners read proportionally.
+    @media (max-width: 900px) {
+        padding: 1.85rem 1.6rem;
+        border-radius: 24px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 1.5rem 1.25rem;
+        border-radius: 18px;
+        gap: 0.9rem;
+    }
+
+    &:hover {
+        transform: translateY(-6px);
+        border-color: rgba(var(--primary-color-rgb, 26, 115, 232), 0.3);
+    }
+
+    // Highlighted (middle) card
+    &.highlighted {
+        border-color: var(--primary-color);
+        background: linear-gradient(135deg,
+                rgba(var(--primary-color-rgb, 26, 115, 232), 0.12) 0%,
+                var(--bg-card) 60%);
+        box-shadow:
+            var(--glass-shadow),
+            0 0 0 1px var(--primary-color),
+            0 0 40px rgba(var(--primary-color-rgb, 26, 115, 232), 0.15);
+
+        &:hover {
+            box-shadow:
+                var(--glass-shadow),
+                0 0 0 1px var(--primary-color),
+                0 0 60px rgba(var(--primary-color-rgb, 26, 115, 232), 0.25);
+        }
+    }
+}
+
+
+// ─── Badge (Most Popular) ─────────────────────────
+.plan-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 1rem;
+    border-radius: 9999px;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(var(--primary-color-rgb, 26, 115, 232), 0.4);
+
+    @media (max-width: 480px) {
+        top: -11px;
+        font-size: 0.6rem;
+        padding: 0.25rem 0.8rem;
+    }
+}
+
+// ─── Plan name ────────────────────────────────────
+.plan-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+
+    @media (max-width: 480px) {
+        font-size: 1.2rem;
+        margin: 15px 1px 4px 14px;
+    }
+}
+
+// ─── Tagline ──────────────────────────────────────
+.plan-eyebrow {
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-family: serif;
+    color: var(--primary-color);
+    padding: 0.3rem 0.7rem;
+    background: rgba(var(--primary-color-rgb, 26, 115, 232), 0.1);
+    border: 1px solid rgba(var(--primary-color-rgb, 26, 115, 232), 0.2);
+    border-radius: 6px;
+    width: fit-content;
+
+    @media (max-width: 480px) {
+        font-size: 0.74rem;
+        padding: 0.25rem 0.6rem;
+    }
+}
+
+// ─── Feature list ─────────────────────────────────
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    font-family: inherit;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.55rem;
+        font-size: 0.875rem;
+        font-weight: 300;
+        color: var(--text-muted);
+        line-height: 1.5;
+
+        @media (max-width: 480px) {
+            font-size: 0.82rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        gap: 0.5rem;
+    }
+}
+
+.check {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 800;
+    margin-top: 2px;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+// ─── Plan note ────────────────────────────────────
+.plan-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.85rem;
+    font-style: italic;
+    opacity: 0.8;
+
+    @media (max-width: 480px) {
+        padding-top: 0.65rem;
+        font-size: 0.7rem;
+    }
+}
+
+.btn-primary {
+    background: linear-gradient(135deg,
+            #06b6d4 0%,
+            #3b82f6 50%,
+            #8b5cf6 100%);
+
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 0.9rem 1.8rem;
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+
+    @media (max-width: 480px) {
+        padding: 0.75rem 1.4rem;
+        border-radius: 10px;
+        font-size: 0.88rem;
+    }
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.3);
+}
+
+// ─── CTA button ───────────────────────────────────
+// Inherit global .btn-primary / .btn-secondary
+// Just ensure full width inside card
+.pricing-card {
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+// ─── Disclaimer ───────────────────────────────────
+.pricing-disclaimer {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.65;
+    padding: 1.25rem 1.5rem;
+    background: var(--hover-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-radius);
+
+    @media (max-width: 480px) {
+        padding: 1rem 1.1rem;
+        font-size: 0.78rem;
+        border-radius: 14px;
+    }
+}
+
+.btn-compare-link {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    padding: 0.5rem 0;
+    transition: var(--transition-smooth);
+    width: 100%;
+    margin-top: 0.25rem;
+
+    @media (max-width: 480px) {
+        font-size: 0.78rem;
+    }
+
+    &:hover {
+        color: var(--secondary-color, #0891b2);
+        text-shadow: 0 0 10px rgba(var(--primary-color-rgb, 26, 115, 232), 0.2);
+    }
+}
+
+/* ─── Sidebar Drawer Panel ───────────────────────── */
+.drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    animation: drawerFadeIn 0.3s ease-out;
+}
+
+.drawer-panel {
+    position: fixed;
+    top: 0;
+    right: -750px;
+    width: 750px;
+    max-width: 95vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.96);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-left: 1px solid var(--border-color);
+    box-shadow: -10px 0 45px rgba(0, 0, 0, 0.15);
+    z-index: 2001;
+    transition: right 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+
+    &.open {
+        right: 0;
+    }
+
+    // Full-width drawer on phones so feature comparison content
+    // gets the whole viewport instead of being squeezed.
+    @media (max-width: 600px) {
+        width: 100vw;
+        max-width: 100vw;
+        right: -100vw;
+    }
+}
+
+:host-context([data-theme='morning']) .drawer-panel,
+:host-context(app-landing-page) .drawer-panel {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+.drawer-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 480px) {
+        padding: 1.1rem 1.25rem;
+    }
+}
+
+.drawer-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0;
+
+    @media (max-width: 480px) {
+        font-size: 1.05rem;
+    }
+}
+
+.drawer-close-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+        color: var(--text-main);
+    }
+}
+
+.drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 1.5rem 1rem 1.5rem;
+
+    @media (max-width: 480px) {
+        padding: 0 1.1rem 1rem 1.1rem;
+    }
+}
+
+@keyframes drawerFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

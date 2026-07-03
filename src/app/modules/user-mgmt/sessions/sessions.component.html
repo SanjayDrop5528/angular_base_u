@@ -1,0 +1,53 @@
+<div class="sessions-view animate-fade-in">
+
+  <div class="sessions-layout">
+    
+    <!-- Left: Active Sessions List -->
+    <div class="active-panel">
+      <h3 style="font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        {{ 'SESSIONS.ACTIVE_ORG_SESSIONS' | translate }}
+        <span class="badge badge-active">{{ activeSessions.length }} {{ 'SESSIONS.ONLINE' | translate }}</span>
+      </h3>
+
+      <div class="table-container">
+        <core-grid #sessionsGrid
+          [listName]="'sessions'"
+          [listData]="activeSessions"
+          [gridRowModelType]="'clientSide'"
+          [showHeader]="true"
+          [cardSchema]="sessionsCardSchema"
+          [cardActionCallback]="onCardAction.bind(this)"
+          (actionClicked)="onGridAction($event)"
+          (deleteRequest)="onDeleteRequest($event)"
+          style="width: 100%; height: calc(100vh - 240px);"
+        ></core-grid>
+      </div>
+    </div>
+
+    <!-- Right: Blocked IPs Panel -->
+    <div class="blocked-panel">
+      <h3 style="font-weight: 700; margin-bottom: 1.5rem;">{{ 'SESSIONS.RESTRICTED_IP_REGISTRY' | translate }}</h3>
+      
+      <div class="blocked-list">
+        <div *ngIf="blockedIPs.length === 0" class="glass-panel" style="text-align: center; padding: 2rem; border-style: dashed; color: var(--text-muted); font-size: 0.9rem;">
+          {{ 'SESSIONS.NO_RESTRICTED_IPS' | translate }}
+        </div>
+        
+        <div class="blocked-card animate-fade-in" *ngFor="let b of blockedIPs">
+          <div class="blocked-details">
+            <span class="blocked-ip">{{ b.ip_address }}</span>
+            <span class="blocked-reason">{{ 'SESSIONS.REASON' | translate }}: {{ b.reason }}</span>
+            <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem;">
+              {{ 'SESSIONS.BLOCKED' | translate }}: {{ b.created_at | date:'short' }}
+            </span>
+          </div>
+          <button (click)="removeIPRestriction(b.id)" class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; width: auto;">
+            {{ 'SESSIONS.UNBLOCK' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

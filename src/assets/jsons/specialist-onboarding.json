@@ -1,0 +1,824 @@
+{
+  "pageHeading": "SPECIALIST.PAGE_HEADING",
+  "screenEditMode": "page",
+  "hideheder": true,
+  "doNotShowFormAction": true,
+  "actionHide": true,
+  "form": {
+    "collectionName": "specialists",
+    "fields": [
+      {
+        "type": "dynamic-stepper",
+        "props": {
+          "submitEndpoint": "/entities/api/onboarding/submit",
+          "skipFinalSubmit": true,
+          "mobileprogressbarshow": true,
+          "pageHeading": "SPECIALIST.PAGE_HEADING",
+          "viewtype": "component",
+          "skippayloadmethos": true,
+          "style": {
+            "height": {
+              "desktop": "calc(100vh - 165px)",
+              "mobile": "calc(100vh - 120px)"
+            }
+          },
+          "prefixicon": "fa-user-doctor",
+          "iconcolor": "#9c27b0",
+          "needclose": true,
+          "fieldGroup": [
+            {
+              "title": "SPECIALIST.ONBOARDING.STEP_IDENTITY_TITLE",
+              "description": "SPECIALIST.ONBOARDING.STEP_IDENTITY_DESC",
+              "key": "identity",
+              "icon": "fa-user",
+              "actIndividual": true,
+              "collectionName": "specialists",
+              "getDataEndpoint": "/entities/specialists/{id}",
+              "updateEndpoint": "/entities/api/onboarding/identity",
+              "payloadKey": "identity_data",
+              "previewFields": [
+                {
+                  "key": "name",
+                  "label": "SPECIALIST.FIELD_LEGAL_NAME"
+                },
+                {
+                  "key": "gender",
+                  "label": "SPECIALIST.FIELD_GENDER"
+                },
+                {
+                  "key": "date_of_birth",
+                  "label": "SPECIALIST.FIELD_DOB"
+                },
+                {
+                  "key": "working_since",
+                  "label": "SPECIALIST.FIELD_WORKING_SINCE"
+                },
+                {
+                  "key": "current_designation",
+                  "label": "SPECIALIST.FIELD_DESIGNATION"
+                },
+                {
+                  "key": "patient_count",
+                  "label": "SPECIALIST.COL_PATIENT_COUNT"
+                },
+                {
+                  "key": "zipcode",
+                  "label": "SPECIALIST.FIELD_ZIPCODE"
+                }
+              ],
+              "fields": [
+                {
+                  "key": "profile_image",
+                  "type": "logo",
+                  "className": "col-12 text-center",
+                  "bind_key": "name",
+                  "refId": "name",
+                  "props": {
+                    "required": true,
+                    "label": "SPECIALIST.FIELD_UPLOAD_PHOTO",
+                    "refId": "email",
+                    "model": "email",
+                    "folder": "specialist_profiles"
+                  },
+                  "templateOptions": {
+                    "required": true,
+                    "label": "SPECIALIST.FIELD_UPLOAD_PHOTO",
+                    "refId": "name",
+                    "folder": "specialist_profiles"
+                  }
+                },
+                {
+                  "fieldGroupClassName": "form-row-3",
+                  "fieldGroup": [
+                    {
+                      "key": "name",
+                      "type": "mat-text-input",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_LEGAL_FULL_NAME",
+                        "placeholder": "SPECIALIST.PLACEHOLDER_NAME",
+                        "required": true,
+                        "onlyLetters": true,
+                        "pattern": "^[a-zA-ZÀ-ÿ\\s]+$",
+                        "maxLength": 50
+                      }
+                    },
+                    {
+                      "key": "gender",
+                      "type": "select-input",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_GENDER_IDENTITY",
+                        "required": true,
+                        "valueProp": "value",
+                        "labelProp": "label",
+                        "needSearch": false,
+                        "optionsDataSource": {
+                          "collectionName": "genders"
+                        }
+                      }
+                    },
+                    {
+                      "key": "date_of_birth",
+                      "type": "date-input",
+                      "dynamicvaltidateDate": true,
+                      "validiotionType": "dob",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_DOB",
+                        "required": true,
+                        "disable_input": true,
+                        "attributes": {
+                          "hide": "dob",
+                          "maxlimt": 18,
+                          "minyears": 100
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "fieldGroupClassName": "form-row-3",
+                  "fieldGroup": [
+                    {
+                      "key": "email",
+                      "type": "mat-text-input",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_EMAIL_ADDRESS",
+                        "placeholder": "SPECIALIST.PLACEHOLDER_EMAIL",
+                        "required": true,
+                        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+                      },
+                      "validation": {
+                        "messages": {
+                          "pattern": "FORM.VALIDATION.INVALID_EMAIL"
+                        }
+                      }
+                    },
+                    {
+                      "key": "primary_phone",
+                      "type": "dropdown-dynamic-input",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_PRIMARY_PHONE",
+                        "required": true,
+                        "datatype": "number",
+                        "pattern": "^[6-9][0-9]{9}$",
+                        "minLength": 10,
+                        "maxLength": 10,
+                        "appendPrefixValueKey": "country",
+                        "appendValue": "name",
+                        "placeholder": "SPECIALIST.PLACEHOLDER_PHONE",
+                        "prefixOptions": {
+                          "lable": "SPECIALIST.FIELD_COUNTRY_CODE",
+                          "key": "phone_code",
+                          "required": true,
+                          "labelProp": "{{flag_icon}} {{calling_code}}",
+                          "valueProp": "calling_code",
+                          "needSearch": true,
+                          "searchfield": "name",
+                          "collectionName": "countries",
+                          "defaultValue": "+91"
+                        }
+                      },
+                      "validation": {
+                        "messages": {
+                          "pattern": "FORM.VALIDATION.INVALID_PHONE",
+                          "minlength": "FORM.VALIDATION.PHONE_EXACT_10",
+                          "maxlength": "FORM.VALIDATION.PHONE_EXACT_10"
+                        }
+                      }
+                    },
+                    {
+                      "key": "country",
+                      "type": "select-input",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_COUNTRY",
+                        "placeholder": "SPECIALIST.PLACEHOLDER_COUNTRY",
+                        "required": false,
+                        "valueProp": "name",
+                        "labelProp": "name",
+                        "needSearch": true,
+                        "optionsDataSource": {
+                          "collectionName": "countries"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "fieldGroupClassName": "form-row-3",
+                  "fieldGroup": [
+                    {
+                      "key": "working_since",
+                      "type": "year-picker",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_WORKING_SINCE_DATE",
+                        "disable_input": true,
+                        "required": true,
+                        "hidefutureyear": true,
+                        "attributes": {
+                          "minyear": 50
+                        }
+                      }
+                    },
+                    {
+                      "key": "current_designation",
+                      "type": "select-input",
+                      "props": {
+                        "label": "SPECIALIST.FIELD_CURRENT_DESIGNATION",
+                        "placeholder": "SPECIALIST.PLACEHOLDER_DESIGNATION",
+                        "required": true,
+                        "valueProp": "name",
+                        "labelProp": "name",
+                        "needSearch": true,
+                        "optionsDataSource": {
+                          "collectionName": "designations"
+                        }
+                      }
+                    },
+                    {
+                      "key": "patient_count",
+                      "type": "mat-text-input",
+                      "props": {
+                        "label": "SPECIALIST.COL_PATIENT_COUNT",
+                        "placeholder": "SPECIALIST.PLACEHOLDER_PATIENTS",
+                        "required": true,
+                        "onlyNumbers": true,
+                        "maxLength": 5,
+                        "pattern": "^[0-9]{1,5}$"
+                      }
+                    },
+                    {
+                      "key": "zipcode",
+                      "type": "mat-text-input",
+                      "hide": true,
+                      "props": {
+                        "label": "SPECIALIST.FIELD_POSTAL_CODE",
+                        "placeholder": "SPECIALIST.PLACEHOLDER_ZIP",
+                        "required": true,
+                        "minLength": 6,
+                        "maxLength": 6,
+                        "pattern": "^[0-9]{6}$",
+                        "onlyNumbers": true
+                      }
+                    }
+                  ]
+                },
+                {
+                  "key": "biography",
+                  "type": "mat-textarea-input",
+                  "props": {
+                    "label": "SPECIALIST.FIELD_BIOGRAPHY",
+                    "placeholder": "SPECIALIST.PLACEHOLDER_BIOGRAPHY",
+                    "rows": 4
+                  }
+                }
+              ]
+            },
+            {
+              "title": "SPECIALIST.ONBOARDING.STEP_QUALIFICATIONS_TITLE",
+              "description": "SPECIALIST.ONBOARDING.STEP_QUALIFICATIONS_DESC",
+              "key": "qualifications_group",
+              "icon": "fa-graduation-cap",
+              "actIndividual": false,
+              "collectionName": "specialists_qualifications",
+              "getDataEndpoint": "/entities/filter/specialists_qualifications",
+              "gettype": "filter",
+              "required": true,
+              "childKey": "qualifications",
+              "filterColumn": "specialist_id",
+              "payloadArrayKey": "qualifications",
+              "payloadKey": "qualifications_data",
+              "parentKey": "id",
+              "previewFields": [
+                {
+                  "key": "qualifications_name",
+                  "label": "SPECIALIST.FIELD_DEGREE_NAME"
+                },
+                {
+                  "key": "qualifications_type",
+                  "label": "SPECIALIST.FIELD_QUALIFICATION_TYPE"
+                },
+                {
+                  "key": "issuing_institution",
+                  "label": "SPECIALIST.FIELD_INSTITUTION"
+                },
+                {
+                  "key": "year_obtained",
+                  "label": "SPECIALIST.FIELD_YEAR_OBTAINED"
+                }
+              ],
+              "fields": [
+                {
+                  "key": "qualifications",
+                  "type": "repeat",
+                  "canAddDefaultInArray": true,
+                  "props": {
+                    "label": "SPECIALIST.ONBOARDING.QUALIFICATIONS",
+                    "repeatClassName": "qualifications-repeat",
+                    "sliderWidth": "40vw",
+                    "collectionName": "specialists_qualifications",
+                    "parentField": "specialist_id"
+                  },
+                  "fieldArray": {
+                    "fieldGroup": [
+                      {
+                        "fieldGroupClassName": "form-row-2",
+                        "fieldGroup": [
+                          {
+                            "key": "qualifications_name",
+                            "type": "select-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_QUALIFICATION_NAME",
+                              "required": true,
+                              "valueProp": "name",
+                              "labelProp": "name",
+                              "needSearch": true,
+                              "preventRepeat": true,
+                              "optionsDataSource": {
+                                "collectionName": "qualifications"
+                              }
+                            }
+                          },
+                          {
+                            "key": "qualifications_type",
+                            "type": "select-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_QUALIFICATION_TYPE",
+                              "required": true,
+                              "valueProp": "value",
+                              "labelProp": "label",
+                              "options": [
+                                {
+                                  "label": "SPECIALIST.QUAL_TYPE_DEGREE",
+                                  "value": "Degree"
+                                },
+                                {
+                                  "label": "SPECIALIST.QUAL_TYPE_CERTIFICATION",
+                                  "value": "Certification"
+                                },
+                                {
+                                  "label": "SPECIALIST.QUAL_TYPE_LICENSE",
+                                  "value": "License"
+                                },
+                                {
+                                  "label": "SPECIALIST.QUAL_TYPE_FELLOWSHIP",
+                                  "value": "Fellowship"
+                                },
+                                {
+                                  "label": "SPECIALIST.QUAL_TYPE_OTHER",
+                                  "value": "Other"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "key": "issuing_institution",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_ISSUING_INSTITUTION",
+                              "placeholder": "SPECIALIST.PLACEHOLDER_INSTITUTION",
+                              "required": true,
+                              "pattern": "^[a-zA-ZÀ-ÿ0-9\\s.,&'()\\/-]+$",
+                              "maxLength": 100
+                            }
+                          },
+                          {
+                            "key": "issuing_country",
+                            "type": "select-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_ISSUING_COUNTRY",
+                              "placeholder": "SPECIALIST.PLACEHOLDER_COUNTRY",
+                              "required": true,
+                              "valueProp": "name",
+                              "labelProp": "name",
+                              "needSearch": true,
+                              "optionsDataSource": {
+                                "collectionName": "countries"
+                              }
+                            }
+                          },
+                          {
+                            "key": "year_obtained",
+                            "type": "year-picker",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_YEAR_OBTAINED",
+                              "placeholder": "SPECIALIST.PLACEHOLDER_YEAR",
+                              "disable_input": true,
+                              "required": true,
+                              "hidefutureyear": true,
+                              "attributes": {
+                                "minyear": 70
+                              }
+                            }
+                          },
+                          {
+                            "key": "expiry_date",
+                            "type": "year-picker",
+                            "parentKey": "year_obtained",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_EXPIRY_DATE",
+                              "disable_input": true,
+                              "hidefutureyear": false
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "fieldGroupClassName": "form-row-1",
+                        "fieldGroup": [
+                          {
+                            "key": "certificate_file",
+                            "type": "file-upload",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_CERT_UPLOAD",
+                              "accept": ".pdf,.doc,.docx,.jpg,.jpeg,.png",
+                              "multiple": false,
+                              "grid": true,
+                              "required": true,
+                              "folderName": "specialist_certificates",
+                              "filefromControll": true,
+                              "hint": "Upload your degree certificate, license or supporting document (PDF, DOC, JPG — max 10 MB)"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "title": "SPECIALIST.ONBOARDING.STEP_SKILLS_TITLE",
+              "description": "SPECIALIST.ONBOARDING.STEP_SKILLS_DESC",
+              "key": "skills_group",
+              "icon": "fa-award",
+              "actIndividual": false,
+              "required": true,
+              "parentKey": "id",
+              "collectionName": "specialists_skills",
+              "getDataEndpoint": "/entities/api/onboarding/specialists-skills/{id}",
+              "payloadKey": "skills_data",
+              "previewFields": [
+                {
+                  "key": "languages",
+                  "label": "SPECIALIST.FIELD_LANGUAGES",
+                  "itemFields": [
+                    {
+                      "key": "language",
+                      "label": "SHARED.LANGUAGE"
+                    },
+                    {
+                      "key": "abilities",
+                      "label": "SPECIALIST.FIELD_ABILITIES"
+                    }
+                  ]
+                },
+                {
+                  "key": "skills",
+                  "label": "SPECIALIST.FIELD_SKILLS_LIST",
+                  "itemFields": [
+                    {
+                      "key": "skill_name",
+                      "label": "SPECIALIST.FIELD_SKILL_NAME"
+                    },
+                    {
+                      "key": "skill_type",
+                      "label": "SPECIALIST.FIELD_SKILL_TYPE"
+                    }
+                  ]
+                }
+              ],
+              "fields": [
+                {
+                  "fieldGroupClassName": "form-row-2 flex-wrap",
+                  "fieldGroup": [
+                    {
+                      "key": "languages",
+                      "type": "repeat",
+                      "canAddDefaultInArray": true,
+                      "props": {
+                        "label": "SPECIALIST.FIELD_LANGUAGES",
+                        "preventAdd": true,
+                        "repeatClassName": "languages-repeat",
+                        "collectionName": "specialists_languages",
+                        "parentField": "specialist_id"
+                      },
+                      "fieldArray": {
+                        "fieldGroupClassName": "form-row-2",
+                        "fieldGroup": [
+                          {
+                            "key": "language",
+                            "type": "select-input",
+                            "props": {
+                              "label": "SHARED.LANGUAGE",
+                              "required": true,
+                              "valueProp": "value",
+                              "labelProp": "label",
+                              "preventRepeat": true,
+                              "needSearch": true,
+                              "optionsDataSource": {
+                                "collectionName": "languages"
+                              }
+                            }
+                          },
+                          {
+                            "key": "abilities",
+                            "type": "select-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_LANG_ABILITIES",
+                              "required": true,
+                              "multiple": true,
+                              "showSelectAll": true,
+                              "valueProp": "value",
+                              "labelProp": "label",
+                              "options": [
+                                {
+                                  "label": "SPECIALIST.ABILITY_READ",
+                                  "value": "read"
+                                },
+                                {
+                                  "label": "SPECIALIST.ABILITY_WRITE",
+                                  "value": "write"
+                                },
+                                {
+                                  "label": "SPECIALIST.ABILITY_SPEAK",
+                                  "value": "speak"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "skills",
+                      "type": "repeat",
+                      "canAddDefaultInArray": true,
+                      "props": {
+                        "label": "SPECIALIST.FIELD_SPATIAL_SKILLS",
+                        "repeatClassName": "skills-repeat",
+                        "preventAdd": true,
+                        "collectionName": "specialists_skills",
+                        "parentField": "specialist_id"
+                      },
+                      "fieldArray": {
+                        "fieldGroupClassName": "form-row-2",
+                        "fieldGroup": [
+                          {
+                            "key": "skill_name",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_SKILL_NAME",
+                              "placeholder": "SPECIALIST.PLACEHOLDER_SKILL",
+                              "required": true,
+                              "pattern": "^[a-zA-ZÀ-ÿ0-9\\s.,&'()\\/-]+$",
+                              "maxLength": 50
+                            }
+                          },
+                          {
+                            "key": "skill_type",
+                            "type": "select-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_SKILL_TYPE",
+                              "required": true,
+                              "valueProp": "name",
+                              "labelProp": "name",
+                              "needSearch": true,
+                              "optionsDataSource": {
+                                "collectionName": "skill_types"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "SPECIALIST.ONBOARDING.STEP_AWARDS_TITLE",
+              "description": "SPECIALIST.ONBOARDING.STEP_AWARDS_DESC",
+              "key": "experience_group",
+              "icon": "fa-briefcase",
+              "actIndividual": false,
+              "childKey": "experience",
+              "required": true,
+              "parentKey": "id",
+              "collectionName": "specialists_experience",
+              "getDataEndpoint": "/entities/filter/specialists_experience",
+              "gettype": "filter",
+              "filterColumn": "specialist_id",
+              "payloadArrayKey": "experience",
+              "previewFields": [
+                {
+                  "key": "award_name",
+                  "label": "SPECIALIST.FIELD_AWARD_NAME"
+                },
+                {
+                  "key": "issuing_organization",
+                  "label": "SPECIALIST.FIELD_ISSUING_ORG"
+                },
+                {
+                  "key": "award_year",
+                  "label": "SPECIALIST.FIELD_AWARD_YEAR"
+                }
+              ],
+              "fields": [
+                {
+                  "key": "experience",
+                  "type": "repeat",
+                  "canAddDefaultInArray": true,
+                  "props": {
+                    "repeatClassName": "experience-repeat",
+                    "label": "SPECIALIST.ONBOARDING.AWARDS",
+                    "collectionName": "specialists_experience",
+                    "parentField": "specialist_id"
+                  },
+                  "fieldArray": {
+                    "fieldGroup": [
+                      {
+                        "fieldGroupClassName": "form-row-1",
+                        "fieldGroup": [
+                          {
+                            "key": "award_name",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_AWARD_ACHIEVEMENT",
+                              "placeholder": "SPECIALIST.PLACEHOLDER_AWARD",
+                              "sliderWidth": "30vw",
+                              "required": true,
+                              "pattern": "^[a-zA-ZÀ-ÿ0-9\\s.,&'()\\/-]+$",
+                              "maxLength": 100
+                            }
+                          },
+                          {
+                            "key": "issuing_organization",
+                            "type": "mat-text-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_ISSUING_ORG",
+                              "placeholder": "SPECIALIST.PLACEHOLDER_ORGANIZATION",
+                              "required": true,
+                              "pattern": "^[a-zA-ZÀ-ÿ0-9\\s.,&'()\\/-]+$",
+                              "maxLength": 100
+                            }
+                          },
+                          {
+                            "key": "award_year",
+                            "type": "year-picker",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_YEAR_AWARDED",
+                              "placeholder": "SPECIALIST.PLACEHOLDER_AWARD_YEAR",
+                              "disable_input": true,
+                              "required": true,
+                              "hidefutureyear": true,
+                              "attributes": {
+                                "minyear": 70
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "fieldGroupClassName": "form-row-1",
+                        "className": "col-span-full",
+                        "fieldGroup": [
+                          {
+                            "key": "descriptions",
+                            "type": "mat-textarea-input",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_BRIEF_DESC",
+                              "placeholder": "SPECIALIST.PLACEHOLDER_AWARD_DETAILS",
+                              "rows": 3
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "fieldGroupClassName": "form-row-1",
+                        "className": "col-span-full",
+                        "fieldGroup": [
+                          {
+                            "key": "certificate_file",
+                            "type": "file-upload",
+                            "props": {
+                              "label": "SPECIALIST.FIELD_AWARD_UPLOAD",
+                              "accept": ".pdf,.doc,.docx,.jpg,.jpeg,.png",
+                              "multiple": true,
+                              "grid": true,
+                              "filefromControll": true,
+                              "folderName": "specialist_certificates",
+                              "hint": "Upload the award certificate or supporting document (PDF, DOC, JPG — max 10 MB)"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "title": "SPECIALIST.ONBOARDING.STEP_SPECIALTIES_TITLE",
+              "description": "SPECIALIST.ONBOARDING.STEP_SPECIALTIES_DESC",
+              "key": "specialties_group",
+              "icon": "fa-stethoscope",
+              "actIndividual": false,
+              "childKey": "specialties",
+              "required": true,
+              "collectionName": "specialists_specialties",
+              "getDataEndpoint": "/entities/filter/specialists_specialties",
+              "gettype": "filter",
+              "parentKey": "id",
+              "filterColumn": "specialist_id",
+              "payloadArrayKey": "specialties",
+              "previewFields": [
+                {
+                  "key": "specialty_name",
+                  "label": "SPECIALIST.FIELD_SPECIALTY_NAME"
+                },
+                {
+                  "key": "year_in_specialtie",
+                  "label": "SPECIALIST.FIELD_YEARS_IN_SPECIALTY"
+                },
+                {
+                  "key": "is_primary",
+                  "label": "SPECIALIST.FIELD_IS_PRIMARY"
+                }
+              ],
+              "fields": [
+                {
+                  "key": "specialties",
+                  "type": "repeat",
+                  "canAddDefaultInArray": true,
+                  "props": {
+                    "repeatClassName": "specialties-repeat",
+                    "sliderWidth": "25vw",
+                    "label": "SPECIALIST.ONBOARDING.SPECIALTIES",
+                    "collectionName": "specialists_specialties",
+                    "supportApi": "entities/api//onboarding/specialists/{{parentField}}/profile-completed",
+                    "parentField": "specialist_id"
+                  },
+                  "fieldArray": {
+                    "fieldGroupClassName": "form-row-1",
+                    "fieldGroup": [
+                      {
+                        "key": "specialty_name",
+                        "type": "mat-text-input",
+                        "props": {
+                          "label": "SPECIALIST.FIELD_SPECIALTY_SUBNAME",
+                          "placeholder": "SPECIALIST.PLACEHOLDER_SPECIALTY",
+                          "required": true,
+                          "pattern": "^[a-zA-ZÀ-ÿ0-9\\s.,&'()\\/-]+$",
+                          "maxLength": 50
+                        }
+                      },
+                      {
+                        "key": "year_in_specialtie",
+                        "type": "mat-text-input",
+                        "props": {
+                          "label": "SPECIALIST.FIELD_YEARS_IN_SPECIALTY",
+                          "placeholder": "SPECIALIST.PLACEHOLDER_EXPERIENCE",
+                          "required": true,
+                          "onlyNumbers": true,
+                          "maxLength": 2,
+                          "pattern": "^[0-9]{1,2}$"
+                        }
+                      },
+                      {
+                        "key": "is_primary",
+                        "type": "select-input",
+                        "props": {
+                          "label": "SPECIALIST.FIELD_IS_PRIMARY_SPECIALTY",
+                          "required": true,
+                          "valueProp": "value",
+                          "labelProp": "label",
+                          "options": [
+                            {
+                              "label": "SHARED.YES",
+                              "value": true
+                            },
+                            {
+                              "label": "SHARED.NO",
+                              "value": false
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "title": "SPECIALIST.ONBOARDING.STEP_SUMMARY_TITLE",
+              "description": "SPECIALIST.ONBOARDING.STEP_SUMMARY_DESC",
+              "key": "review",
+              "hideviewprofile": true,
+              "icon": "fa-clipboard-check",
+              "fields": []
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

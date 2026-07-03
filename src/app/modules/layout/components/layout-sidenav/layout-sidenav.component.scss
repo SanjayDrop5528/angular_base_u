@@ -1,0 +1,443 @@
+// ═══════════════════════════════════════════════════════════════
+//  Layout Sidenav — Theme-aware, collapsible, glassmorphic
+// ═══════════════════════════════════════════════════════════════
+
+.sidenav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(3px);
+  z-index: 299;
+}
+
+.layout-sidenav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--sidenav-bg-color, #ffffff);
+  width: var(--sidenav-bg-width, auto);
+  border-right: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+// ── Sidenav Header ────────────────────────────────────────────
+.sidenav-header {
+  padding: 1.2rem 1rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.sidenav-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.sidenav-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--sidenav-font-color, var(--text-muted));
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 8px;
+  width: 100%;
+  transition: var(--transition-smooth);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.sidenav-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.logo-fallback {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidenav-app-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.2s ease;
+}
+
+// ── Section label (header-sidenav mode) ──────────────────────
+.section-label-area {
+  padding: 1rem 1.2rem 0.5rem;
+  flex-shrink: 0;
+}
+
+.section-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--primary-color);
+  padding: 0 0 0.5rem 0.2rem;
+  border-bottom: 1px solid rgba(var(--primary-color-rgb, 26, 115, 232), 0.2);
+}
+
+.section-label-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  margin: 0 auto;
+}
+
+// ── Nav ────────────────────────────────────────────────────────
+.sidenav-nav {
+  flex: 1;
+  padding: 0.75rem 0.65rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 100, 100, 0.45) rgba(0, 0, 0, 0.05);
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(100, 100, 100, 0.45);
+    border-radius: 4px;
+    &:hover {
+      background: rgba(100, 100, 100, 0.65);
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
+}
+
+.nav-divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 0.5rem 0.4rem;
+}
+
+// ── Nav Item base ──────────────────────────────────────────────
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--sidenav-font-color, var(--text-muted));
+  border-radius: 9px;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-align: left;
+  position: relative;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+  overflow: visible;
+
+  .nav-icon {
+    font-size: 1.1rem; width: 1.1rem; height: 1.1rem;
+    flex-shrink: 0;
+    color: var(--sidenav-icon-color, currentColor);
+    transition: color 0.15s ease;
+  }
+
+  .nav-label {
+    flex: 1;
+    overflow: visible;
+    transition: opacity 0.2s ease;
+  }
+
+  .nav-badge-chip {
+    background: var(--primary-color); color: #fff;
+    font-size: 0.65rem; font-weight: 700;
+    padding: 1px 6px; border-radius: 999px; flex-shrink: 0;
+  }
+
+  .expand-icon {
+    font-size: 1rem; width: 1rem; height: 1rem;
+    flex-shrink: 0; opacity: 0.6;
+    transition: transform 0.2s ease;
+  }
+
+  .group-toggle-btn {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    margin-left: auto;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: rgba(var(--primary-color-rgb, 26, 115, 232), 0.12);
+      color: var(--primary-color);
+      .expand-icon {
+        opacity: 0.9;
+      }
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &:hover, &:focus-visible {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-main);
+    outline: none;
+    .nav-icon { color: var(--sidenavlink-active-icon-color, var(--primary-color)); }
+  }
+
+  &.active {
+    background: var(--sidenavlink-active-bg, rgba(var(--primary-color-rgb, 26, 115, 232), 0.14));
+    color: var(--sidenavlink-active-font-color, var(--primary-color));
+    font-weight: 600;
+
+    .nav-icon { color: var(--sidenavlink-active-icon-color, var(--primary-color)); }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 20%; bottom: 20%;
+      width: 3px;
+      background: var(--sidenavlink-active-icon-color, var(--primary-color));
+      border-radius: 0 3px 3px 0;
+    }
+  }
+
+  &.has-active-child {
+    color: var(--sidenavlink-active-font-color, var(--primary-color));
+    font-weight: 600;
+    .nav-icon { color: var(--sidenavlink-active-icon-color, var(--primary-color)); }
+  }
+
+  &:disabled, &.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.expanded .expand-icon { transform: rotate(0deg); }
+}
+
+// ── Children (sub-items) ──────────────────────────────────────
+.nav-node {
+  position: relative;
+
+  // Each node draws its own vertical segment through itself
+  &::before {
+    content: '';
+    position: absolute;
+    left: -1.4rem;
+    top: 0;
+    bottom: 0;
+    width: 1.5px;
+    background: var(--border-color);
+  }
+
+  // Last node: vertical line only reaches its own midpoint (└ shape)
+  &:last-child::before {
+    top: 0;
+    height: 1.1rem;
+    bottom: unset;
+  }
+
+  // Horizontal connector from vertical line rightward to item
+  &::after {
+    content: '';
+    position: absolute;
+    left: -1.4rem;
+    top: 1.1rem;
+    width: 1.1rem;
+    height: 1.5px;
+    background: var(--border-color);
+  }
+}
+
+.nav-children {
+  overflow: visible;
+  animation: slideDown 0.18s ease;
+  position: relative;
+  margin-left: 1.4rem;
+
+  .nav-children {
+    margin-left: 1.2rem;
+  }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nav-child {
+  .child-icon {
+    font-size: 0.85rem;
+    width: 0.85rem;
+    height: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  &.active {
+    .child-icon { color: var(--primary-color); }
+  }
+}
+
+// ── Collapse Toggle Button ────────────────────────────────────
+.collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-top: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 1.1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--primary-color);
+  }
+}
+
+// ── Collapsed State ───────────────────────────────────────────
+.layout-sidenav.collapsed {
+  .sidenav-app-name,
+  .nav-label,
+  .nav-badge-chip,
+  .expand-icon,
+  .section-label {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+  }
+
+  .nav-item {
+    justify-content: center;
+    padding: 0.65rem 0;
+  }
+
+  .logo-area {
+    display: none;
+  }
+
+  .sidenav-header-content {
+    justify-content: center;
+  }
+
+  .sidenav-toggle-btn {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .nav-child {
+    padding-left: 0;
+  }
+}
+
+// ── Mobile ────────────────────────────────────────────────────
+@media (max-width: 1200px) {
+  .layout-sidenav {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    bottom: 0;
+    height: 100dvh;
+    width: 260px !important;
+    transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 300;
+
+    &.mobile-open {
+      left: 0;
+      box-shadow: 4px 0 32px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .collapse-btn {
+    display: none;
+  }
+
+  .sidenav-toggle-btn {
+    display: flex;
+  }
+}
