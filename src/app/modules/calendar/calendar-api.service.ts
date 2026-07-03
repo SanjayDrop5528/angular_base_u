@@ -5,14 +5,21 @@ import { map } from 'rxjs/operators';
 import { Calendar, User, RoasterConfigPayload } from './calendar.model';
 import { RoasterType } from '../../enums/enum';
 import { environment } from '../../../environments/environment';
+import { BaseService } from '../../core/services/base.service';
 
 @Injectable({ providedIn: 'root' })
-export class CalendarApiService {
-  constructor(private http: HttpClient) {}
+export class CalendarApiService extends BaseService {
+  constructor(http: HttpClient) {
+    super(http);
+    this.baseUrl = this.apiBaseUrl;
+  }
 
   private _customBaseUrl?: string;
 
-  setCustomBaseUrl(url: string) { this._customBaseUrl = url; }
+  setCustomBaseUrl(url: string) {
+    this._customBaseUrl = url;
+    this.baseUrl = url;
+  }
 
   private get apiBaseUrl(): string {
     if (this._customBaseUrl) return this._customBaseUrl;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { ApiService } from '../../../core/services/api.service';
+import { IamService } from '../service/iam.service';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class MfaVerifyComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private apiService: ApiService,
+    private apiService: IamService,
     private authService: AuthService,
     private router: Router
   ) {}

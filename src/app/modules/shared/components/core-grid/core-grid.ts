@@ -64,7 +64,7 @@ import { HelperService } from '../../../../core/services/utils/helper.service';
 import { FilterService } from '../../../../core/services/utils/filter.service';
 import { ActionButtonComponent } from '../../../dynamic/components/datatable/button';
 import { MyLinkRendererComponent } from '../../../dynamic/components/datatable/cellstyle';
-import { ScreenLoaded } from '../../services/screenloader.service';
+import { ScreenLoaded } from '../../../../core/services/screenloader.service';
 import { expressionCheck } from '../../../../core/interfaces/filter-builder';
 import { DynamicFormComponent } from '../../../dynamic/components/dynamic-form/dynamic-form.component';
 import { DynamicFilterComponent } from '../../../dynamic/components/dynamic-filter/dynamic-filter.component';

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ApiService } from '../../../core/services/api.service';
+import { UserMgmtService } from '../service/user-mgmt.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { DialogService } from '../../../core/services/dialog.service';
@@ -73,7 +73,7 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private apiService: ApiService,
+    private apiService: UserMgmtService,
     private authService: AuthService,
     private translateService: TranslateService,
     private dialogService: DialogService,

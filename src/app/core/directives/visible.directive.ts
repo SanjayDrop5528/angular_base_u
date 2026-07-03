@@ -1,5 +1,5 @@
 import { Directive, Input, ViewContainerRef, TemplateRef, inject } from '@angular/core';
-import { PermissionService } from '../../../core/services/permission/permission.service';
+import { PermissionService } from '../services/permission/permission.service';
 export declare type usedOn = 'menu' | 'button';
 
 @Directive({

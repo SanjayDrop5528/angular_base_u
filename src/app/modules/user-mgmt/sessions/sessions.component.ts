@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../../core/services/api.service';
+import { UserMgmtService } from '../service/user-mgmt.service';
 import { DialogService } from '../../../core/services/dialog.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { CoreGrid, GridOutputEvent } from '../../shared/components/core-grid/core-grid';
@@ -35,7 +35,7 @@ export class SessionsComponent implements OnInit {
   };
 
   constructor(
-    private apiService: ApiService,
+    private apiService: UserMgmtService,
     private dialogService: DialogService,
     private translateService: TranslateService
   ) {}

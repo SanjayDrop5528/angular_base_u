@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { ApiService } from '../../../core/services/api.service';
+import { IamService } from '../service/iam.service';
 import { AuthService } from '../../../core/services/auth.service';
 
 import { initializeApp } from 'firebase/app';
@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private apiService: ApiService,
+    private apiService: IamService,
     private authService: AuthService,
     private router: Router,
     private firebaseServices: FirebaseServices

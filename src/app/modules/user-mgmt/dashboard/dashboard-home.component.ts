@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ApiService } from '../../../core/services/api.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { DataService } from '../../../core/services/data.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -75,7 +74,6 @@ export class DashboardHomeComponent implements OnInit {
     { caseId: 'CASE-810', type: 'Cardiac Assessment', status: 'Advice Ready', doctor: 'Dr. Rajesh Kumar' }
   ];
 
-  private apiService = inject(ApiService);
   private authService = inject(AuthService);
   private dataService = inject(DataService);
 

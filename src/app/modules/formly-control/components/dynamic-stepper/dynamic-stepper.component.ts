@@ -8,14 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { Observable, Subject, forkJoin } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { ApiService } from '../../../../core/services/api.service';
+import { BaseService } from '../../../../core/services/base.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { DialogService } from '../../../../core/services/dialog.service';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { DataService } from '../../../../core/services/data.service';
 import { environment } from '../../../../../environments/environment';
-import { PatientDetailsViewComponent } from '../../../shared/components/patient-details-view/patient-details-view.component';
-import { SpecialistViewComponent } from "../../../specialist/specialist-view/specialist-view.component";
 
 @Component({
   selector: 'app-dynamic-stepper',
@@ -27,8 +25,6 @@ import { SpecialistViewComponent } from "../../../specialist/specialist-view/spe
     RouterModule,
     FormlyModule,
     MatIconModule,
-    PatientDetailsViewComponent,
-    SpecialistViewComponent,
     TranslateModule
   ],
   templateUrl: './dynamic-stepper.component.html',
@@ -98,7 +94,7 @@ export class DynamicStepperComponent extends FieldType implements OnInit {
   private _destroy$ = new Subject<void>();
 
   constructor(
-    private apiService: ApiService,
+    private apiService: BaseService,
     private authService: AuthService,
     private router: Router,
     public dialogService: DialogService,
@@ -1163,9 +1159,9 @@ export class DynamicStepperComponent extends FieldType implements OnInit {
     if (status === 'draft' || status === 'partial') {
       return true;
     }
-    return this.router.url.includes('/onboard') || 
-           this.router.url.includes('/addpatients') || 
-           this.isNewOnboarding;
+    return this.router.url.includes('/onboard') ||
+      this.router.url.includes('/addpatients') ||
+      this.isNewOnboarding;
   }
 
   submitRegistration(): void {
@@ -1198,111 +1194,111 @@ export class DynamicStepperComponent extends FieldType implements OnInit {
     }
   }
 
-    // const id = this.onboardingModel?.id
+  // const id = this.onboardingModel?.id
 
-    // if (this.isEdit) {
-    //   const editSaves = this.steps
-    //     .filter(step => step.updateEndpoint && step.payloadKey)
-    //     .map(step => {
-    //       const stepData = { ...(this.onboardingModel[step.key] || {}) };
-    //       const payload: any = {
-    //         [step.payloadKey]: stepData
-    //       };
+  // if (this.isEdit) {
+  //   const editSaves = this.steps
+  //     .filter(step => step.updateEndpoint && step.payloadKey)
+  //     .map(step => {
+  //       const stepData = { ...(this.onboardingModel[step.key] || {}) };
+  //       const payload: any = {
+  //         [step.payloadKey]: stepData
+  //       };
 
-    //       if (this.onboardingModel?.email) {
-    //         payload[step.payloadKey].email = this.onboardingModel.email;
-    //       } else {
-    //         const currentEmail = this.authService.getCurrentUser()?.email;
-    //         if (currentEmail) {
-    //           payload[step.payloadKey].email = currentEmail;
-    //         }
-    //       }
+  //       if (this.onboardingModel?.email) {
+  //         payload[step.payloadKey].email = this.onboardingModel.email;
+  //       } else {
+  //         const currentEmail = this.authService.getCurrentUser()?.email;
+  //         if (currentEmail) {
+  //           payload[step.payloadKey].email = currentEmail;
+  //         }
+  //       }
 
-    //       if (patientId) {
-    //         payload.patient_id = patientId;
-    //         payload[step.payloadKey].patient_id = patientId;
-    //       }
+  //       if (patientId) {
+  //         payload.patient_id = patientId;
+  //         payload[step.payloadKey].patient_id = patientId;
+  //       }
 
-    //       return this.apiService.post(step.updateEndpoint, payload);
-    //     });
+  //       return this.apiService.post(step.updateEndpoint, payload);
+  //     });
 
-    //   if (editSaves.length > 0) {
-    //     forkJoin(editSaves).subscribe({
-    //       next: () => {
-    //         this.isSubmitting = false;
-    //         this.cdr.detectChanges();
-    //         this.dialogService.openSnackBar('Record updated successfully!', 'OK');
-    //         this.location.back();
-    //       },
-    //       error: (err: any) => {
-    //         this.isSubmitting = false;
-    //         this.cdr.detectChanges();
-    //         this.dialogService.openSnackBar(err.error?.error || 'Failed to update record.', 'OK');
-    //       }
-    //     });
-    //     return;
-    //   }
-    // }
+  //   if (editSaves.length > 0) {
+  //     forkJoin(editSaves).subscribe({
+  //       next: () => {
+  //         this.isSubmitting = false;
+  //         this.cdr.detectChanges();
+  //         this.dialogService.openSnackBar('Record updated successfully!', 'OK');
+  //         this.location.back();
+  //       },
+  //       error: (err: any) => {
+  //         this.isSubmitting = false;
+  //         this.cdr.detectChanges();
+  //         this.dialogService.openSnackBar(err.error?.error || 'Failed to update record.', 'OK');
+  //       }
+  //     });
+  //     return;
+  //   }
+  // }
 
-    // // Only save steps that are NOT actIndividual (those are saved on Next already)
-    // const saves = this.visibleSteps
-    //   .filter(step => step.updateEndpoint && step.payloadKey && !step.actIndividual)
-    //   .map(step => {
-    //     const stepData = { ...(this.onboardingModel[step.key] || {}) };
+  // // Only save steps that are NOT actIndividual (those are saved on Next already)
+  // const saves = this.visibleSteps
+  //   .filter(step => step.updateEndpoint && step.payloadKey && !step.actIndividual)
+  //   .map(step => {
+  //     const stepData = { ...(this.onboardingModel[step.key] || {}) };
 
-    //     // If in edit mode, include the doctor ID inside the step data
-    //     if (this.isEdit && id) {
-    //       stepData.id = id;
-    //     }
+  //     // If in edit mode, include the doctor ID inside the step data
+  //     if (this.isEdit && id) {
+  //       stepData.id = id;
+  //     }
 
-    //     const payload: any = {
-    //       [step.payloadKey]: stepData
-    //     };
+  //     const payload: any = {
+  //       [step.payloadKey]: stepData
+  //     };
 
-    //     return this.apiService.post(step.updateEndpoint, payload);
-    //   });
+  //     return this.apiService.post(step.updateEndpoint, payload);
+  //   });
 
-    // if (saves.length > 0) {
-    //   forkJoin(saves).subscribe({
-    //     next: () => {
-    //       if (patientId) {
-    //         this.apiService.post(`/entities/api/patients/${patientId}/complete`, {}).subscribe({
-    //           next: () => {
-    //             localStorage.setItem('onboarded_completed', 'true');
-    //             this.executeFinalSubmission();
-    //           },
-    //           error: () => {
-    //             localStorage.setItem('onboarded_completed', 'true');
-    //             this.executeFinalSubmission();
-    //           }
-    //         });
-    //       } else {
-    //         this.executeFinalSubmission();
-    //       }
-    //     },
-    //     error: (err: any) => {
-    //       this.isSubmitting = false;
-    //       this.cdr.detectChanges();
-    //       this.dialogService.openSnackBar(err.error?.error || 'Failed to save onboarding details.', 'OK');
-    //     }
-    //   });
-    // } else {
-    //   if (patientId) {
-    //     this.apiService.post(`/entities/api/patients/${patientId}/complete`, {}).subscribe({
-    //       next: () => {
-    //         localStorage.setItem('onboarded_completed', 'true');
-    //         this.executeFinalSubmission();
-    //       },
-    //       error: () => {
-    //         localStorage.setItem('onboarded_completed', 'true');
-    //         this.executeFinalSubmission();
-    //       }
-    //     });
-    //   } else {
-    //     this.executeFinalSubmission();
-    //   }
-    // }
-  
+  // if (saves.length > 0) {
+  //   forkJoin(saves).subscribe({
+  //     next: () => {
+  //       if (patientId) {
+  //         this.apiService.post(`/entities/api/patients/${patientId}/complete`, {}).subscribe({
+  //           next: () => {
+  //             localStorage.setItem('onboarded_completed', 'true');
+  //             this.executeFinalSubmission();
+  //           },
+  //           error: () => {
+  //             localStorage.setItem('onboarded_completed', 'true');
+  //             this.executeFinalSubmission();
+  //           }
+  //         });
+  //       } else {
+  //         this.executeFinalSubmission();
+  //       }
+  //     },
+  //     error: (err: any) => {
+  //       this.isSubmitting = false;
+  //       this.cdr.detectChanges();
+  //       this.dialogService.openSnackBar(err.error?.error || 'Failed to save onboarding details.', 'OK');
+  //     }
+  //   });
+  // } else {
+  //   if (patientId) {
+  //     this.apiService.post(`/entities/api/patients/${patientId}/complete`, {}).subscribe({
+  //       next: () => {
+  //         localStorage.setItem('onboarded_completed', 'true');
+  //         this.executeFinalSubmission();
+  //       },
+  //       error: () => {
+  //         localStorage.setItem('onboarded_completed', 'true');
+  //         this.executeFinalSubmission();
+  //       }
+  //     });
+  //   } else {
+  //     this.executeFinalSubmission();
+  //   }
+  // }
+
   route = inject(ActivatedRoute)
   executeFinalSubmission(): void {
     this.isSubmitting = false;

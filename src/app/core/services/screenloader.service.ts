@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { BaseService } from "../../../core/services/base.service";
+import { BaseService } from "./base.service";
 import { Observable } from "rxjs";
-import { environment } from "../../../../environments/environment";
+import { environment } from "../../../environments/environment";
 import _ from "lodash";
 
 // Injectable service available throughout the app

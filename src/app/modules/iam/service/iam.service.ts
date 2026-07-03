@@ -27,15 +27,6 @@ export class IamService extends BaseService {
     return this.post('/user/api/auth/register-sso', payload);
   }
 
-  // registerPatient(name: string, email: string, mobile: string): Observable<any> {
-  //   return this.post('/user/api/auth/register-sso', {
-  //     name,
-  //     email,
-  //     mobile,
-  //     entity_type: 'Patient'
-  //   });
-  // }
-
   getOnboardingDraft(email: string): Observable<any> {
     return this.get(`/user/api/auth/onboarding/draft?email=${encodeURIComponent(email)}`);
   }

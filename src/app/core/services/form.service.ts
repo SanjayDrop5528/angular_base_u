@@ -20,7 +20,7 @@ import { DialogService } from "./dialog.service";
 import { DataService } from "./data.service";
 import { AggridHelperService } from "./ag-grid/aggrid-helper.service";
 import { expressionCheck } from "../interfaces/filter-builder";
-import { ScreenLoaded } from "../../modules/shared/services/screenloader.service";
+import { ScreenLoaded } from "./screenloader.service";
 import { AuthService } from "./auth.service";
 
 @Injectable({

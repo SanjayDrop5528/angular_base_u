@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { fromEvent, Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
-import { ApiService } from '../../../core/services/api.service';
+import { UserMgmtService } from '../service/user-mgmt.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private apiService: ApiService,
+    private apiService: UserMgmtService,
     private router: Router,
     private translateService: TranslateService
   ) { }

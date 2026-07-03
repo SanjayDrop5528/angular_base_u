@@ -226,4 +226,8 @@ export class UserMgmtService extends BaseService {
   updateUserCustomPermissions(userId: string, customPermissions: any[]): Observable<any> {
     return this.put(`/user/api/users/${userId}/custom-permissions`, { custom_permissions: customPermissions });
   }
+
+  changePassword(body: any): Observable<any> {
+    return this.post('/user/api/auth/change-password', body);
+  }
 }

@@ -1,12 +1,12 @@
 import { Component, inject, injectAsync, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ApiService } from '../../../core/services/api.service';
+import { UserMgmtService } from '../service/user-mgmt.service';
 import { DialogService } from '../../../core/services/dialog.service';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { AgGridModule } from 'ag-grid-angular';
 import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
-import { ScreenLoaded } from '../../shared/services/screenloader.service';
+import { ScreenLoaded } from '../../../core/services/screenloader.service';
 import { CoreGrid, GridOutputEvent } from '../../shared/components/core-grid/core-grid';
 import { MatStepperModule } from '@angular/material/stepper';
 import { forkJoin, Observable } from 'rxjs';
@@ -139,7 +139,7 @@ export class RolesComponent implements OnInit {
   menuEditIndependentOfPermissions = false;
 
   constructor(
-    private apiService: ApiService,
+    private apiService: UserMgmtService,
     private dialogService: DialogService,
     private translateService: TranslateService,
     private screenLoaded: ScreenLoaded

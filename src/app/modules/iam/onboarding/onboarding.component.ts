@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, AfterViewChecked } from '@ang
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { ApiService } from '../../../core/services/api.service';
+import { IamService } from '../service/iam.service';
 import { AuthService } from '../../../core/services/auth.service';
 
 interface Message {
@@ -67,7 +67,7 @@ export class OnboardingComponent implements OnInit, AfterViewChecked {
   acceptPrivacy = false;
 
   constructor(
-    private apiService: ApiService,
+    private apiService: IamService,
     private authService: AuthService,
     private router: Router
   ) { }

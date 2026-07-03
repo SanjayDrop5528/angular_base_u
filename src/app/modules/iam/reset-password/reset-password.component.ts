@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ApiService } from '../../../core/services/api.service';
+import { IamService } from '../service/iam.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -18,7 +18,7 @@ export class ResetPasswordComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private apiService: ApiService
+    private apiService: IamService
   ) {}
 
   ngOnInit(): void {
