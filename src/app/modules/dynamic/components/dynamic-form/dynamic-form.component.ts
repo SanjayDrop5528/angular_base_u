@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, NgZone, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FormGroup, FormsModule } from '@angular/forms';
@@ -10,8 +10,6 @@ import { HelperService } from '../../../../core/services/utils/helper.service';
 import { DialogService } from '../../../../core/services/dialog.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from '../../../shared/shared.module';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   standalone: true,
@@ -27,7 +25,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['./dynamic-form.component.css']
 })
 export class DynamicFormComponent {
-  @ViewChild('emailTemplatePreview') emailTemplatePreview!: TemplateRef<any>;
   form = new FormGroup({})
   pageHeading: any
   formAction = ''
@@ -46,8 +43,6 @@ export class DynamicFormComponent {
   @Output('onClose') onClose = new EventEmitter<any>();
   butonflag: boolean = false;
   actionHide: boolean = false;
-  previewUrl: SafeResourceUrl | null = null;
-  private previewDialogRef?: MatDialogRef<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,8 +53,6 @@ export class DynamicFormComponent {
     private dialogService: DialogService,
     public cdr: ChangeDetectorRef,
     public ngZone: NgZone,
-    private matDialog: MatDialog,
-    private sanitizer: DomSanitizer,
   ) { }
   valuchangeDetect = new Subject<any>();
   ngOnInit() {

@@ -1,7 +1,7 @@
-// file-preview.service.ts
-import { Injectable } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Injectable, inject } from '@angular/core';
+import { SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '../../../../../environments/environment';
+import { HelperService } from '../../../../core/services/utils/helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,9 @@ export class FilePreviewService {
     VIDEO: ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv']
   };
   baseFileUrl: string;
+  private helperService = inject(HelperService);
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor() {
     this.baseFileUrl = environment.ImageBaseUrl;
   }
 
@@ -57,13 +58,13 @@ export class FilePreviewService {
       case 'doc':
       case 'docx':
         const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true`;
-        return this.sanitizer.bypassSecurityTrustResourceUrl(viewerUrl);
+        return this.helperService.bypassSecurityTrustResourceUrl(viewerUrl);
       case 'image':
-        return this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
+        return this.helperService.bypassSecurityTrustResourceUrl(fileUrl);
       case 'video':
-        return this.sanitizer.bypassSecurityTrustResourceUrl(fileUrl);
+        return this.helperService.bypassSecurityTrustResourceUrl(fileUrl);
       default:
-        return this.sanitizer.bypassSecurityTrustResourceUrl('');
+        return this.helperService.bypassSecurityTrustResourceUrl('');
     }
   }
 

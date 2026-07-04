@@ -39,22 +39,4 @@
   <span>Given ID is not valid</span>
 </div>
 }
-
-<ng-template #emailTemplatePreview>
-  <div class="email-preview-dialog">
-    <div class="email-preview-dialog__header">
-      <div>
-        <h2>Email Preview</h2>
-        <p>Rendered HTML and CSS from the current template body</p>
-      </div>
-      <button type="button" mat-icon-button (click)="closeEmailPreview()" aria-label="Close preview">
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-    <div class="email-preview-dialog__body">
-      <section class="email-preview-dialog__pane">
-        <iframe class="email-preview-dialog__frame" sandbox [src]="previewUrl"></iframe>
-      </section>
-    </div>
-  </div>
-</ng-template>
+

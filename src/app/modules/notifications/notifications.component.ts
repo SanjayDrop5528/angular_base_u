@@ -9,6 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, Subject, catchError, filter, forkJoin, of, takeUntil } from 'rxjs';
 import { InAppNotification, InAppNotificationService } from '../../core/services/notification/in-app-notification.service';
 import { AuthService } from '../../core/services/auth.service';
+import { HelperService } from '../../core/services/utils/helper.service';
 
 type RecipientField = {
   key: 'name' | 'email' | 'mobile' | 'whatsapp' | 'telegram_id' | 'device_token' | 'user_id';
@@ -114,7 +115,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private sanitizer: DomSanitizer
+    private helperService: HelperService
   ) { }
 
   ngOnInit(): void {
@@ -526,7 +527,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       return this.previewUrlCache.url;
     }
 
-    const url = this.sanitizer.bypassSecurityTrustResourceUrl(
+    const url = this.helperService.bypassSecurityTrustResourceUrl(
       `data:text/html;charset=utf-8,${encodeURIComponent(html)}`
     );
     this.previewUrlCache = { html, url };

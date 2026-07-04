@@ -4,6 +4,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { BehaviorSubject, catchError, map, Observable, of, retry, Subject, take, tap } from 'rxjs';
 import { DatePipe, PlatformLocation, } from '@angular/common';
 import * as uuid from 'uuid';
+import { DomSanitizer, SafeResourceUrl, SafeHtml } from '@angular/platform-browser';
 
 import { DataService } from '../data.service';
 import { HttpClient } from '@angular/common/http';
@@ -151,5 +152,34 @@ export class HelperService {
       result += chars.charAt(randomValues[i] % chars.length);
     }
     return result;
+  }
+
+  private sanitizer = inject(DomSanitizer);
+
+  public bypassSecurityTrustResourceUrl(url: string, allowedPrefixes: string[] = []): SafeResourceUrl {
+    if (!url) return this.sanitizer.bypassSecurityTrustResourceUrl('');
+    const prefixes = [
+      'assets/svgs/',
+      'data:text/html;charset=utf-8,',
+      'https://docs.google.com/gview',
+      'http://localhost',
+      'https://localhost',
+      ...allowedPrefixes
+    ];
+    const isAllowed = prefixes.some(prefix => url.startsWith(prefix));
+    if (isAllowed) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
+    console.warn(`Centralized sanitizer blocked resource URL: ${url}`);
+    return this.sanitizer.bypassSecurityTrustResourceUrl('');
+  }
+
+  public bypassSecurityTrustHtml(html: string): SafeHtml {
+    if (!html) return '';
+    const clean = html
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/\bon\w+\s*=\s*(['"][^'"]*['"]|[^\s>]*)/gi, '')
+      .replace(/\b(href|src)\s*=\s*['"]\s*(javascript|data)\s*:[^'"]*['"]/gi, '');
+    return this.sanitizer.bypassSecurityTrustHtml(clean);
   }
 }
