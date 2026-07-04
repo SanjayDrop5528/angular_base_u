@@ -42,7 +42,9 @@ export class MenuService extends BaseService {
     if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
       return crypto.randomUUID();
     }
-    return 'menu-' + Math.random().toString(36).substring(2, 9) + '-' + Date.now();
+    const array = new Uint32Array(1);
+    (window.crypto || (window as any).msCrypto).getRandomValues(array);
+    return 'menu-' + array[0].toString(36) + '-' + Date.now();
   }
 
   public loadMenu(currentUser?: any): Promise<any> {

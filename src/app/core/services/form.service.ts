@@ -1294,7 +1294,7 @@ export class FormService {
       return;
     }
     //sync way
-    defaultValues.map((obj: any) => {
+    defaultValues.forEach((obj: any) => {
       let totaVAlue = Object.assign({}, formData, model);
       if (obj["defaultValue"]) {
         formData[obj.colName] = obj["defaultValue"];

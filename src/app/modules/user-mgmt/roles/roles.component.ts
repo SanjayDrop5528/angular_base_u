@@ -221,7 +221,9 @@ export class RolesComponent implements OnInit {
     if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
       return crypto.randomUUID();
     }
-    return 'temp-' + Math.random().toString(36).substring(2, 9) + '-' + Date.now();
+    const array = new Uint32Array(1);
+    (window.crypto || (window as any).msCrypto).getRandomValues(array);
+    return 'temp-' + array[0].toString(36) + '-' + Date.now();
   }
 
   private unwrapArrayResponse(value: any, nestedKey?: string): any[] {

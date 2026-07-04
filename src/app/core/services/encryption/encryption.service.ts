@@ -19,8 +19,8 @@ export class EncryptionService {
 
     let latin1Str = '';
 
-    for (let i = 0; i < compressed.length; i++) {
-      latin1Str += String.fromCharCode(compressed[i]);
+    for (const byte of compressed) {
+      latin1Str += String.fromCharCode(byte);
     }
 
     const wordArray = CryptoJS.enc.Latin1.parse(latin1Str);

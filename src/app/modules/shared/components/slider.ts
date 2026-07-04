@@ -66,7 +66,7 @@ export class ToggleSwitchComponent implements OnChanges {
   @Input() checked: any;
   @Output() valueChanged = new EventEmitter<any>();
   cdr=inject(ChangeDetectorRef)
-  randomId = `switch-${Math.random().toString(36).substring(2, 9)}`;
+  randomId = `switch-${self.crypto.randomUUID().substring(0, 8)}`;
 
   ngOnChanges(): void {
     // console.log('Checked value changed:', this.checked);

@@ -200,7 +200,7 @@ export class DataManipulatorService {
     buildOptions(res: any, to: any) {
       var data: any[] = res.data ? res.data : res;
       if (to?.labelPropTemplate) {
-        data.map((e: any) => {
+        data.forEach((e: any) => {
           e[to.labelProp] = this._utilsService.processText(to.labelPropTemplate, e);
         });
       }

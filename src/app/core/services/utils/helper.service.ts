@@ -145,11 +145,11 @@ export class HelperService {
   generateRandomId(length: number = 8): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
-
+    const randomValues = new Uint32Array(length);
+    (window.crypto || (window as any).msCrypto).getRandomValues(randomValues);
     for (let i = 0; i < length; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
+      result += chars.charAt(randomValues[i] % chars.length);
     }
-
     return result;
   }
 }

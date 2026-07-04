@@ -42,7 +42,7 @@ export class GoogleMapLinkService {
     const mapUrl = `https://www.google.com/maps/place/${latitude},${longitude}`;
 
     // Return the anchor tag with the proper href
-    return `<a href="${mapUrl}" target="_blank">
+    return `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">
                   ${lat}, ${long}
                 </a>`;
   }

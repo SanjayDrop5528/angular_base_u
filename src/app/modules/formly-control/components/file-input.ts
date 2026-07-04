@@ -92,8 +92,8 @@ export class FileInput extends FieldType<any> implements OnInit {
 
     const formData = new FormData();
 
-    for (let i = 0; i < this.selectedFiles.length; i++) {
-      formData.append('file', this.selectedFiles[i]);
+    for (const file of this.selectedFiles) {
+      formData.append('file', file);
       console.log(formData)
     }
     formData.append(this.field.refId, id);
@@ -117,8 +117,8 @@ export class FileInput extends FieldType<any> implements OnInit {
     this.file = []
     this.show_button = false
     this.selectedFiles = target.files
-    for (let i = 0; i < this.selectedFiles.length; i++) {
-      this.file.push({ "filename": this.selectedFiles[i].name })
+    for (const file of this.selectedFiles) {
+      this.file.push({ "filename": file.name })
     }
   }
 }

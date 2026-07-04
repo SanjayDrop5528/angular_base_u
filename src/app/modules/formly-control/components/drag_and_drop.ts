@@ -524,9 +524,7 @@ export class DragComponent extends FieldType<any> {
           "OK"
         );
       }
-      for (let index = 0; index < files.length; index++) {
-        const element = files[index];
-
+      for (const element of files) {
         formData.append("file", element);
       }
       // this.dataService.imageupload(this.opt.folder, this.model[this.opt.refId], formData)

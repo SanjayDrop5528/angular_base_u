@@ -46,6 +46,8 @@ export class DynamicFormComponent {
   @Output('onClose') onClose = new EventEmitter<any>();
   butonflag: boolean = false;
   actionHide: boolean = false;
+  previewUrl: SafeResourceUrl | null = null;
+  private previewDialogRef?: MatDialogRef<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -188,6 +190,12 @@ export class DynamicFormComponent {
       this.onClose.emit({ action: 'cancel', data: null });
       this.dialogService.closeModal();
     }
+  }
+
+  closeEmailPreview(): void {
+    this.previewDialogRef?.close();
+    this.previewDialogRef = undefined;
+    this.previewUrl = null;
   }
 
 }
