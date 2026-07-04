@@ -191,11 +191,4 @@ export class DynamicFormComponent {
       this.dialogService.closeModal();
     }
   }
-
-  closeEmailPreview(): void {
-    this.previewDialogRef?.close();
-    this.previewDialogRef = undefined;
-    this.previewUrl = null;
-  }
-
 }

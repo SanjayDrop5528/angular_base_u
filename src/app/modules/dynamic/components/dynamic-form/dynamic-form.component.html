@@ -21,10 +21,6 @@
       <button class="cancel-button-color" style="margin: 5px;" mat-button (click)="cancel()"
         [disabled]="butonflag">{{'FORM.COMMON.CANCEL'|translate}}</button>
       }
-      @if (shouldShowEmailPreview()) {
-      <button class="preview-button-color" style="margin: 5px;" mat-button type="button" (click)="openEmailPreview()"
-        [disabled]="butonflag">Preview</button>
-      }
       @if (!this.id) {
       <button class="reset-button-color" style="margin: 5px;" mat-button (click)="resetBtn('reset')"
         [disabled]="butonflag">{{'FORM.COMMON.RESET'|translate}}</button>
